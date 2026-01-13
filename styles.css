@@ -57,20 +57,24 @@ body {
   padding: 0 20px;
 }
 
-/* LOGO IMAGE - FIXED & BLENDED */
+/* LOGO IMAGE - FIXED */
 .main-logo {
-  width: 80%;           /* Чуть меньше на мобилках */
-  max-width: 300px;     
+  width: 85%;
+  max-width: 280px;
   height: auto;
   display: block;
-  margin: 20px auto;    
-  opacity: 1; 
   
-  /* МАГИЯ: Убирает черный фон картинки, оставляя белый меч */
+  /* Центровка */
+  margin: 0 auto; 
+  
+  opacity: 1;
   mix-blend-mode: screen; 
-  
-  /* Если меч кажется тусклым, можно чуть усилить */
-  filter: brightness(1.2); 
+  filter: brightness(1.3) contrast(1.1); /* Чуть ярче, чтобы меч сиял */
+
+  /* ХИРУРГИЯ: */
+  /* inset(сверху справа снизу слева) */
+  /* Обрезаем 15% сверху/снизу (пустота) и 2px по бокам (белая полоса) */
+  clip-path: inset(15% 2px 15% 2px);
 }
 
 .eyebrow {
@@ -248,4 +252,48 @@ footer {
   50% { transform: translateX(-50%) scaleY(1); transform-origin: top; opacity: 1; }
   51% { transform: translateX(-50%) scaleY(1); transform-origin: bottom; opacity: 1; }
   100% { transform: translateX(-50%) scaleY(0); transform-origin: bottom; opacity: 0; }
+}
+
+/* INTERFACE GALLERY */
+.interface-gallery {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto; /* Горизонтальный скролл на мобилках */
+  padding: 20px 0;
+  margin-top: 40px;
+  
+  /* Скрываем скроллбар для красоты */
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+}
+.interface-gallery::-webkit-scrollbar { 
+  display: none; 
+}
+
+.gallery-item {
+  min-width: 260px; /* Ширина одной карточки */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gallery-item img {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+  transform: translateY(-5px);
+  border-color: var(--accent);
+}
+
+.caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-align: center;
+  letter-spacing: 1px;
 }

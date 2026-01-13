@@ -29,12 +29,27 @@ body {
 }
 
 /* HERO */
+/* HERO SECTION WITH IMAGE BACKGROUND */
 .hero {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  
+  /* Твое кибер-фото на фон */
+  background-image: url('hero-cyber.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+/* Затемнение фона, чтобы текст читался */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6); /* 60% темноты */
+  z-index: 0;
 }
 
 .hero-inner {
@@ -181,4 +196,25 @@ footer {
   padding: 60px 20px;
   text-align: center;
   color: var(--muted);
+}
+/* LOGO IMAGE */
+.main-logo {
+  width: 100%;
+  max-width: 400px; /* Ограничим ширину */
+  height: auto;
+  filter: invert(1); /* Если логотип черный на белом, это сделает его белым на черном. Если он уже белый прозрачный - убери эту строку */
+  margin: 20px 0;
+}
+/* PRODUCT PHOTO */
+.product-showcase {
+  margin-top: 40px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.product-showcase img {
+  width: 100%;
+  height: auto;
+  display: block;
 }

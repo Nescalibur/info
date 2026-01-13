@@ -57,29 +57,44 @@ body {
   padding: 0 20px;
 }
 
-/* LOGO IMAGE - FIXED */
+/* LOGO IMAGE - FIXED & BLENDED */
 .main-logo {
-  width: auto;           /* Авто-ширина, чтобы сохранить пропорции */
-  max-width: 250px;      /* Было 500, ставим 250-300, чтобы не орало */
+  width: 80%;           /* Чуть меньше на мобилках */
+  max-width: 300px;     
   height: auto;
   display: block;
-  margin: 0 auto 10px auto; /* Убрал отступ сверху (0), снизу 10px, центровка */
-  opacity: 0.95; 
+  margin: 20px auto;    
+  opacity: 1; 
+  
+  /* МАГИЯ: Убирает черный фон картинки, оставляя белый меч */
+  mix-blend-mode: screen; 
+  
+  /* Если меч кажется тусклым, можно чуть усилить */
+  filter: brightness(1.2); 
 }
 
 .eyebrow {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  letter-spacing: 0.2em;
-  color: var(--muted);
+  font-size: 10px;        /* Чуть мельче */
+  letter-spacing: 0.3em;  /* Шире разрядка - выглядит дороже */
+  color: #fff;            /* Белый цвет */
+  opacity: 0.7;           /* Полупрозрачность вместо серого цвета */
   text-transform: uppercase;
+  margin-bottom: 10px;
+  display: block;
 }
 
+
 .hero-sub {
-  font-size: 18px;
-  color: var(--text); /* Сделал светлее для читаемости на фото */
-  opacity: 0.8;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #e6e6eb;
   margin-top: 10px;
+  font-weight: 300;
+  max-width: 90%;       /* Чтобы не прилипал к краям на телефоне */
+  margin-left: auto;
+  margin-right: auto;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8); /* Тень, чтобы читалось на любом фоне */
 }
 
 /* DIVIDER */
@@ -214,4 +229,23 @@ footer {
   padding: 60px 20px;
   text-align: center;
   color: var(--muted);
+}
+
+/* SCROLL INDICATOR */
+.scroll-indicator {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, #fff, transparent);
+  animation: scrollDown 2s infinite;
+}
+
+@keyframes scrollDown {
+  0% { transform: translateX(-50%) scaleY(0); transform-origin: top; opacity: 1; }
+  50% { transform: translateX(-50%) scaleY(1); transform-origin: top; opacity: 1; }
+  51% { transform: translateX(-50%) scaleY(1); transform-origin: bottom; opacity: 1; }
+  100% { transform: translateX(-50%) scaleY(0); transform-origin: bottom; opacity: 0; }
 }

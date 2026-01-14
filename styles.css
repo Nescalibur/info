@@ -78,7 +78,7 @@ body {
 
 .scroll-indicator {
   position: absolute;
-  bottom: 60px;
+  bottom: 1px;
   left: 50%;
   width: 2px;
   height: 60px;

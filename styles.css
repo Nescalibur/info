@@ -12,14 +12,12 @@
 
 body {
   margin: 0;
-  background:
-    radial-gradient(circle at top, #14141a, #060608 70%);
+  background: radial-gradient(circle at top, #14141a, #060608 70%);
   color: var(--text);
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
 }
 
-/* Noise overlay */
 .noise {
   position: fixed;
   inset: 0;
@@ -34,76 +32,68 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: url('hero-cyber.jpg') center / cover no-repeat;
   position: relative;
-  
-  /* Твое кибер-фото на фон */
-  background-image: url('hero-cyber.jpg');
-  background-size: cover;
-  background-position: center;
 }
 
-/* Затемнение фона */
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7); /* Чуть темнее для контраста */
-  z-index: 0;
+  background: rgba(0,0,0,0.7);
 }
 
 .hero-inner {
+  position: relative;
   text-align: center;
-  z-index: 1;
   padding: 0 20px;
 }
 
-/* LOGO IMAGE - FIXED */
 .main-logo {
-  width: 85%;
-  max-width: 280px;
-  height: auto;
-  display: block;
-  
-  /* Центровка */
-  margin: 0 auto; 
-  
-  opacity: 1;
-  mix-blend-mode: screen; 
-  filter: brightness(1.3) contrast(1.1); /* Чуть ярче, чтобы меч сиял */
-
-  /* ХИРУРГИЯ: */
-  /* inset(сверху справа снизу слева) */
-  /* Обрезаем 15% сверху/снизу (пустота) и 2px по бокам (белая полоса) */
-  /* clip-path: inset(10% 6px 30% 6px); */
+  width: 260px;
+  max-width: 80%;
+  margin: 20px auto;
+  opacity: 0.85;
+  filter: brightness(1.15) contrast(1.05);
 }
 
 .eyebrow {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;        /* Чуть мельче */
-  letter-spacing: 0.3em;  /* Шире разрядка - выглядит дороже */
-  color: #fff;            /* Белый цвет */
-  opacity: 0.7;           /* Полупрозрачность вместо серого цвета */
+  font-size: 10px;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  margin-bottom: 10px;
-  display: block;
+  opacity: 0.7;
 }
 
+.hero-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px;
+  margin: 20px 0 10px;
+}
 
 .hero-sub {
   font-size: 16px;
-  line-height: 1.4;
-  color: #e6e6eb;
-  margin-top: 10px;
-  font-weight: 300;
-  max-width: 90%;       /* Чтобы не прилипал к краям на телефоне */
-  margin-left: auto;
-  margin-right: auto;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.8); /* Тень, чтобы читалось на любом фоне */
+  opacity: 0.9;
 }
 
-/* DIVIDER */
+.scroll-indicator {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, #fff, transparent);
+  animation: scroll 2s infinite;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(-50%) scaleY(0); }
+  50% { transform: translateX(-50%) scaleY(1); }
+  100% { transform: translateX(-50%) scaleY(0); opacity: 0; }
+}
+
+/* COMMON */
 .divider {
-  width: 100%;
   height: 120px;
   position: relative;
 }
@@ -111,28 +101,17 @@ body {
 .divider::after {
   content: "";
   position: absolute;
-  left: 50%;
   top: 20px;
+  left: 50%;
   width: 1px;
   height: 80px;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(255,255,255,0.4),
-    transparent
-  );
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4), transparent);
 }
 
 .divider.accent::after {
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    var(--accent),
-    transparent
-  );
+  background: linear-gradient(to bottom, transparent, var(--accent), transparent);
 }
 
-/* SECTION */
 .section {
   max-width: 960px;
   margin: 0 auto;
@@ -149,7 +128,6 @@ body {
 .section-index {
   font-family: 'JetBrains Mono', monospace;
   color: var(--accent);
-  font-size: 14px;
 }
 
 h2 {
@@ -158,32 +136,20 @@ h2 {
   margin: 0;
 }
 
-/* PRODUCT PHOTO */
-.product-showcase {
-  margin: 40px 0;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+.section-text {
+  font-size: 18px;
+  line-height: 1.6;
 }
 
 .product-showcase img {
   width: 100%;
-  height: auto;
-  display: block;
+  border-radius: 12px;
+  margin: 40px 0;
 }
 
-.section-text {
-  margin-top: 40px;
-  font-size: 18px;
-  line-height: 1.6;
-  color: var(--text);
-}
-
-/* GRID */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
   gap: 40px;
 }
 
@@ -191,16 +157,6 @@ h2 {
   padding: 30px;
   background: rgba(255,255,255,0.02);
   border: 1px solid rgba(255,255,255,0.05);
-  backdrop-filter: blur(6px);
-}
-
-.card h3 {
-  font-family: 'Space Grotesk', sans-serif;
-  margin: 10px 0;
-}
-
-.card p {
-  color: var(--muted);
 }
 
 .metric {
@@ -209,11 +165,32 @@ h2 {
   color: var(--muted);
 }
 
-/* DATA LIST */
+.interface-gallery {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+}
+
+.gallery-item {
+  min-width: 260px;
+  text-align: center;
+}
+
+.gallery-item img {
+  width: 100%;
+  border-radius: 12px;
+}
+
+.caption {
+  margin-top: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+}
+
 .data-list {
   list-style: none;
   padding: 0;
-  margin-top: 40px;
 }
 
 .data-list li {
@@ -228,72 +205,8 @@ h2 {
   color: var(--accent);
 }
 
-/* FOOTER */
 footer {
   padding: 60px 20px;
   text-align: center;
   color: var(--muted);
-}
-
-/* SCROLL INDICATOR */
-.scroll-indicator {
-  position: absolute;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 1px;
-  height: 60px;
-  background: linear-gradient(to bottom, #fff, transparent);
-  animation: scrollDown 2s infinite;
-}
-
-@keyframes scrollDown {
-  0% { transform: translateX(-50%) scaleY(0); transform-origin: top; opacity: 1; }
-  50% { transform: translateX(-50%) scaleY(1); transform-origin: top; opacity: 1; }
-  51% { transform: translateX(-50%) scaleY(1); transform-origin: bottom; opacity: 1; }
-  100% { transform: translateX(-50%) scaleY(0); transform-origin: bottom; opacity: 0; }
-}
-
-/* INTERFACE GALLERY */
-.interface-gallery {
-  display: flex;
-  gap: 20px;
-  overflow-x: auto; /* Горизонтальный скролл на мобилках */
-  padding: 20px 0;
-  margin-top: 40px;
-  
-  /* Скрываем скроллбар для красоты */
-  scrollbar-width: none; 
-  -ms-overflow-style: none;
-}
-.interface-gallery::-webkit-scrollbar { 
-  display: none; 
-}
-
-.gallery-item {
-  min-width: 260px; /* Ширина одной карточки */
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.gallery-item img {
-  width: 100%;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  transition: transform 0.3s ease;
-}
-
-.gallery-item:hover img {
-  transform: translateY(-5px);
-  border-color: var(--accent);
-}
-
-.caption {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--muted);
-  text-align: center;
-  letter-spacing: 1px;
 }

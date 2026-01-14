@@ -151,6 +151,40 @@
 <footer>
   <span class="metric">NESCALIBUR · 2026</span>
 </footer>
+<script>
+  // === 1. CINEMATIC SCROLL OBSERVER ===
+  // Заставляет элементы появляться красиво при скролле
+  const observerOptions = {
+    threshold: 0.1, // Срабатывает, когда показалось 10% элемента
+    rootMargin: "0px 0px -50px 0px"
+  };
 
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // observer.unobserve(entry.target); // Раскомментируй, если хочешь анимацию только 1 раз
+      }
+    });
+  }, observerOptions);
+
+  // Следим за всеми важными блоками
+  document.querySelectorAll('.section, .card, .product-showcase, .gallery-item').forEach(el => {
+    observer.observe(el);
+  });
+
+  // === 2. MOUSE SPOTLIGHT (ФОНАРИК) ===
+  // Работает только на десктопе
+  if (window.matchMedia("(pointer: fine)").matches) {
+    const light = document.createElement('div');
+    light.classList.add('cursor-light');
+    document.body.appendChild(light);
+
+    document.addEventListener('mousemove', (e) => {
+      light.style.left = e.clientX + 'px';
+      light.style.top = e.clientY + 'px';
+    });
+  }
+</script>
 </body>
 </html>

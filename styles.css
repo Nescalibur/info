@@ -1,309 +1,290 @@
-/* === 1. BASE SETTINGS === */
 :root {
-  --bg-deep: #050507;
-  --bg-panel: #0e0e12;
-  --text-main: #ededed;
-  --text-muted: #8a8a93;
+  --bg: #0b0b0d;
+  --bg-soft: #121217;
+  --text: #e6e6eb;
+  --muted: #8a8a92;
   --accent: #ff3b3b;
-  --border: rgba(255,255,255,0.08);
-  
-  --font-body: 'Inter', sans-serif;
-  --font-head: 'Space Grotesk', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
-  background-color: var(--bg-deep);
-  color: var(--text-main);
-  font-family: var(--font-body);
-  line-height: 1.6;
+  background: radial-gradient(circle at top, #14141a, #060608 70%);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
   overflow-x: hidden;
 }
 
-/* === 2. BACKGROUND & NOISE === */
-.noise-layer {
+.noise {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
   pointer-events: none;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  z-index: 0;
 }
 
-/* === 3. HERO SECTION (Исправлен фон) === */
+/* HERO */
 .hero {
-  position: relative;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url('hero-cyber.jpg') center/cover no-repeat;
-  z-index: 1;
+  background: url('hero-cyber.jpg') center / cover no-repeat;
+  position: relative;
 }
 
-/* Затемнение, чтобы текст читался идеально */
-.hero-overlay {
+.hero::before {
+  content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(5,5,7,0.85), #050507);
+  background: rgba(0,0,0,0.7);
 }
 
-.hero-content {
+.hero-inner {
   position: relative;
   text-align: center;
-  max-width: 800px;
   padding: 0 20px;
-  z-index: 2;
 }
 
 .main-logo {
-  width: 240px;
+  width: 260px;
   max-width: 80%;
-  margin-bottom: 40px;
-  filter: drop-shadow(0 0 20px rgba(255,255,255,0.1));
+  margin: 20px auto;
+  opacity: 0.85;
+  filter: brightness(1.15) contrast(1.05);
 }
 
-h1 {
-  font-family: var(--font-head);
-  font-size: clamp(28px, 5vw, 56px);
-  line-height: 1.1;
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  margin-bottom: 20px;
-  letter-spacing: -0.02em;
+  opacity: 0.7;
 }
 
-.accent-text {
-  color: #fff;
-  text-shadow: 0 0 30px rgba(255,255,255,0.2);
+.hero-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px;
+  margin: 20px 0 10px;
 }
 
 .hero-sub {
-  color: var(--text-muted);
-  font-size: clamp(14px, 2vw, 18px);
-  max-width: 500px;
-  margin: 0 auto 60px;
+  font-size: 16px;
+  opacity: 0.9;
 }
 
-.scroll-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  opacity: 0.6;
-}
-
-.scroll-line {
-  width: 1px;
-  height: 50px;
+.scroll-indicator {
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  width: 2px;
+  height: 60px;
   background: linear-gradient(to bottom, #fff, transparent);
+  animation: scroll 2s infinite;
 }
 
-/* === 4. COMMON SECTIONS === */
-.section {
+@keyframes scroll {
+  0% { transform: translateX(-50%) scaleY(0); }
+  50% { transform: translateX(-50%) scaleY(1); }
+  100% { transform: translateX(-50%) scaleY(0); opacity: 0; }
+}
+
+/* COMMON */
+.divider {
+  height: 120px;
   position: relative;
-  max-width: 1100px;
+}
+
+.divider::after {
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4), transparent);
+}
+
+.divider.accent::after {
+  background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+}
+
+.section {
+  max-width: 960px;
   margin: 0 auto;
   padding: 120px 20px;
-  z-index: 2;
 }
 
-.section-head {
+.section-header {
   display: flex;
   align-items: baseline;
   gap: 20px;
-  margin-bottom: 60px;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 20px;
+  margin-bottom: 40px;
 }
 
-.section-num {
-  font-family: var(--font-mono);
+.section-index {
+  font-family: 'JetBrains Mono', monospace;
   color: var(--accent);
-  font-size: 14px;
 }
 
 h2 {
-  font-family: var(--font-head);
-  font-size: clamp(24px, 4vw, 42px);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 36px;
   margin: 0;
-  text-transform: uppercase;
 }
 
-/* === 5. PRODUCT DISPLAY === */
-.product-showcase {
-  margin-bottom: 40px;
-  position: relative;
+.section-text {
+  font-size: 18px;
+  line-height: 1.6;
 }
 
 .product-showcase img {
   width: 100%;
-  border-radius: 4px;
-  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin: 40px 0;
 }
 
-.status-panel {
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid var(--border);
-  padding-top: 10px;
-  margin-top: 10px;
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-.text-body p {
-  font-size: 18px;
-  color: var(--text-muted);
-  max-width: 700px;
-}
-.white { color: #fff; border-bottom: 1px solid var(--accent); }
-
-/* === 6. CARDS GRID (ATHLETE / COACH / BUSINESS) === */
-.grid-3 {
+.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+  gap: 40px;
 }
 
 .card {
-  background: var(--bg-panel);
   padding: 30px;
-  border: 1px solid var(--border);
-  transition: border-color 0.3s;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
-.card:hover {
-  border-color: rgba(255,255,255,0.2);
+.metric {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
 }
 
-.mono-tag {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: 0.05em;
-}
-
-.card h3 {
-  font-family: var(--font-head);
-  font-size: 22px;
-  margin: 10px 0 20px;
-}
-
-.card-bullets {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.card-bullets li {
-  margin-bottom: 15px;
-  font-size: 14px;
-  color: var(--text-muted);
-}
-
-.card-bullets strong {
-  color: #fff;
-  display: block;
-  margin-bottom: 4px;
-}
-
-/* === 7. GALLERY (MODES) === */
-.gallery-wrapper {
+/* FIXED GALLERY */
+.interface-gallery {
   display: flex;
-  gap: 30px;
+  gap: 20px;
   overflow-x: auto;
-  padding-bottom: 20px;
-  scrollbar-width: none;
-}
-.gallery-wrapper::-webkit-scrollbar { display: none; }
-
-.gallery-card {
-  min-width: 320px;
-  max-width: 320px;
-  flex-shrink: 0;
-}
-
-.img-box {
-  background: #000;
-  height: 240px;
-  border: 1px solid var(--border);
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.img-box img {
-  width: 100%;
-  height: 100%;
-  /* ВАЖНО: CONTAIN НЕ ОБРЕЗАЕТ ГРАФИКИ */
-  object-fit: contain; 
-}
-
-.gallery-info h4 {
-  font-size: 14px;
-  margin: 0 0 10px 0;
-  letter-spacing: 0.05em;
-}
-
-.desc {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin: 0;
-  line-height: 1.5;
-}
-
-/* === 8. SPECS (TABLE) === */
-.specs-grid {
-  border-top: 1px solid var(--border);
-}
-
-.spec-row {
-  display: flex;
-  justify-content: space-between;
   padding: 20px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 14px;
+  margin-top: 40px;
+  
+  /* Убираем вертикальные скроллы */
+  overflow-y: hidden;
+  scrollbar-width: none; 
+  align-items: flex-start; /* Выравнивание по верху */
 }
 
-.value { color: var(--accent); text-align: right; }
-
-/* === 9. FOOTER & UTILS === */
-footer {
-  margin-top: 80px;
-  border-top: 1px solid var(--border);
-  padding: 40px 20px;
-  text-align: center;
-}
-
-.footer-content {
+.gallery-item {
+  /* Фиксируем ширину карточки */
+  min-width: 280px; 
+  max-width: 280px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.gallery-item img {
+  width: 100%;
+  /* ЖЕСТКАЯ ВЫСОТА КАРТИНОК */
+  height: 450px; 
+  /* Картинка заполнит блок, обрезав лишнее, но сохранит пропорции */
+  object-fit: cover; 
+  /* Фокус на центр картинки */
+  object-position: center top;
+  
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.caption {
+  margin-top: 10px;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
-  opacity: 0.6;
+  color: var(--muted);
 }
 
-.mono { font-family: var(--font-mono); text-transform: uppercase; }
+.data-list {
+  list-style: none;
+  padding: 0;
+}
 
-/* ANIMATION CLASSES */
-.fade-ready {
+.data-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.value {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent);
+}
+
+footer {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--muted);
+}
+
+
+/* === 2026 VISUAL UPGRADE === */
+
+/* 1. CINEMATIC REVEAL (Скрываем элементы по умолчанию) */
+.section, .card, .product-showcase, .gallery-item {
   opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.6s ease-out;
+  transform: translateY(30px);
+  filter: blur(10px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); /* Плавная физика Apple */
 }
+
+/* Класс, который делает их видимыми (добавляется JS-ом) */
 .visible {
   opacity: 1;
   transform: translateY(0);
+  filter: blur(0);
 }
 
-/* MOBILE FIXES */
-@media (max-width: 600px) {
-  .hero-sub { margin-bottom: 40px; }
-  .grid-3 { grid-template-columns: 1fr; }
-  .spec-row { flex-direction: column; gap: 5px; }
-  .value { text-align: left; }
+/* 2. CUBE PULSATION ENGINE */
+.product-showcase {
+  position: relative; /* Обязательно для позиционирования свечения */
+}
+
+.cube-pulse {
+  position: absolute;
+  /* Координаты центра куба на фото (подстрой под свою картинку) */
+  top: 65%;  
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  width: 40%;  /* Ширина пятна света */
+  height: 40%; /* Высота пятна */
+  
+  /* Фиолетовое "ядерное" свечение */
+  background: radial-gradient(circle, rgba(140, 0, 255, 0.4) 0%, rgba(140, 0, 255, 0) 70%);
+  mix-blend-mode: screen; /* Режим наложения для свечения */
+  pointer-events: none;
+  
+  animation: reactor-breath 4s infinite ease-in-out;
+}
+
+@keyframes reactor-breath {
+  0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.9); }
+  50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+
+
+/* 3. GLOW EFFECT (Подсветка карточек) */
+.card {
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  border-color: rgba(255,255,255,0.3);
+  box-shadow: 0 0 30px rgba(255, 59, 59, 0.15); /* Красноватое свечение */
 }

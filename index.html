@@ -1,309 +1,247 @@
-/* === 1. BASE SETTINGS === */
-:root {
-  --bg-deep: #050507;
-  --bg-panel: #0e0e12;
-  --text-main: #ededed;
-  --text-muted: #8a8a93;
-  --accent: #ff3b3b;
-  --border: rgba(255,255,255,0.08);
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="NESCALIBUR: Станция изометрического профилирования. Анализ iRFD и Relaxation Rate.">
+  <title>NESCALIBUR | Isometry Station</title>
   
-  --font-body: 'Inter', sans-serif;
-  --font-head: 'Space Grotesk', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-}
+  <link rel="icon" type="image/png" href="favicon.png">
+  
+  <!-- Fonts: Space Grotesk (Tech Headers), Inter (Body), JetBrains Mono (Data) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-* { box-sizing: border-box; }
+  <link rel="stylesheet" href="styles.css">
+</head>
 
-body {
-  margin: 0;
-  background-color: var(--bg-deep);
-  color: var(--text-main);
-  font-family: var(--font-body);
-  line-height: 1.6;
-  overflow-x: hidden;
-}
+<body>
 
-/* === 2. BACKGROUND & NOISE === */
-.noise-layer {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-}
+<div class="noise-layer"></div>
 
-/* === 3. HERO SECTION (Исправлен фон) === */
-.hero {
-  position: relative;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: url('hero-cyber.jpg') center/cover no-repeat;
-  z-index: 1;
-}
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    
+    <!-- LOGO -->
+    <img src="logo-sword.png" alt="NESCALIBUR" class="main-logo">
 
-/* Затемнение, чтобы текст читался идеально */
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, rgba(5,5,7,0.85), #050507);
-}
+    <!-- HEADLINE -->
+    <h1>
+      ФИЗИЧЕСКОЕ СОСТОЯНИЕ<br>
+      <span class="accent-text">БЕЗ ИНТЕРПРЕТАЦИЙ</span>
+    </h1>
 
-.hero-content {
-  position: relative;
-  text-align: center;
-  max-width: 800px;
-  padding: 0 20px;
-  z-index: 2;
-}
+    <p class="hero-sub">
+      Станция изометрического профилирования.<br>
+      Фиксация усилия. Метрики ЦНС. Решение за человеком.
+    </p>
 
-.main-logo {
-  width: 240px;
-  max-width: 80%;
-  margin-bottom: 40px;
-  filter: drop-shadow(0 0 20px rgba(255,255,255,0.1));
-}
+    <!-- SCROLL INDICATOR -->
+    <div class="scroll-wrapper">
+      <span class="mono-label">SCROLL</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+</section>
 
-h1 {
-  font-family: var(--font-head);
-  font-size: clamp(28px, 5vw, 56px);
-  line-height: 1.1;
-  text-transform: uppercase;
-  margin-bottom: 20px;
-  letter-spacing: -0.02em;
-}
+<!-- SECTION 01: PRODUCT -->
+<section class="section">
+  <div class="section-head">
+    <span class="section-num">01</span>
+    <h2>ЧТО ЭТО</h2>
+  </div>
 
-.accent-text {
-  color: #fff;
-  text-shadow: 0 0 30px rgba(255,255,255,0.2);
-}
+  <div class="product-showcase">
+    <img src="product-void.jpg" alt="NESCALIBUR Device">
+    <div class="status-panel">
+      <div class="status-row">
+        <span>SENSOR TYPE</span>
+        <span class="mono">S-TYPE LOAD CELL</span>
+      </div>
+      <div class="status-row">
+        <span>SAMPLING</span>
+        <span class="mono">80 HZ (WINDOWED)</span>
+      </div>
+    </div>
+  </div>
 
-.hero-sub {
-  color: var(--text-muted);
-  font-size: clamp(14px, 2vw, 18px);
-  max-width: 500px;
-  margin: 0 auto 60px;
-}
+  <div class="text-body">
+    <p>
+      NESCALIBUR — это инструмент прямого измерения. Мы не используем алгоритмы предсказания по пульсу (HRV). 
+      Мы измеряем <span class="white">механический отклик</span> нервно-мышечной системы.
+    </p>
+    <p>
+      Тензометрическая платформа фиксирует, как эффективно мозг рекрутирует двигательные единицы 
+      и, что важнее, как быстро он способен их отключать.
+    </p>
+  </div>
+</section>
 
-.scroll-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  opacity: 0.6;
-}
+<!-- SECTION 02: TARGET AUDIENCE (Вернул твою структуру) -->
+<section class="section">
+  <div class="section-head">
+    <span class="section-num">02</span>
+    <h2>СФЕРЫ ПРИМЕНЕНИЯ</h2>
+  </div>
 
-.scroll-line {
-  width: 1px;
-  height: 50px;
-  background: linear-gradient(to bottom, #fff, transparent);
-}
+  <div class="grid-3">
+    <!-- CARD 1 -->
+    <div class="card">
+      <div class="card-header">
+        <span class="mono-tag">АТЛЕТ</span>
+        <h3>Ресурс организма</h3>
+      </div>
+      <ul class="card-bullets">
+        <li>
+          <strong>Пик формы:</strong> Знание, когда идти на рекорд, подтвержденное цифрами (MVC).
+        </li>
+        <li>
+          <strong>Профилактика:</strong> Если сила в норме, но скорость расслабления упала — ЦНС перегружена.
+        </li>
+      </ul>
+    </div>
 
-/* === 4. COMMON SECTIONS === */
-.section {
-  position: relative;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 120px 20px;
-  z-index: 2;
-}
+    <!-- CARD 2 -->
+    <div class="card">
+      <div class="card-header">
+        <span class="mono-tag">ТРЕНЕР</span>
+        <h3>Факты vs Мнения</h3>
+      </div>
+      <ul class="card-bullets">
+        <li>
+          <strong>Метрика прогресса:</strong> Объективная оценка плана тренировок.
+        </li>
+        <li>
+          <strong>Коррекция:</strong> Основание изменить нагрузку "здесь и сейчас" на основе iRFD.
+        </li>
+      </ul>
+    </div>
 
-.section-head {
-  display: flex;
-  align-items: baseline;
-  gap: 20px;
-  margin-bottom: 60px;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 20px;
-}
+    <!-- CARD 3 -->
+    <div class="card">
+      <div class="card-header">
+        <span class="mono-tag">БИЗНЕС</span>
+        <h3>Стандарт</h3>
+      </div>
+      <ul class="card-bullets">
+        <li>
+          <strong>LTV Клиента:</strong> Снижение оттока через заботу о долголетии и здоровье.
+        </li>
+        <li>
+          <strong>Технологичность:</strong> Физическое доказательство профессионализма клуба.
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-.section-num {
-  font-family: var(--font-mono);
-  color: var(--accent);
-  font-size: 14px;
-}
+<!-- SECTION 03: MODES (Fixed Terminology) -->
+<section class="section">
+  <div class="section-head">
+    <span class="section-num">03</span>
+    <h2>РЕЖИМЫ ИЗМЕРЕНИЯ</h2>
+  </div>
 
-h2 {
-  font-family: var(--font-head);
-  font-size: clamp(24px, 4vw, 42px);
-  margin: 0;
-  text-transform: uppercase;
-}
+  <div class="gallery-wrapper">
+    
+    <!-- MODE A -->
+    <div class="gallery-card">
+      <div class="img-box">
+        <img src="chart-power.jpg" alt="MVC Chart">
+      </div>
+      <div class="gallery-info">
+        <h4 class="mono">POWER (MVC)</h4>
+        <p class="desc">
+          Пиковое изометрическое усилие.<br>
+          Оценка способности создавать максимальное напряжение.
+        </p>
+      </div>
+    </div>
 
-/* === 5. PRODUCT DISPLAY === */
-.product-showcase {
-  margin-bottom: 40px;
-  position: relative;
-}
+    <!-- MODE B -->
+    <div class="gallery-card">
+      <div class="img-box">
+        <img src="chart-speed.jpg" alt="iRFD Chart">
+      </div>
+      <div class="gallery-info">
+        <h4 class="mono">EXPLOSIVE IMPULSE</h4>
+        <p class="desc">
+          Взрывной импульс (0–100 мс).<br>
+          Валидная метрика стартовой мощности и реакции для частоты 80Гц.
+        </p>
+      </div>
+    </div>
 
-.product-showcase img {
-  width: 100%;
-  border-radius: 4px;
-  border: 1px solid var(--border);
-}
+    <!-- MODE C -->
+    <div class="gallery-card void-card">
+      <div class="img-box">
+        <img src="chart-void.jpg" alt="Relaxation Chart">
+      </div>
+      <div class="gallery-info">
+        <h4 class="mono" style="color: #a78bfa;">RELAXATION RATE</h4>
+        <p class="desc">
+          Скорость активного расслабления.<br>
+          Ключевой маркер утомления ЦНС (способность тормозить мотонейроны).
+        </p>
+      </div>
+    </div>
 
-.status-panel {
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid var(--border);
-  padding-top: 10px;
-  margin-top: 10px;
-  font-size: 12px;
-  color: var(--text-muted);
-}
+  </div>
+</section>
 
-.text-body p {
-  font-size: 18px;
-  color: var(--text-muted);
-  max-width: 700px;
-}
-.white { color: #fff; border-bottom: 1px solid var(--accent); }
+<!-- SECTION 04: SPECS (Strict Data Only) -->
+<section class="section">
+  <div class="section-head">
+    <span class="section-num">04</span>
+    <h2>ТЕХ. ДАННЫЕ</h2>
+  </div>
 
-/* === 6. CARDS GRID (ATHLETE / COACH / BUSINESS) === */
-.grid-3 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-}
+  <div class="specs-grid">
+    <div class="spec-row">
+      <span>Протокол</span>
+      <span class="mono value">Изометрическая тяга</span>
+    </div>
+    <div class="spec-row">
+      <span>Частота опроса</span>
+      <span class="mono value">80 Hz (Windowed)</span>
+    </div>
+    <div class="spec-row">
+      <span>Диапазон</span>
+      <span class="mono value">0 — 300 кг</span>
+    </div>
+    <div class="spec-row">
+      <span>Индикация</span>
+      <span class="mono value">TFT + LED Feedback</span>
+    </div>
+  </div>
+</section>
 
-.card {
-  background: var(--bg-panel);
-  padding: 30px;
-  border: 1px solid var(--border);
-  transition: border-color 0.3s;
-}
+<footer>
+  <div class="footer-content">
+    <span class="mono">NESCALIBUR © 2026</span>
+    <span class="mono muted">ENGINEERED FOR HUMANS</span>
+  </div>
+</footer>
 
-.card:hover {
-  border-color: rgba(255,255,255,0.2);
-}
+<script>
+  // Простой и надежный Observer. 
+  // Делает opacity: 1 когда элемент появляется на экране.
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
 
-.mono-tag {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: 0.05em;
-}
+  document.querySelectorAll('.section, .card, .gallery-card, .spec-row').forEach(el => {
+    el.classList.add('fade-ready'); // Скрываем изначально
+    observer.observe(el);
+  });
+</script>
 
-.card h3 {
-  font-family: var(--font-head);
-  font-size: 22px;
-  margin: 10px 0 20px;
-}
-
-.card-bullets {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.card-bullets li {
-  margin-bottom: 15px;
-  font-size: 14px;
-  color: var(--text-muted);
-}
-
-.card-bullets strong {
-  color: #fff;
-  display: block;
-  margin-bottom: 4px;
-}
-
-/* === 7. GALLERY (MODES) === */
-.gallery-wrapper {
-  display: flex;
-  gap: 30px;
-  overflow-x: auto;
-  padding-bottom: 20px;
-  scrollbar-width: none;
-}
-.gallery-wrapper::-webkit-scrollbar { display: none; }
-
-.gallery-card {
-  min-width: 320px;
-  max-width: 320px;
-  flex-shrink: 0;
-}
-
-.img-box {
-  background: #000;
-  height: 240px;
-  border: 1px solid var(--border);
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.img-box img {
-  width: 100%;
-  height: 100%;
-  /* ВАЖНО: CONTAIN НЕ ОБРЕЗАЕТ ГРАФИКИ */
-  object-fit: contain; 
-}
-
-.gallery-info h4 {
-  font-size: 14px;
-  margin: 0 0 10px 0;
-  letter-spacing: 0.05em;
-}
-
-.desc {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin: 0;
-  line-height: 1.5;
-}
-
-/* === 8. SPECS (TABLE) === */
-.specs-grid {
-  border-top: 1px solid var(--border);
-}
-
-.spec-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 14px;
-}
-
-.value { color: var(--accent); text-align: right; }
-
-/* === 9. FOOTER & UTILS === */
-footer {
-  margin-top: 80px;
-  border-top: 1px solid var(--border);
-  padding: 40px 20px;
-  text-align: center;
-}
-
-.footer-content {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  font-size: 10px;
-  opacity: 0.6;
-}
-
-.mono { font-family: var(--font-mono); text-transform: uppercase; }
-
-/* ANIMATION CLASSES */
-.fade-ready {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.6s ease-out;
-}
-.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* MOBILE FIXES */
-@media (max-width: 600px) {
-  .hero-sub { margin-bottom: 40px; }
-  .grid-3 { grid-template-columns: 1fr; }
-  .spec-row { flex-direction: column; gap: 5px; }
-  .value { text-align: left; }
-}
+</body>
+</html>

@@ -3,275 +3,227 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="NESCALIBUR — Станция нейромышечного анализа. 80Hz iRFD, Relaxation Rate.">
-  <title>NESCALIBUR — SYSTEM STATUS: ACTIVE</title>
+  <title>NESCALIBUR — Нейромышечный контроль</title>
   
   <!-- FAVICONS -->
   <link rel="icon" type="image/png" sizes="512x512" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
 
-  <!-- Fonts -->
+  <!-- FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@300;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- СТИЛИ -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- ЗАЩИТА ОТ БЕЛОГО ЭКРАНА (Inline Critical CSS) -->
+  <style>body { background-color: #050505; color: #e0e0e0; }</style>
 </head>
 
 <body>
 
-  <!-- VISUAL LAYERS -->
-  <div class="noise-overlay"></div>
-  <div class="cyber-grid"></div>
-  <div class="scanline"></div>
-  
-  <!-- CUSTOM CURSOR -->
-  <div class="cursor-dot"></div>
-  <div class="cursor-circle"></div>
+<div class="noise"></div>
+<div class="scanline"></div>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-content reveal-type">
-      <div class="sys-status mono"><span class="blink">●</span> SYSTEM ONLINE // 80HZ SAMPLING</div>
-      
-      <img src="logo-sword.png" alt="NESCALIBUR" class="main-logo interactive">
-      
-      <h1 class="hero-tagline scramble-text">
-        ОБЪЕКТИВНЫЙ КОНТРОЛЬ<br>
-        НЕЙРОМЫШЕЧНОГО РЕСУРСА
-      </h1>
-
-      <p class="hero-sub">
-        Стационарная станция изометрического анализа.<br>
-        Факты вместо мнений.
-      </p>
-    </div>
-  </section>
-
-  <!-- PRODUCT INTRO -->
-  <section class="section">
-    <div class="section-header reveal-type">
-      <div class="section-index mono">[01]</div>
-      <h2 class="section-title scramble-text" data-value="ARCHITECTURE">ARCHITECTURE</h2>
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="status-bar mono">
+      <span>● СИСТЕМА АКТИВНА</span>
+      <span class="desktop-only">ТЕНЗОМЕТРИЯ S-TYPE</span>
     </div>
 
-    <div class="product-wrapper reveal-type interactive">
-      <img src="product-void.jpg" alt="Nescalibur Device" class="parallax-img">
-      <div class="reactor-glow"></div> <!-- "Ядро" куба -->
+    <!-- ЛОГОТИП -->
+    <img src="logo-sword.png" alt="NESCALIBUR" class="main-logo">
+
+    <h1 class="hero-title scramble" data-text="НЕЙРОМЫШЕЧНЫЙ АНАЛИЗ">
+      НЕЙРОМЫШЕЧНЫЙ АНАЛИЗ
+    </h1>
+
+    <p class="hero-sub">
+      Станция изометрического тестирования.<br>
+      Лабораторная точность в потребительском форм-факторе.
+    </p>
+
+    <div class="scroll-trigger">
+      <span class="mono">SCROLL</span>
+      <div class="line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 01: CONCEPT -->
+<section class="section">
+  <div class="header-row fade-in">
+    <span class="index mono">01</span>
+    <h2>АРХИТЕКТУРА</h2>
+  </div>
+
+  <div class="showcase-container fade-in">
+    <img src="product-void.jpg" alt="Устройство Nescalibur" class="product-img">
+    <div class="img-overlay"></div>
+  </div>
+
+  <div class="text-block fade-in">
+    <p>
+      NESCALIBUR исключает субъективность. В отличие от фитнес-трекеров, которые "гадают" по пульсу, 
+      мы измеряем <span class="highlight">физическую реальность</span> — килограммы силы, приложенные к тензодатчику.
+    </p>
+    <p>
+      Это не тренажер. Это диагностический инструмент для оценки готовности ЦНС через 
+      прямой отклик двигательных единиц.
+    </p>
+  </div>
+</section>
+
+<!-- BLOCK 02: TARGET -->
+<section class="section">
+  <div class="header-row fade-in">
+    <span class="index mono">02</span>
+    <h2>СФЕРЫ ПРИМЕНЕНИЯ</h2>
+  </div>
+
+  <div class="grid fade-in">
+    <div class="card">
+      <span class="metric mono">АТЛЕТ</span>
+      <h3>Ресурс организма</h3>
+      <p>Определение готовности к пиковым нагрузкам. Защита от перетренированности через мониторинг скорости восстановления.</p>
     </div>
 
-    <div class="tech-desc reveal-type">
-      <p>
-        NESCALIBUR — это не тренажер. Это измерительный инструмент лабораторного класса. 
-        Тензометрическая платформа фиксирует усилия, исключая субъективность. 
-        Мы переводим ощущения в сухие данные, чтобы вы принимали решения осознанно.
-      </p>
-      <ul class="tech-specs mono">
-        <li>SENSOR: S-TYPE LOAD CELL (300KG)</li>
-        <li>SAMPLING: 80HZ CONSTANT</li>
-        <li>PROCESSOR: ESP32-S3 DUAL CORE</li>
-        <li>FEEDBACK: TFT + ADDRESSABLE LED</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- TARGET AUDIENCE (GRID) -->
-  <section class="section">
-    <div class="section-header reveal-type">
-      <div class="section-index mono">[02]</div>
-      <h2 class="section-title scramble-text" data-value="OPERATORS">OPERATORS</h2>
+    <div class="card">
+      <span class="metric mono">ТРЕНЕР</span>
+      <h3>Валидация плана</h3>
+      <p>Коррекция микроцикла "здесь и сейчас". Если iRFD падает при сохранении силы — ЦНС утомлена, нужна разгрузка.</p>
     </div>
 
-    <div class="grid-3 reveal-type">
-      <div class="card interactive">
-        <span class="mono accent-text">TARGET: ATHLETE</span>
-        <h3>Ресурс ЦНС</h3>
-        <p>Знание границ. Когда идти на рекорд, а когда организм требует восстановления. Снижение риска травм.</p>
-      </div>
-
-      <div class="card interactive">
-        <span class="mono accent-text">TARGET: COACH</span>
-        <h3>Факты vs Мнения</h3>
-        <p>Метрика готовности и прогресса. Основание для коррекции плана тренировок здесь и сейчас.</p>
-      </div>
-
-      <div class="card interactive">
-        <span class="mono accent-text">TARGET: BUSINESS</span>
-        <h3>Стандарт</h3>
-        <p>Технологическое преимущество и забота о долголетии клиентов. Профилактика выгорания.</p>
-      </div>
+    <div class="card">
+      <span class="metric mono">БИЗНЕС</span>
+      <h3>Технологичность</h3>
+      <p>Снижение оттока клиентов (Churn Rate) через научный подход к их здоровью и долголетию.</p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- MODES (SCROLL) -->
-  <section class="section">
-    <div class="section-header reveal-type">
-      <div class="section-index mono">[03]</div>
-      <h2 class="section-title scramble-text" data-value="PROTOCOLS">PROTOCOLS</h2>
-    </div>
+<!-- BLOCK 03: MODES (SCIENTIFIC) -->
+<section class="section">
+  <div class="header-row fade-in">
+    <span class="index mono">03</span>
+    <h2>ПРОТОКОЛЫ ИЗМЕРЕНИЯ</h2>
+  </div>
 
-    <div class="modes-container reveal-type">
-      
-      <!-- MODE: POWER -->
-      <div class="mode-item interactive">
-        <img src="chart-power.jpg" alt="График Силы" class="mode-image">
-        <div class="mode-info">
-          <div class="mode-title">MODE A: POWER</div>
-          <span class="mode-metric mono">MVC / MECHANIC IMPULSE</span>
-          <p style="font-size: 12px; color: #888; margin-top: 10px;">
-            Измерение пикового усилия и способности удерживать нагрузку (Anaerobic Capacity). Оценка рекрутирования двигательных единиц.
-          </p>
-        </div>
+  <div class="gallery-scroll fade-in">
+    
+    <!-- MODE A -->
+    <div class="gallery-item">
+      <div class="img-wrapper">
+        <img src="chart-power.jpg" alt="График силы">
       </div>
-
-      <!-- MODE: SPEED -->
-      <div class="mode-item interactive">
-        <img src="chart-speed.jpg" alt="График Скорости" class="mode-image">
-        <div class="mode-info">
-          <div class="mode-title">MODE B: SPEED</div>
-          <span class="mode-metric mono">LATENCY / iRFD / EXPLOSIVE IMPULSE</span>
-          <p style="font-size: 12px; color: #888; margin-top: 10px;">
-            Тест реакции из преднатяга. Анализ взрывного импульса (Explosive Drive) в окне 0–100мс. Валидно для 80Гц.
-          </p>
-        </div>
-      </div>
-
-      <!-- MODE: VOID (USP) -->
-      <div class="mode-item interactive">
-        <img src="chart-void.jpg" alt="График Расслабления" class="mode-image">
-        <div class="mode-info">
-          <div class="mode-title" style="color: #bc85ff;">MODE C: VOID</div>
-          <span class="mode-metric mono">NORMALIZED RELAXATION RATE</span>
-          <p style="font-size: 12px; color: #888; margin-top: 10px;">
-            Уникальная метрика. Скорость активного расслабления мышц. Главный маркер утомления ЦНС и эффективности восстановления.
-          </p>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- SPECS LIST -->
-  <section class="section">
-    <div class="section-header reveal-type">
-      <div class="section-index mono">[04]</div>
-      <h2 class="section-title scramble-text" data-value="DATA_FLOW">DATA_FLOW</h2>
-    </div>
-
-    <div class="data-list reveal-type">
-      <div class="data-row interactive">
-        <span class="data-label">Test Duration</span>
-        <span class="data-val">5 - 10 SEC</span>
-      </div>
-      <div class="data-row interactive">
-        <span class="data-label">Metric Type</span>
-        <span class="data-val">ISOMETRIC PULL</span>
-      </div>
-      <div class="data-row interactive">
-        <span class="data-label">Accuracy</span>
-        <span class="data-val">LAB GRADE</span>
-      </div>
-      <div class="data-row interactive">
-        <span class="data-label">Decision</span>
-        <span class="data-val">HUMAN DRIVEN</span>
+      <div class="item-content">
+        <h3 class="mono">РЕЖИМ: POWER</h3>
+        <span class="subtitle">ПИКОВОЕ УСИЛИЕ (MVC)</span>
+        <p>Классический тест максимального произвольного сокращения. Оценивает способность рекрутировать высокопороговые двигательные единицы.</p>
       </div>
     </div>
-  </section>
 
-  <!-- FOOTER -->
-  <footer>
-    <img src="logo-sword.png" alt="Logo" style="width: 60px; opacity: 0.3; margin-bottom: 20px;">
-    <div class="mono" style="font-size: 10px; opacity: 0.5;">
-      NESCALIBUR LABS © 2026<br>
-      NO MAGIC. JUST PHYSICS.
+    <!-- MODE B -->
+    <div class="gallery-item">
+      <div class="img-wrapper">
+        <img src="chart-speed.jpg" alt="График импульса">
+      </div>
+      <div class="item-content">
+        <h3 class="mono">РЕЖИМ: SPEED</h3>
+        <span class="subtitle">ВЗРЫВНОЙ ИМПУЛЬС (iRFD)</span>
+        <p>Тест из преднатяга. Анализ крутизны нарастания силы (Rate of Force Development) в окне 0–100 мс. Валидный показатель взрывных качеств для частоты 80 Гц.</p>
+      </div>
     </div>
-  </footer>
+
+    <!-- MODE C -->
+    <div class="gallery-item border-accent">
+      <div class="img-wrapper">
+        <img src="chart-void.jpg" alt="График сброса">
+      </div>
+      <div class="item-content">
+        <h3 class="mono" style="color: #a48eff;">РЕЖИМ: VOID</h3>
+        <span class="subtitle">КОНТРОЛЬ ТОРМОЖЕНИЯ</span>
+        <p>Уникальная метрика скорости сброса усилия (Relaxation Rate). Замедление фазы расслабления — первый биологический маркер утомления ЦНС.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BLOCK 04: SPECS -->
+<section class="section">
+  <div class="header-row fade-in">
+    <span class="index mono">04</span>
+    <h2>СПЕЦИФИКАЦИЯ</h2>
+  </div>
+
+  <ul class="specs-list fade-in">
+    <li>
+      <span>Тип сенсора</span>
+      <span class="value mono">Тензодатчик S-Type (300кг)</span>
+    </li>
+    <li>
+      <span>Частота АЦП</span>
+      <span class="value mono">80 Hz (Windowed Analysis)</span>
+    </li>
+    <li>
+      <span>Контроллер</span>
+      <span class="value mono">ESP32-S3 Dual Core</span>
+    </li>
+    <li>
+      <span>Индикация</span>
+      <span class="value mono">TFT 3.5" + LED Feedback</span>
+    </li>
+  </ul>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <span class="mono">NESCALIBUR SYSTEM © 2026</span>
+    <span class="mono" style="opacity: 0.5">NO MAGIC. JUST PHYSICS.</span>
+  </div>
+</footer>
 
 <script>
-  /**
-   * 1. HACKER TEXT SCRAMBLE EFFECT
-   * Эффект "дешифровки" текста при наведении
-   */
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-  document.querySelectorAll(".scramble-text").forEach(header => {
-    header.addEventListener("mouseover", event => {
-      let iteration = 0;
-      const originalText = event.target.dataset.value || event.target.innerText;
-      
-      clearInterval(event.target.interval);
-
-      event.target.interval = setInterval(() => {
-        event.target.innerText = originalText
-          .split("")
-          .map((letter, index) => {
-            if(index < iteration) {
-              return originalText[index];
-            }
-            return letters[Math.floor(Math.random() * 26)];
-          })
-          .join("");
-        
-        if(iteration >= originalText.length){ 
-          clearInterval(event.target.interval);
-        }
-        
-        iteration += 1/3;
-      }, 30);
-    });
-  });
-
-  /**
-   * 2. MAGNETIC CURSOR & HOVER STATES
-   * Кастомный курсор, который реагирует на элементы
-   */
-  const cursorDot = document.querySelector('.cursor-dot');
-  const cursorCircle = document.querySelector('.cursor-circle');
+  // === 1. АНИМАЦИЯ ПОЯВЛЕНИЯ (Intersection Observer) ===
+  const observerOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
   
-  if (window.matchMedia("(pointer: fine)").matches) {
-    document.addEventListener('mousemove', e => {
-      // Плавное движение круга и мгновенное точки
-      cursorDot.style.left = e.clientX + 'px';
-      cursorDot.style.top = e.clientY + 'px';
-      
-      cursorCircle.animate({
-        left: `${e.clientX}px`,
-        top: `${e.clientY}px`
-      }, { duration: 500, fill: "forwards" });
-    });
-
-    // Добавляем класс hovered body, когда наводим на интерактивные элементы
-    document.querySelectorAll('.interactive, a, button').forEach(el => {
-      el.addEventListener('mouseenter', () => document.body.classList.add('hovered'));
-      el.addEventListener('mouseleave', () => document.body.classList.remove('hovered'));
-    });
-  }
-
-  /**
-   * 3. CINEMATIC OBSERVER
-   * Появление элементов при скролле
-   */
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
       }
     });
-  }, { threshold: 0.1 });
+  }, observerOptions);
 
-  document.querySelectorAll('.reveal-type').forEach(el => observer.observe(el));
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-  /**
-   * 4. SIMPLE PARALLAX
-   * Сдвиг картинок внутри контейнера
-   */
-  window.addEventListener('scroll', () => {
-    const scrolled = window.scrollY;
-    document.querySelectorAll('.parallax-img').forEach(img => {
-      // Небольшой сдвиг по Y в зависимости от скролла
-      const speed = 0.05;
-      img.style.transform = `scale(1.1) translateY(${scrolled * speed}px)`;
+  // === 2. SCRAMBLE TEXT EFFECT (Эффект дешифровки заголовка) ===
+  const header = document.querySelector('.scramble');
+  if(header) {
+    const originalText = header.getAttribute('data-text');
+    const chars = "АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ0123456789"; // Кириллица для эффекта
+    
+    header.addEventListener('mouseenter', () => {
+      let iterations = 0;
+      const interval = setInterval(() => {
+        header.innerText = originalText
+          .split("")
+          .map((letter, index) => {
+            if(index < iterations) return originalText[index];
+            return chars[Math.floor(Math.random() * chars.length)];
+          })
+          .join("");
+        
+        if(iterations >= originalText.length) clearInterval(interval);
+        iterations += 1/2; 
+      }, 30);
     });
-  });
-
+  }
 </script>
+
 </body>
 </html>

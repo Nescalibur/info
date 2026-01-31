@@ -1,140 +1,99 @@
-/* === 1. VARIABLES & RESET === */
 :root {
-  --bg-dark: #050505;
-  --bg-card: #0e0e10;
-  --text-primary: #e6e6e6;
-  --text-secondary: #888890;
-  --accent: #ff3b3b; /* Signal Red */
-  --accent-void: #8c52ff; /* Purple for Void mode */
+  --bg: #08080a;
+  --bg-card: #111114;
+  --text: #e0e0e0;
+  --muted: #85858a;
+  --accent: #ff3333;
+  --purple: #8c52ff;
   
-  --font-main: 'Inter', sans-serif;
-  --font-display: 'Space Grotesk', sans-serif;
+  --font-ui: 'Inter', sans-serif;
+  --font-head: 'Space Grotesk', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
-  padding: 0;
-  background-color: var(--bg-dark);
-  color: var(--text-primary);
-  font-family: var(--font-main);
-  line-height: 1.6;
-  overflow-x: hidden; /* Предотвращает горизонтальный скролл */
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  line-height: 1.5;
+  overflow-x: hidden;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* === 2. BACKGROUND EFFECTS === */
+/* Шум на фоне */
 .noise {
   position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  inset: 0;
+  opacity: 0.03;
   pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   z-index: 0;
 }
 
-.scanline {
-  position: fixed;
-  top: 0; left: 0; right: 0; height: 1px;
-  background: rgba(255, 255, 255, 0.05);
-  animation: scan 6s linear infinite;
-  pointer-events: none;
-  z-index: 99;
-}
-@keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
-
-/* === 3. TYPOGRAPHY === */
-h1, h2, h3 { margin: 0; font-weight: 400; color: white; }
-
-.mono {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.highlight { color: white; border-bottom: 1px solid var(--accent); }
-
-/* === 4. HERO SECTION === */
+/* HERO SECTION */
 .hero {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  text-align: center;
   position: relative;
-  /* Градиент для глубины */
-  background: radial-gradient(circle at center, #101012 0%, #050505 80%);
+  /* ВОЗВРАЩАЕМ КАРТИНКУ */
+  background: url('hero-cyber.jpg') center/cover no-repeat;
+}
+
+/* Затемнение фона, чтобы текст читался */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 5, 8, 0.75); /* 75% темноты */
 }
 
 .hero-inner {
-  text-align: center;
-  max-width: 800px;
   position: relative;
   z-index: 1;
-}
-
-.status-bar {
-  display: inline-flex;
-  gap: 20px;
-  color: var(--accent);
-  border: 1px solid rgba(255, 59, 59, 0.2);
-  padding: 8px 16px;
-  margin-bottom: 40px;
-  font-size: 10px;
+  padding: 0 20px;
+  max-width: 800px;
 }
 
 .main-logo {
-  width: 240px;
-  margin: 0 auto 30px;
-  filter: drop-shadow(0 0 15px rgba(255,255,255,0.1));
+  width: 220px;
+  margin-bottom: 30px;
+  filter: drop-shadow(0 0 20px rgba(255,255,255,0.15));
 }
 
-.hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(32px, 6vw, 64px); /* Адаптивный шрифт */
+h1 {
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 5vw, 4rem);
+  text-transform: uppercase;
+  margin: 0 0 20px 0;
   line-height: 1;
-  margin-bottom: 20px;
   letter-spacing: -0.02em;
 }
 
 .hero-sub {
-  color: var(--text-secondary);
-  font-size: 16px;
-  max-width: 480px;
+  color: var(--muted);
+  font-size: 1.1rem;
+  max-width: 500px;
   margin: 0 auto;
 }
 
-.scroll-trigger {
-  position: absolute;
-  bottom: -80px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
+.scroll-line {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, var(--text), transparent);
+  margin: 60px auto 0;
   opacity: 0.5;
 }
-.scroll-trigger .line {
-  width: 1px;
-  height: 40px;
-  background: white;
-}
 
-/* === 5. SECTIONS === */
+/* ОБЩИЕ БЛОКИ */
 .section {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 120px 20px;
+  padding: 100px 20px;
   position: relative;
   z-index: 1;
 }
@@ -143,47 +102,48 @@ h1, h2, h3 { margin: 0; font-weight: 400; color: white; }
   display: flex;
   align-items: baseline;
   gap: 15px;
-  margin-bottom: 60px;
+  margin-bottom: 50px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
-  padding-bottom: 20px;
+  padding-bottom: 15px;
 }
 
-.index { color: var(--accent); }
+.index {
+  color: var(--accent);
+  font-size: 14px;
+}
 
 h2 {
-  font-family: var(--font-display);
-  font-size: clamp(24px, 4vw, 42px);
+  font-family: var(--font-head);
+  font-size: 2rem;
+  margin: 0;
   text-transform: uppercase;
 }
 
-/* === 6. SHOWCASE BLOCK === */
-.showcase-container {
+/* БЛОК ПРОДУКТА */
+.product-shot {
   position: relative;
   margin-bottom: 40px;
-  border: 1px solid rgba(255,255,255,0.1);
 }
-.product-img {
+
+.product-shot img {
   width: 100%;
-  max-height: 500px;
-  object-fit: cover;
-  filter: grayscale(100%); /* Строгий стиль */
-  transition: filter 0.5s;
-}
-.showcase-container:hover .product-img {
-  filter: grayscale(0%);
+  border-radius: 4px;
+  /* Убрал grayscale, оставил легкий контраст */
+  filter: contrast(1.1); 
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 .text-block p {
-  font-size: 18px;
-  color: var(--text-secondary);
+  font-size: 1.1rem;
   max-width: 700px;
+  color: #ccc;
   margin-bottom: 20px;
 }
 
-/* === 7. GRID CARDS === */
+/* КАРТОЧКИ (GRID) */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 30px;
 }
 
@@ -191,108 +151,112 @@ h2 {
   background: var(--bg-card);
   padding: 30px;
   border: 1px solid rgba(255,255,255,0.05);
-  transition: border-color 0.3s;
-}
-.card:hover {
-  border-color: rgba(255,255,255,0.3);
 }
 
-.card h3 {
-  font-family: var(--font-display);
-  font-size: 22px;
-  margin: 15px 0 10px;
-}
-
-.card p {
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-.metric { color: var(--text-secondary); opacity: 0.7; }
-
-/* === 8. GALLERY SCROLL (MODES) === */
-.gallery-scroll {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 40px;
-}
-
-.gallery-item {
-  display: flex;
-  flex-direction: column;
-}
-
-.img-wrapper {
-  border: 1px solid rgba(255,255,255,0.1);
-  margin-bottom: 20px;
-  overflow: hidden;
-}
-.img-wrapper img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover; /* Кропает картинку, чтобы все были одной высоты */
-}
-
-.subtitle {
-  font-family: var(--font-mono);
-  color: var(--accent);
-  font-size: 11px;
+.metric {
+  color: var(--muted);
+  font-size: 12px;
   display: block;
   margin-bottom: 10px;
 }
 
-/* Особый стиль для карточки VOID */
-.border-accent .subtitle { color: var(--accent-void); }
+.card h3 {
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  margin: 0 0 20px 0;
+}
 
-/* === 9. SPECS LIST === */
-.specs-list {
+.card-list {
   list-style: none;
   padding: 0;
-  border-top: 1px solid rgba(255,255,255,0.1);
-}
-.specs-list li {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  font-size: 14px;
-}
-.specs-list .value {
-  color: white;
-  text-align: right;
+  margin: 0;
 }
 
-/* === 10. FOOTER === */
-footer {
-  margin-top: 100px;
-  padding: 40px 20px;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  text-align: center;
-}
-.footer-inner {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  font-size: 10px;
-  color: var(--text-secondary);
+.card-list li {
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.4;
 }
 
-/* === 11. ANIMATIONS === */
-.fade-in {
+.card-list strong {
+  color: var(--text);
+  font-weight: 500;
+  display: block; /* Перенос строки после заголовка пункта */
+  margin-bottom: 4px;
+}
+
+/* ГАЛЕРЕЯ ГРАФИКОВ (SCROLL) */
+.interface-gallery {
+  display: flex;
+  gap: 30px;
+  overflow-x: auto;
+  padding-bottom: 20px;
+  /* Скрытие скроллбара */
+  scrollbar-width: none;
+}
+.interface-gallery::-webkit-scrollbar { display: none; }
+
+.gallery-item {
+  min-width: 320px;
+  max-width: 320px;
+  flex-shrink: 0;
+}
+
+.chart-container {
+  border: 1px solid rgba(255,255,255,0.1);
+  background: #000;
+  margin-bottom: 15px;
+  height: 250px; /* Фиксированная высота контейнера */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.chart-container img {
+  width: 100%;
+  height: 100%;
+  /* ВАЖНО: contain не обрежет оси графика, но покажет черные полосы по бокам если пропорции не те. 
+     Это лучше, чем потерять данные. */
+  object-fit: contain; 
+}
+
+.caption-block .mono {
+  font-size: 12px;
+  display: block;
+  margin-bottom: 8px;
+}
+.accent { color: var(--accent); }
+.purple { color: var(--purple); }
+
+.caption-block p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* АНИМАЦИИ */
+.fade-init {
   opacity: 0;
   transform: translateY(20px);
-  transition: all 0.8s ease-out;
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
-.fade-in.visible {
+.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* === 12. RESPONSIVE FIXES === */
-@media (max-width: 768px) {
-  .hero-title { font-size: 32px; }
-  .grid, .gallery-scroll { grid-template-columns: 1fr; }
-  .desktop-only { display: none; }
-  .specs-list li { flex-direction: column; gap: 5px; }
-  .specs-list .value { text-align: left; color: var(--accent); }
+footer {
+  text-align: center;
+  padding: 80px 20px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  margin-top: 80px;
+}
+
+/* MOBILE FIX */
+@media (max-width: 600px) {
+  .hero-title { font-size: 2.5rem; }
+  .grid { grid-template-columns: 1fr; }
+  .chart-container { height: 200px; }
 }

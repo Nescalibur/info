@@ -3,226 +3,184 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NESCALIBUR — Нейромышечный контроль</title>
+  <title>NESCALIBUR</title>
   
-  <!-- FAVICONS -->
-  <link rel="icon" type="image/png" sizes="512x512" href="favicon.png">
-  <link rel="apple-touch-icon" href="favicon.png">
-
-  <!-- FONTS -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 
-  <!-- СТИЛИ -->
   <link rel="stylesheet" href="styles.css">
-  
-  <!-- ЗАЩИТА ОТ БЕЛОГО ЭКРАНА (Inline Critical CSS) -->
-  <style>body { background-color: #050505; color: #e0e0e0; }</style>
 </head>
 
 <body>
 
+<!-- ФОНОВЫЙ ШУМ -->
 <div class="noise"></div>
-<div class="scanline"></div>
 
-<!-- HERO SECTION -->
+<!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
-    <div class="status-bar mono">
-      <span>● СИСТЕМА АКТИВНА</span>
-      <span class="desktop-only">ТЕНЗОМЕТРИЯ S-TYPE</span>
-    </div>
-
-    <!-- ЛОГОТИП -->
+    
     <img src="logo-sword.png" alt="NESCALIBUR" class="main-logo">
 
-    <h1 class="hero-title scramble" data-text="НЕЙРОМЫШЕЧНЫЙ АНАЛИЗ">
-      НЕЙРОМЫШЕЧНЫЙ АНАЛИЗ
-    </h1>
+    <h1 class="glitch-text">НЕЙРОМЫШЕЧНЫЙ<br>КОНТРОЛЬ</h1>
 
     <p class="hero-sub">
       Станция изометрического тестирования.<br>
-      Лабораторная точность в потребительском форм-факторе.
+      Сенсор S-Type. Прямое измерение силы. Никаких алгоритмов.
     </p>
 
-    <div class="scroll-trigger">
-      <span class="mono">SCROLL</span>
-      <div class="line"></div>
-    </div>
+    <!-- Скролл индикатор -->
+    <div class="scroll-line"></div>
   </div>
 </section>
 
-<!-- BLOCK 01: CONCEPT -->
+<!-- ЧТО ЭТО -->
 <section class="section">
-  <div class="header-row fade-in">
+  <div class="header-row">
     <span class="index mono">01</span>
-    <h2>АРХИТЕКТУРА</h2>
+    <h2>ОБЪЕКТИВНОСТЬ</h2>
   </div>
 
-  <div class="showcase-container fade-in">
-    <img src="product-void.jpg" alt="Устройство Nescalibur" class="product-img">
-    <div class="img-overlay"></div>
+  <div class="product-shot">
+    <img src="product-void.jpg" alt="Станция Nescalibur">
+    <!-- Легкое свечение только под кубом, без перебора -->
+    <div class="glow-underlay"></div>
   </div>
 
-  <div class="text-block fade-in">
+  <div class="text-block">
     <p>
-      NESCALIBUR исключает субъективность. В отличие от фитнес-трекеров, которые "гадают" по пульсу, 
-      мы измеряем <span class="highlight">физическую реальность</span> — килограммы силы, приложенные к тензодатчику.
+      Nescalibur переводит ощущения атлета в метрическую систему. 
+      В отличие от трекеров, анализирующих косвенные признаки (пульс, HRV), 
+      мы фиксируем конечный результат работы ЦНС — килограммы приложенной силы.
     </p>
     <p>
-      Это не тренажер. Это диагностический инструмент для оценки готовности ЦНС через 
-      прямой отклик двигательных единиц.
+      Физический прибор. Жесткая конструкция. Данные, на которых можно строить прогноз.
     </p>
   </div>
 </section>
 
-<!-- BLOCK 02: TARGET -->
+<!-- ДЛЯ КОГО (Вернул структуру из V1) -->
 <section class="section">
-  <div class="header-row fade-in">
+  <div class="header-row">
     <span class="index mono">02</span>
     <h2>СФЕРЫ ПРИМЕНЕНИЯ</h2>
   </div>
 
-  <div class="grid fade-in">
+  <div class="grid">
+    <!-- КАРТОЧКА 1 -->
     <div class="card">
       <span class="metric mono">АТЛЕТ</span>
-      <h3>Ресурс организма</h3>
-      <p>Определение готовности к пиковым нагрузкам. Защита от перетренированности через мониторинг скорости восстановления.</p>
+      <h3>Понимание ресурса</h3>
+      <ul class="card-list">
+        <li>
+          <strong>Пик формы:</strong> Объективное подтверждение готовности к рекорду.
+        </li>
+        <li>
+          <strong>Безопасность:</strong> Если сила на месте, но iRFD (скорость) упал — ЦНС утомлена. Риск травмы повышен.
+        </li>
+      </ul>
     </div>
 
+    <!-- КАРТОЧКА 2 -->
     <div class="card">
       <span class="metric mono">ТРЕНЕР</span>
-      <h3>Валидация плана</h3>
-      <p>Коррекция микроцикла "здесь и сейчас". Если iRFD падает при сохранении силы — ЦНС утомлена, нужна разгрузка.</p>
+      <h3>Факты вместо мнений</h3>
+      <ul class="card-list">
+        <li>
+          <strong>Валидация:</strong> Метрика прогресса подопечного, независимая от его слов "я в порядке".
+        </li>
+        <li>
+          <strong>Коррекция:</strong> Основание изменить план тренировки здесь и сейчас.
+        </li>
+      </ul>
     </div>
 
+    <!-- КАРТОЧКА 3 -->
     <div class="card">
       <span class="metric mono">БИЗНЕС</span>
-      <h3>Технологичность</h3>
-      <p>Снижение оттока клиентов (Churn Rate) через научный подход к их здоровью и долголетию.</p>
+      <h3>Стандарт качества</h3>
+      <ul class="card-list">
+        <li>
+          <strong>Удержание (LTV):</strong> Снижение оттока клиентов через профилактику выгорания и травм.
+        </li>
+        <li>
+          <strong>Технологичность:</strong> Материальное доказательство профессионального подхода клуба.
+        </li>
+      </ul>
     </div>
   </div>
 </section>
 
-<!-- BLOCK 03: MODES (SCIENTIFIC) -->
+<!-- РЕЖИМЫ (Вернул горизонтальный скролл) -->
 <section class="section">
-  <div class="header-row fade-in">
+  <div class="header-row">
     <span class="index mono">03</span>
-    <h2>ПРОТОКОЛЫ ИЗМЕРЕНИЯ</h2>
+    <h2>ПРОТОКОЛЫ</h2>
   </div>
 
-  <div class="gallery-scroll fade-in">
+  <div class="interface-gallery">
     
-    <!-- MODE A -->
+    <!-- POWER -->
     <div class="gallery-item">
-      <div class="img-wrapper">
-        <img src="chart-power.jpg" alt="График силы">
+      <div class="chart-container">
+        <img src="chart-power.jpg" alt="График Силы">
       </div>
-      <div class="item-content">
-        <h3 class="mono">РЕЖИМ: POWER</h3>
-        <span class="subtitle">ПИКОВОЕ УСИЛИЕ (MVC)</span>
-        <p>Классический тест максимального произвольного сокращения. Оценивает способность рекрутировать высокопороговые двигательные единицы.</p>
+      <div class="caption-block">
+        <span class="mono accent">РЕЖИМ: POWER (MVC)</span>
+        <p>Пиковое усилие и Механический Импульс. <br>Оценка способности рекрутировать двигательные единицы.</p>
       </div>
     </div>
 
-    <!-- MODE B -->
+    <!-- SPEED -->
     <div class="gallery-item">
-      <div class="img-wrapper">
-        <img src="chart-speed.jpg" alt="График импульса">
+      <div class="chart-container">
+        <img src="chart-speed.jpg" alt="График Скорости">
       </div>
-      <div class="item-content">
-        <h3 class="mono">РЕЖИМ: SPEED</h3>
-        <span class="subtitle">ВЗРЫВНОЙ ИМПУЛЬС (iRFD)</span>
-        <p>Тест из преднатяга. Анализ крутизны нарастания силы (Rate of Force Development) в окне 0–100 мс. Валидный показатель взрывных качеств для частоты 80 Гц.</p>
+      <div class="caption-block">
+        <span class="mono accent">РЕЖИМ: SPEED (iRFD)</span>
+        <p>Взрывной импульс в окне 0–100 мс. <br>Тест реакции и стартовой мощности из преднатяга.</p>
       </div>
     </div>
 
-    <!-- MODE C -->
-    <div class="gallery-item border-accent">
-      <div class="img-wrapper">
-        <img src="chart-void.jpg" alt="График сброса">
+    <!-- VOID -->
+    <div class="gallery-item">
+      <div class="chart-container">
+        <img src="chart-void.jpg" alt="График Расслабления">
       </div>
-      <div class="item-content">
-        <h3 class="mono" style="color: #a48eff;">РЕЖИМ: VOID</h3>
-        <span class="subtitle">КОНТРОЛЬ ТОРМОЖЕНИЯ</span>
-        <p>Уникальная метрика скорости сброса усилия (Relaxation Rate). Замедление фазы расслабления — первый биологический маркер утомления ЦНС.</p>
+      <div class="caption-block">
+        <span class="mono purple">РЕЖИМ: VOID (RELAXATION)</span>
+        <p>Скорость падения усилия. <br>Маркер способности ЦНС тормозить мотонейроны (активное расслабление).</p>
       </div>
     </div>
 
   </div>
 </section>
 
-<!-- BLOCK 04: SPECS -->
-<section class="section">
-  <div class="header-row fade-in">
-    <span class="index mono">04</span>
-    <h2>СПЕЦИФИКАЦИЯ</h2>
-  </div>
-
-  <ul class="specs-list fade-in">
-    <li>
-      <span>Тип сенсора</span>
-      <span class="value mono">Тензодатчик S-Type (300кг)</span>
-    </li>
-    <li>
-      <span>Частота АЦП</span>
-      <span class="value mono">80 Hz (Windowed Analysis)</span>
-    </li>
-    <li>
-      <span>Контроллер</span>
-      <span class="value mono">ESP32-S3 Dual Core</span>
-    </li>
-    <li>
-      <span>Индикация</span>
-      <span class="value mono">TFT 3.5" + LED Feedback</span>
-    </li>
-  </ul>
-</section>
-
+<!-- FOOTER -->
 <footer>
-  <div class="footer-inner">
-    <span class="mono">NESCALIBUR SYSTEM © 2026</span>
-    <span class="mono" style="opacity: 0.5">NO MAGIC. JUST PHYSICS.</span>
+  <div class="mono" style="opacity: 0.4; font-size: 12px;">
+    NESCALIBUR 2026 / HARDWARE DIVISION
   </div>
 </footer>
 
 <script>
-  // === 1. АНИМАЦИЯ ПОЯВЛЕНИЯ (Intersection Observer) ===
-  const observerOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
-  
+  // Простой обсервер для плавного появления
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
       }
     });
-  }, observerOptions);
+  }, { threshold: 0.1 });
 
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-  // === 2. SCRAMBLE TEXT EFFECT (Эффект дешифровки заголовка) ===
-  const header = document.querySelector('.scramble');
-  if(header) {
-    const originalText = header.getAttribute('data-text');
-    const chars = "АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ0123456789"; // Кириллица для эффекта
-    
-    header.addEventListener('mouseenter', () => {
-      let iterations = 0;
-      const interval = setInterval(() => {
-        header.innerText = originalText
-          .split("")
-          .map((letter, index) => {
-            if(index < iterations) return originalText[index];
-            return chars[Math.floor(Math.random() * chars.length)];
-          })
-          .join("");
-        
-        if(iterations >= originalText.length) clearInterval(interval);
-        iterations += 1/2; 
-      }, 30);
-    });
-  }
+  document.querySelectorAll('.section, .card, .gallery-item').forEach(el => {
+    el.classList.add('fade-init');
+    observer.observe(el);
+  });
 </script>
 
 </body>

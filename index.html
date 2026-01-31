@@ -1,290 +1,193 @@
-:root {
-  --bg: #0b0b0d;
-  --bg-soft: #121217;
-  --text: #e6e6eb;
-  --muted: #8a8a92;
-  --accent: #ff3b3b;
-}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NESCALIBUR — контроль состояния тела</title>
+  <!-- FAVICONS -->
+  <link rel="icon" type="image/png" sizes="512x512" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png"> <!-- Для иконок на iPhone -->
 
-* {
-  box-sizing: border-box;
-}
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 
-body {
-  margin: 0;
-  background: radial-gradient(circle at top, #14141a, #060608 70%);
-  color: var(--text);
-  font-family: 'Inter', sans-serif;
-  overflow-x: hidden;
-}
+  <link rel="stylesheet" href="styles.css">
+</head>
 
-.noise {
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-}
+<body>
 
-/* HERO */
-.hero {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: url('hero-cyber.jpg') center / cover no-repeat;
-  position: relative;
-}
+<div class="noise"></div>
 
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-}
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Физическое состояние · без интерпретаций</span>
 
-.hero-inner {
-  position: relative;
-  text-align: center;
-  padding: 0 20px;
-}
-
-.main-logo {
-  width: 260px;
-  max-width: 80%;
-  margin: 20px auto;
-  opacity: 0.85;
-  filter: brightness(1.15) contrast(1.05);
-}
-
-.eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  opacity: 0.7;
-}
-
-.hero-title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 28px;
-  margin: 20px 0 10px;
-}
-
-.hero-sub {
-  font-size: 16px;
-  opacity: 0.9;
-}
-
-.scroll-indicator {
-  position: absolute;
-  bottom: -60px;
-  left: 50%;
-  width: 2px;
-  height: 60px;
-  background: linear-gradient(to bottom, #fff, transparent);
-  animation: scroll 2s infinite;
-}
-
-@keyframes scroll {
-  0% { transform: translateX(-50%) scaleY(0); }
-  50% { transform: translateX(-50%) scaleY(1); }
-  100% { transform: translateX(-50%) scaleY(0); opacity: 0; }
-}
-
-/* COMMON */
-.divider {
-  height: 120px;
-  position: relative;
-}
-
-.divider::after {
-  content: "";
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  width: 1px;
-  height: 80px;
-  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4), transparent);
-}
-
-.divider.accent::after {
-  background: linear-gradient(to bottom, transparent, var(--accent), transparent);
-}
-
-.section {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 120px 20px;
-}
-
-.section-header {
-  display: flex;
-  align-items: baseline;
-  gap: 20px;
-  margin-bottom: 40px;
-}
-
-.section-index {
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--accent);
-}
-
-h2 {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 36px;
-  margin: 0;
-}
-
-.section-text {
-  font-size: 18px;
-  line-height: 1.6;
-}
-
-.product-showcase img {
-  width: 100%;
-  border-radius: 12px;
-  margin: 40px 0;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
-  gap: 40px;
-}
-
-.card {
-  padding: 30px;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.05);
-}
-
-.metric {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  color: var(--muted);
-}
-
-/* FIXED GALLERY */
-.interface-gallery {
-  display: flex;
-  gap: 20px;
-  overflow-x: auto;
-  padding: 20px 0;
-  margin-top: 40px;
-  
-  /* Убираем вертикальные скроллы */
-  overflow-y: hidden;
-  scrollbar-width: none; 
-  align-items: flex-start; /* Выравнивание по верху */
-}
-
-.gallery-item {
-  /* Фиксируем ширину карточки */
-  min-width: 280px; 
-  max-width: 280px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.gallery-item img {
-  width: 100%;
-  /* ЖЕСТКАЯ ВЫСОТА КАРТИНОК */
-  height: 450px; 
-  /* Картинка заполнит блок, обрезав лишнее, но сохранит пропорции */
-  object-fit: cover; 
-  /* Фокус на центр картинки */
-  object-position: center top;
-  
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
-.caption {
-  margin-top: 10px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--muted);
-}
-
-.data-list {
-  list-style: none;
-  padding: 0;
-}
-
-.data-list li {
-  display: flex;
-  justify-content: space-between;
-  padding: 16px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-
-.value {
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--accent);
-}
-
-footer {
-  padding: 60px 20px;
-  text-align: center;
-  color: var(--muted);
-}
-
-
-/* === 2026 VISUAL UPGRADE === */
-
-/* 1. CINEMATIC REVEAL (Скрываем элементы по умолчанию) */
-.section, .card, .product-showcase, .gallery-item {
-  opacity: 0;
-  transform: translateY(30px);
-  filter: blur(10px);
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); /* Плавная физика Apple */
-}
-
-/* Класс, который делает их видимыми (добавляется JS-ом) */
-.visible {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-}
-
-/* 2. CUBE PULSATION ENGINE */
-.product-showcase {
-  position: relative; /* Обязательно для позиционирования свечения */
-}
-
-.cube-pulse {
-  position: absolute;
-  /* Координаты центра куба на фото (подстрой под свою картинку) */
-  top: 65%;  
-  left: 50%;
-  transform: translate(-50%, -50%);
-  
-  width: 40%;  /* Ширина пятна света */
-  height: 40%; /* Высота пятна */
-  
-  /* Фиолетовое "ядерное" свечение */
-  background: radial-gradient(circle, rgba(140, 0, 255, 0.4) 0%, rgba(140, 0, 255, 0) 70%);
-  mix-blend-mode: screen; /* Режим наложения для свечения */
-  pointer-events: none;
-  
-  animation: reactor-breath 4s infinite ease-in-out;
-}
-
-@keyframes reactor-breath {
-  0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.9); }
-  50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
-}
+    <img src="logo-sword.png" alt="NESCALIBUR" class="main-logo">
 
 
 
-/* 3. GLOW EFFECT (Подсветка карточек) */
-.card {
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-.card:hover {
-  border-color: rgba(255,255,255,0.3);
-  box-shadow: 0 0 30px rgba(255, 59, 59, 0.15); /* Красноватое свечение */
-}
+    <p class="hero-sub">
+      Фиксирует состояние.
+      Решение за человеком.
+    </p>
+
+    <div class="scroll-indicator"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WHAT IT IS -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-index">01</span>
+    <h2>Что это</h2>
+  </div>
+
+  <div class="product-showcase">
+    <img src="product-void.jpg" alt="Nescalibur device">
+    <div class="cube-pulse"></div>
+  </div>
+
+  <p class="section-text">
+    NESCALIBUR — это станция нейромышечного анализа. 
+    Она переводит ощущения в данные. 
+    Мы исключили субъективность, чтобы вы могли принимать решения, 
+    основанные на фактах.
+  </p>
+</section>
+
+<div class="divider accent"></div>
+
+<!-- WHO -->
+<section class="section grid">
+  <div class="card">
+    <span class="metric">ДЛЯ СПОРТСМЕНА</span>
+    <h3>Понимание ресурса</h3>
+    <p>Знание: когда можно идти на рекорд, а когда организм требует восстановления. Снижение риска травм.</p>
+  </div>
+
+  <div class="card">
+    <span class="metric">ДЛЯ ТРЕНЕРА</span>
+    <h3>Факты вместо мнений</h3>
+    <p>Метрика готовности и прогресса подопечного. Основание для коррекции плана тренировок здесь и сейчас.</p>
+  </div>
+
+  <div class="card">
+    <span class="metric">ДЛЯ БИЗНЕСА</span>
+    <h3>Стандарт безопасности</h3>
+    <p>Снижение оттока клиентов через профилактику выгорания. Технологическое преимущество и забота о долголетии.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MODES -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-index">02</span>
+    <h2>Режимы измерения</h2>
+  </div>
+
+  <div class="interface-gallery">
+    <div class="gallery-item">
+      <img src="chart-power.jpg" alt="Сила">
+      <span class="caption">СИЛА · пиковое усилие и импульс</span>
+    </div>
+
+    <div class="gallery-item">
+      <img src="chart-speed.jpg" alt="Скорость">
+      <span class="caption">СКОРОСТЬ · реакция и нарастание усилия</span>
+    </div>
+
+    <div class="gallery-item">
+      <img src="chart-void.jpg" alt="Контроль">
+      <span class="caption">КОНТРОЛЬ · способности миорелаксации</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider accent"></div>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-index">03</span>
+    <h2>Как используется</h2>
+  </div>
+
+  <ul class="data-list">
+    <li><span>Короткий тест</span><span class="value">30–60 секунд</span></li>
+    <li><span>Фиксация реакции и усилия</span><span class="value">автоматически</span></li>
+    <li><span>Результат</span><span class="value">сразу</span></li>
+    <li><span>Решение</span><span class="value">осознанно</span></li>
+  </ul>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRINCIPLES -->
+<section class="section grid">
+  <div class="card">
+    <span class="metric">ПРИНЦИП</span>
+    <h3>Честность данных</h3>
+    <p>Без интерпретаций и обещаний. Только измерение.</p>
+  </div>
+
+  <div class="card">
+    <span class="metric">ПОДХОД</span>
+    <h3>Спокойный контроль</h3>
+    <p>Контроль как форма заботы, а не давления.</p>
+  </div>
+
+  <div class="card">
+    <span class="metric">ФОРМА</span>
+    <h3>Материальность</h3>
+    <p>Физический прибор, а не абстрактное приложение.</p>
+  </div>
+</section>
+
+<footer>
+  <span class="metric">NESCALIBUR · 2026</span>
+</footer>
+<script>
+  // === 1. CINEMATIC SCROLL OBSERVER ===
+  // Заставляет элементы появляться красиво при скролле
+  const observerOptions = {
+    threshold: 0.1, // Срабатывает, когда показалось 10% элемента
+    rootMargin: "0px 0px -50px 0px"
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // observer.unobserve(entry.target); // Раскомментируй, если хочешь анимацию только 1 раз
+      }
+    });
+  }, observerOptions);
+
+  // Следим за всеми важными блоками
+  document.querySelectorAll('.section, .card, .product-showcase, .gallery-item').forEach(el => {
+    observer.observe(el);
+  });
+
+  // === 2. MOUSE SPOTLIGHT (ФОНАРИК) ===
+  // Работает только на десктопе
+  if (window.matchMedia("(pointer: fine)").matches) {
+    const light = document.createElement('div');
+    light.classList.add('cursor-light');
+    document.body.appendChild(light);
+
+    document.addEventListener('mousemove', (e) => {
+      light.style.left = e.clientX + 'px';
+      light.style.top = e.clientY + 'px';
+    });
+  }
+</script>
+</body>
+</html>

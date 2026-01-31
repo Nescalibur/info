@@ -3,172 +3,232 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NESCALIBUR</title>
+  <meta name="description" content="NESCALIBUR: Станция изометрического профилирования. Анализ iRFD и Relaxation Rate.">
+  <title>NESCALIBUR | Isometry Station</title>
   
   <link rel="icon" type="image/png" href="favicon.png">
   
-  <!-- Fonts -->
+  <!-- Fonts: Space Grotesk (Tech Headers), Inter (Body), JetBrains Mono (Data) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-<!-- ФОНОВЫЙ ШУМ -->
-<div class="noise"></div>
+<div class="noise-layer"></div>
 
-<!-- HERO -->
+<!-- HERO SECTION -->
 <section class="hero">
-  <div class="hero-inner">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
     
+    <!-- LOGO -->
     <img src="logo-sword.png" alt="NESCALIBUR" class="main-logo">
 
-    <h1 class="glitch-text">НЕЙРОМЫШЕЧНЫЙ<br>КОНТРОЛЬ</h1>
+    <!-- HEADLINE -->
+    <h1>
+      ФИЗИЧЕСКОЕ СОСТОЯНИЕ<br>
+      <span class="accent-text">БЕЗ ИНТЕРПРЕТАЦИЙ</span>
+    </h1>
 
     <p class="hero-sub">
-      Станция изометрического тестирования.<br>
-      Сенсор S-Type. Прямое измерение силы. Никаких алгоритмов.
+      Станция изометрического профилирования.<br>
+      Фиксация усилия. Метрики ЦНС. Решение за человеком.
     </p>
 
-    <!-- Скролл индикатор -->
-    <div class="scroll-line"></div>
+    <!-- SCROLL INDICATOR -->
+    <div class="scroll-wrapper">
+      <span class="mono-label">SCROLL</span>
+      <div class="scroll-line"></div>
+    </div>
   </div>
 </section>
 
-<!-- ЧТО ЭТО -->
+<!-- SECTION 01: PRODUCT -->
 <section class="section">
-  <div class="header-row">
-    <span class="index mono">01</span>
-    <h2>ОБЪЕКТИВНОСТЬ</h2>
+  <div class="section-head">
+    <span class="section-num">01</span>
+    <h2>ЧТО ЭТО</h2>
   </div>
 
-  <div class="product-shot">
-    <img src="product-void.jpg" alt="Станция Nescalibur">
-    <!-- Легкое свечение только под кубом, без перебора -->
-    <div class="glow-underlay"></div>
+  <div class="product-showcase">
+    <img src="product-void.jpg" alt="NESCALIBUR Device">
+    <div class="status-panel">
+      <div class="status-row">
+        <span>SENSOR TYPE</span>
+        <span class="mono">S-TYPE LOAD CELL</span>
+      </div>
+      <div class="status-row">
+        <span>SAMPLING</span>
+        <span class="mono">80 HZ (WINDOWED)</span>
+      </div>
+    </div>
   </div>
 
-  <div class="text-block">
+  <div class="text-body">
     <p>
-      Nescalibur переводит ощущения атлета в метрическую систему. 
-      В отличие от трекеров, анализирующих косвенные признаки (пульс, HRV), 
-      мы фиксируем конечный результат работы ЦНС — килограммы приложенной силы.
+      NESCALIBUR — это инструмент прямого измерения. Мы не используем алгоритмы предсказания по пульсу (HRV). 
+      Мы измеряем <span class="white">механический отклик</span> нервно-мышечной системы.
     </p>
     <p>
-      Физический прибор. Жесткая конструкция. Данные, на которых можно строить прогноз.
+      Тензометрическая платформа фиксирует, как эффективно мозг рекрутирует двигательные единицы 
+      и, что важнее, как быстро он способен их отключать.
     </p>
   </div>
 </section>
 
-<!-- ДЛЯ КОГО (Вернул структуру из V1) -->
+<!-- SECTION 02: TARGET AUDIENCE (Вернул твою структуру) -->
 <section class="section">
-  <div class="header-row">
-    <span class="index mono">02</span>
+  <div class="section-head">
+    <span class="section-num">02</span>
     <h2>СФЕРЫ ПРИМЕНЕНИЯ</h2>
   </div>
 
-  <div class="grid">
-    <!-- КАРТОЧКА 1 -->
+  <div class="grid-3">
+    <!-- CARD 1 -->
     <div class="card">
-      <span class="metric mono">АТЛЕТ</span>
-      <h3>Понимание ресурса</h3>
-      <ul class="card-list">
+      <div class="card-header">
+        <span class="mono-tag">АТЛЕТ</span>
+        <h3>Ресурс организма</h3>
+      </div>
+      <ul class="card-bullets">
         <li>
-          <strong>Пик формы:</strong> Объективное подтверждение готовности к рекорду.
+          <strong>Пик формы:</strong> Знание, когда идти на рекорд, подтвержденное цифрами (MVC).
         </li>
         <li>
-          <strong>Безопасность:</strong> Если сила на месте, но iRFD (скорость) упал — ЦНС утомлена. Риск травмы повышен.
+          <strong>Профилактика:</strong> Если сила в норме, но скорость расслабления упала — ЦНС перегружена.
         </li>
       </ul>
     </div>
 
-    <!-- КАРТОЧКА 2 -->
+    <!-- CARD 2 -->
     <div class="card">
-      <span class="metric mono">ТРЕНЕР</span>
-      <h3>Факты вместо мнений</h3>
-      <ul class="card-list">
+      <div class="card-header">
+        <span class="mono-tag">ТРЕНЕР</span>
+        <h3>Факты vs Мнения</h3>
+      </div>
+      <ul class="card-bullets">
         <li>
-          <strong>Валидация:</strong> Метрика прогресса подопечного, независимая от его слов "я в порядке".
+          <strong>Метрика прогресса:</strong> Объективная оценка плана тренировок.
         </li>
         <li>
-          <strong>Коррекция:</strong> Основание изменить план тренировки здесь и сейчас.
+          <strong>Коррекция:</strong> Основание изменить нагрузку "здесь и сейчас" на основе iRFD.
         </li>
       </ul>
     </div>
 
-    <!-- КАРТОЧКА 3 -->
+    <!-- CARD 3 -->
     <div class="card">
-      <span class="metric mono">БИЗНЕС</span>
-      <h3>Стандарт качества</h3>
-      <ul class="card-list">
+      <div class="card-header">
+        <span class="mono-tag">БИЗНЕС</span>
+        <h3>Стандарт</h3>
+      </div>
+      <ul class="card-bullets">
         <li>
-          <strong>Удержание (LTV):</strong> Снижение оттока клиентов через профилактику выгорания и травм.
+          <strong>LTV Клиента:</strong> Снижение оттока через заботу о долголетии и здоровье.
         </li>
         <li>
-          <strong>Технологичность:</strong> Материальное доказательство профессионального подхода клуба.
+          <strong>Технологичность:</strong> Физическое доказательство профессионализма клуба.
         </li>
       </ul>
     </div>
   </div>
 </section>
 
-<!-- РЕЖИМЫ (Вернул горизонтальный скролл) -->
+<!-- SECTION 03: MODES (Fixed Terminology) -->
 <section class="section">
-  <div class="header-row">
-    <span class="index mono">03</span>
-    <h2>ПРОТОКОЛЫ</h2>
+  <div class="section-head">
+    <span class="section-num">03</span>
+    <h2>РЕЖИМЫ ИЗМЕРЕНИЯ</h2>
   </div>
 
-  <div class="interface-gallery">
+  <div class="gallery-wrapper">
     
-    <!-- POWER -->
-    <div class="gallery-item">
-      <div class="chart-container">
-        <img src="chart-power.jpg" alt="График Силы">
+    <!-- MODE A -->
+    <div class="gallery-card">
+      <div class="img-box">
+        <img src="chart-power.jpg" alt="MVC Chart">
       </div>
-      <div class="caption-block">
-        <span class="mono accent">РЕЖИМ: POWER (MVC)</span>
-        <p>Пиковое усилие и Механический Импульс. <br>Оценка способности рекрутировать двигательные единицы.</p>
-      </div>
-    </div>
-
-    <!-- SPEED -->
-    <div class="gallery-item">
-      <div class="chart-container">
-        <img src="chart-speed.jpg" alt="График Скорости">
-      </div>
-      <div class="caption-block">
-        <span class="mono accent">РЕЖИМ: SPEED (iRFD)</span>
-        <p>Взрывной импульс в окне 0–100 мс. <br>Тест реакции и стартовой мощности из преднатяга.</p>
+      <div class="gallery-info">
+        <h4 class="mono">POWER (MVC)</h4>
+        <p class="desc">
+          Пиковое изометрическое усилие.<br>
+          Оценка способности создавать максимальное напряжение.
+        </p>
       </div>
     </div>
 
-    <!-- VOID -->
-    <div class="gallery-item">
-      <div class="chart-container">
-        <img src="chart-void.jpg" alt="График Расслабления">
+    <!-- MODE B -->
+    <div class="gallery-card">
+      <div class="img-box">
+        <img src="chart-speed.jpg" alt="iRFD Chart">
       </div>
-      <div class="caption-block">
-        <span class="mono purple">РЕЖИМ: VOID (RELAXATION)</span>
-        <p>Скорость падения усилия. <br>Маркер способности ЦНС тормозить мотонейроны (активное расслабление).</p>
+      <div class="gallery-info">
+        <h4 class="mono">EXPLOSIVE IMPULSE</h4>
+        <p class="desc">
+          Взрывной импульс (0–100 мс).<br>
+          Валидная метрика стартовой мощности и реакции для частоты 80Гц.
+        </p>
+      </div>
+    </div>
+
+    <!-- MODE C -->
+    <div class="gallery-card void-card">
+      <div class="img-box">
+        <img src="chart-void.jpg" alt="Relaxation Chart">
+      </div>
+      <div class="gallery-info">
+        <h4 class="mono" style="color: #a78bfa;">RELAXATION RATE</h4>
+        <p class="desc">
+          Скорость активного расслабления.<br>
+          Ключевой маркер утомления ЦНС (способность тормозить мотонейроны).
+        </p>
       </div>
     </div>
 
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- SECTION 04: SPECS (Strict Data Only) -->
+<section class="section">
+  <div class="section-head">
+    <span class="section-num">04</span>
+    <h2>ТЕХ. ДАННЫЕ</h2>
+  </div>
+
+  <div class="specs-grid">
+    <div class="spec-row">
+      <span>Протокол</span>
+      <span class="mono value">Изометрическая тяга</span>
+    </div>
+    <div class="spec-row">
+      <span>Частота опроса</span>
+      <span class="mono value">80 Hz (Windowed)</span>
+    </div>
+    <div class="spec-row">
+      <span>Диапазон</span>
+      <span class="mono value">0 — 300 кг</span>
+    </div>
+    <div class="spec-row">
+      <span>Индикация</span>
+      <span class="mono value">TFT + LED Feedback</span>
+    </div>
+  </div>
+</section>
+
 <footer>
-  <div class="mono" style="opacity: 0.4; font-size: 12px;">
-    NESCALIBUR 2026 / HARDWARE DIVISION
+  <div class="footer-content">
+    <span class="mono">NESCALIBUR © 2026</span>
+    <span class="mono muted">ENGINEERED FOR HUMANS</span>
   </div>
 </footer>
 
 <script>
-  // Простой обсервер для плавного появления
+  // Простой и надежный Observer. 
+  // Делает opacity: 1 когда элемент появляется на экране.
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -177,8 +237,8 @@
     });
   }, { threshold: 0.1 });
 
-  document.querySelectorAll('.section, .card, .gallery-item').forEach(el => {
-    el.classList.add('fade-init');
+  document.querySelectorAll('.section, .card, .gallery-card, .spec-row').forEach(el => {
+    el.classList.add('fade-ready'); // Скрываем изначально
     observer.observe(el);
   });
 </script>

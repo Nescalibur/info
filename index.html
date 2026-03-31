@@ -20,7 +20,16 @@
 <body>
 
 <div class="noise"></div>
-
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="#" class="nav-brand">NESC<span>ALIBUR</span></a>
+  <div class="nav-links">
+    <a href="#faq" class="nav-link">База знаний</a>
+    <!-- Проактивное предложение: кнопка-заглушка для будущей интеграции -->
+    <a href="#faq" class="nav-link" style="color: var(--accent); border: 1px solid var(--accent); padding: 8px 16px; border-radius: 6px;">ПРОЙТИ ТЕСТ</a>
+  </div>
+</nav>
+  
 <!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
@@ -150,7 +159,104 @@
     <p>Физический прибор, а не абстрактное приложение.</p>
   </div>
 </section>
+<div class="divider accent"></div>
 
+<!-- FAQ & GOALS SECTION (ЯКОРЬ ДЛЯ МЕНЮ ЗДЕСЬ) -->
+<section class="section" id="faq">
+  <div class="section-header">
+    <span class="section-index">04</span>
+    <h2>База знаний</h2>
+  </div>
+
+  <div class="faq-container">
+    <!-- FAQ ITEM 1 -->
+    <div class="faq-item">
+      <button class="faq-question">
+        Что показывает этот прибор и зачем мне эта информация?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p>Аппарат измеряет ваши время-силовые характеристики. Субъективное чувство бодрости часто обманчиво: вы можете выпить энергетик, но ваши мышцы физиологически не успели восстановиться после прошлой тренировки. Прибор считывает скорость мышечного отклика и скорость расслабления. Эта информация позволяет понять: готовы ли ваши мышцы к рекордным нагрузкам сегодня, или они находятся в спазме, и тренировку необходимо заменить на восстановительную (растяжка, МФР).</p>
+      </div>
+    </div>
+
+    <!-- FAQ ITEM 2 -->
+    <div class="faq-item">
+      <button class="faq-question">
+        Почему это безопаснее динамических упражнений со штангой?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p>Тестирование проходит в изометрическом режиме — рукоять прибора неподвижна. В отличие от упражнений со свободными весами (где присутствует инерция, гравитация и риск быть придавленным снарядом при мышечном отказе), здесь вы генерируете ровно столько усилия, сколько позволяет ваш аппарат в данную секунду. Если возникает дискомфорт, вы просто разжимаете ладонь, и нагрузка мгновенно падает до нуля. <strong>Внимание: перед тестированием суставная разминка строго обязательна.</strong></p>
+      </div>
+    </div>
+
+    <!-- FAQ ITEM 3 -->
+    <div class="faq-item">
+      <button class="faq-question">
+        Почему нельзя отрегулировать высоту цепи под мой рост?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p>Станция откалибрована под мировой биомеханический стандарт — Isometric Mid-Thigh Pull (IMTP). Фиксированная высота в 42 см ставит людей ростом от 160 до 195 см в позицию максимального механического преимущества (с оптимальными углами в коленном и тазобедренном суставах). Любое изменение длины цепи изменит рычаги вашего тела, что сделает результаты математически невалидными и не подлежащими сравнению.</p>
+      </div>
+    </div>
+
+    <!-- FAQ ITEM 4 -->
+    <div class="faq-item">
+      <button class="faq-question">
+        Подходит ли это девушкам?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p>Да. Изометрическое тестирование не требует поднимать физические диски или гири. Алгоритм аналитики прибора автоматически применяет гендерные коэффициенты и оценивает вашу силу исключительно по отношению к вашей собственной массе тела (Относительная сила / RFI). Это позволяет объективно отслеживать тонус мышц независимо от габаритов атлета.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE TABS (ВИЛКА ЦЕЛЕЙ) -->
+  <div class="tabs-container">
+    <div class="section-header" style="margin-bottom: 20px; justify-content: center;">
+      <h2 style="font-size: 24px; color: var(--muted);">В ЧЕМ ВАША ЦЕЛЬ?</h2>
+    </div>
+
+    <div class="tabs-nav">
+      <button class="tab-btn active" data-tab="tab-hypertrophy">Бодибилдинг</button>
+      <button class="tab-btn" data-tab="tab-power">Пауэрлифтинг</button>
+      <button class="tab-btn" data-tab="tab-sports">Единоборства / Спринт</button>
+      <button class="tab-btn" data-tab="tab-health">Здоровье / Похудение</button>
+    </div>
+
+    <div class="tab-content active" id="tab-hypertrophy">
+      <div class="tab-content-box">
+        <h3>БОДИБИЛДИНГ И ГИПЕРТРОФИЯ</h3>
+        <p>Для роста мышечной массы требуется достаточный объем работы и метаболический стресс. Однако тренировка на фоне неполного восстановления снижает качество мышечных сокращений. Режим «Деактивация» позволяет выявить остаточный фасциальный спазм и локальное утомление. Если скорость расслабления замедлена, целевая мышечная группа еще не готова к новому микротравмированию — имеет смысл сместить сплит на другие мышцы или сделать день активного восстановления.</p>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-power">
+      <div class="tab-content-box">
+        <h3>ПАУЭРЛИФТИНГ И АБСОЛЮТНАЯ СИЛА</h3>
+        <p>В силовом спорте важна способность рекрутировать максимальное количество высокопороговых двигательных единиц. Режим «POWER» оценивает вашу пиковую структурную силу в безопасной позиции блокировки (lockout). Аналитика профиля покажет ваш слабый сегмент: если страдает взрывная активация (вы медленно выходите на пик), в тренировочный план необходимо интегрировать работу с цепями, резиной или динамические усилия (Speed work) с весом 40-50% от 1ПМ.</p>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-sports">
+      <div class="tab-content-box">
+        <h3>БОЕВЫЕ ИСКУССТВА И ИГРОВЫЕ ВИДЫ</h3>
+        <p>В единоборствах и спринте абсолютная сила вторична — первичен градиент силы (Rate of Force Development). Режим «SPEED» тестирует ваш когнитивный отклик и баллистический импульс. Жесткий фильтр алгоритма отсекает попытки «предугадывания» старта. Вы получите объективную оценку того, насколько быстро сигнал от моторной коры доходит до мышц, трансформируясь в пробивную мощь.</p>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-health">
+      <div class="tab-content-box">
+        <h3>ПОХУДЕНИЕ И ПОДДЕРЖАНИЕ ЗДОРОВЬЯ</h3>
+        <p>Регулярный дефицит калорий и бытовой стресс приводят к истощению нейромоторного аппарата. Тренировки через боль на фоне системного утомления ведут к травмам суставов и выгоранию. Аппарат работает как предохранитель: 10-секундный тест перед тренировкой покажет, находится ли ваш организм в состоянии стресса. Это сигнал для тренера снизить интенсивность, выбрав легкое кардио вместо высокоинтенсивного интервального тренинга (HIIT).</p>
+      </div>
+    </div>
+  </div>
+</section>
+  
 <footer>
   <span class="metric">NESCALIBUR · 2026</span>
 </footer>
@@ -188,6 +294,56 @@
       light.style.top = e.clientY + 'px';
     });
   }
+// === 3. FAQ ACCORDION LOGIC ===
+  const faqItems = document.querySelectorAll('.faq-item');
+  faqItems.forEach(item => {
+    const btn = item.querySelector('.faq-question');
+    btn.addEventListener('click', () => {
+      // Закрываем все остальные (опционально, если хочешь чтобы открыт был только один)
+      faqItems.forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.classList.remove('active');
+          otherItem.querySelector('.faq-icon').textContent = '+';
+        }
+      });
+      // Переключаем текущий
+      item.classList.toggle('active');
+      const icon = item.querySelector('.faq-icon');
+      icon.textContent = item.classList.contains('active') ? '×' : '+';
+    });
+  });
+
+  // === 4. TABS LOGIC (ВИЛКА ЦЕЛЕЙ) ===
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Убираем active у всех кнопок и контента
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+
+      // Добавляем active нажатой кнопке
+      btn.classList.add('active');
+
+      // Показываем нужный контент
+      const targetId = btn.getAttribute('data-tab');
+      document.getElementById(targetId).classList.add('active');
+    });
+  });
+
+  // === 5. Прячем Navbar при скролле вниз (опционально, для большего экрана) ===
+  let lastScrollY = window.scrollY;
+  const navbar = document.querySelector('.navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > lastScrollY && window.scrollY > 100) {
+      navbar.style.transform = 'translateY(-100%)'; // Прячем
+    } else {
+      navbar.style.transform = 'translateY(0)'; // Показываем
+    }
+    lastScrollY = window.scrollY;
+  });
+  
 </script>
 </body>
 </html>

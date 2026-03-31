@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NESCALIBUR | Coach Manual</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090a0f;
+      --surface: #12141a;
+      --border: #222630;
+      --text-main: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent: #00f3ff;
+      --danger: #ff3b30;
+      --warning: #ffd60a;
+      --success: #32d74b;
+    }
+    body {
+      margin: 0; padding: 0; background-color: var(--bg); color: var(--text-main);
+      font-family: 'Inter', sans-serif; line-height: 1.6;
+    }
+    .header {
+      background: var(--surface); border-bottom: 1px solid var(--border); padding: 20px;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header h1 {
+      margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 16px; color: var(--accent); letter-spacing: 1px;
+    }
+    .header p { margin: 5px 0 0 0; font-size: 11px; color: var(--text-muted); text-transform: uppercase; }
+    
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    
+    .section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 25px; margin-bottom: 25px; }
+    .section h2 { margin-top: 0; font-size: 18px; border-bottom: 1px dashed var(--border); padding-bottom: 10px; margin-bottom: 20px; }
+    
+    .alert-box { background: rgba(255, 59, 48, 0.05); border-left: 3px solid var(--danger); padding: 15px; border-radius: 4px; margin-bottom: 20px;}
+    .alert-box strong { color: var(--danger); font-family: 'JetBrains Mono', monospace; font-size: 12px; display: block; margin-bottom: 5px; }
+    .alert-box p { margin: 0; font-size: 13px; color: var(--text-muted); }
+
+    .data-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+    .data-table th, .data-table td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--border); }
+    .data-table th { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); font-weight: normal; text-transform: uppercase; }
+    .data-table td:first-child { font-weight: 600; color: var(--text-main); width: 35%; }
+    
+    .badge { display: inline-block; padding: 3px 6px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; margin-right: 5px;}
+    .b-red { background: rgba(255,59,48,0.1); color: var(--danger); border: 1px solid rgba(255,59,48,0.3); }
+    .b-yellow { background: rgba(255,214,10,0.1); color: var(--warning); border: 1px solid rgba(255,214,10,0.3); }
+    .b-green { background: rgba(50,215,75,0.1); color: var(--success); border: 1px solid rgba(50,215,75,0.3); }
+
+    .concept { margin-bottom: 20px; }
+    .concept h3 { font-size: 15px; margin: 0 0 8px 0; color: #fff; }
+    .concept p { font-size: 14px; color: var(--text-muted); margin: 0; }
+
+    .script-box { background: #000; border: 1px solid var(--border); border-radius: 8px; padding: 15px; margin-top: 15px; }
+    .script-box span { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); margin-bottom: 8px; }
+    .script-box p { margin: 0; font-size: 13px; font-style: italic; color: #ccc; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="container" style="padding: 0;">
+      <h1>NESCALIBUR // COACH MANUAL</h1>
+      <p>Методическое руководство по интерпретации изометрических данных</p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="alert-box">
+      <strong>ЭПИСТЕМОЛОГИЯ (ЧТО МЫ РЕАЛЬНО ИЗМЕРЯЕМ)</strong>
+      <p>Аппарат не делает МРТ и не видит «спазмы». Он фиксирует механический отклик кинематической цепи (мышцы + сухожилия + фасции). Мы оперируем терминами: «скорость активации» и «скорость миорелаксации». Запрещено использовать данные прибора для постановки медицинских диагнозов. Наша цель — объективная авторегуляция тренировочной нагрузки.</p>
+    </div>
+
+    <!-- СЕКЦИЯ 1 -->
+    <div class="section">
+      <h2>1. Правило Базовой Линии (Baseline)</h2>
+      <div class="concept">
+        <p>Не существует идеальной цифры для всех. Абсолютные нормативы (например, 130 мс) являются лишь ориентиром. У каждого атлета свой генетический предел скорости передачи нервного импульса и своя композиция мышечных волокон.</p>
+        <ul style="color: var(--text-muted); font-size: 13px; padding-left: 20px;">
+          <li><strong>Шаг 1:</strong> Проведите 3-5 тестирований клиента в состоянии восстановления.</li>
+          <li><strong>Шаг 2:</strong> Зафиксируйте его средние показатели (Baseline). Например: Сила 80 кг, Сброс 145 мс.</li>
+          <li><strong>Шаг 3:</strong> Оценивайте только <strong>ДЕЛЬТУ (отклонение)</strong> текущего результата от его личной нормы.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- СЕКЦИЯ 2 -->
+    <div class="section">
+      <h2>2. Матрица Авторегуляции (Режим VOID)</h2>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Оценка скорости механического расслабления (Drop Time). Снижение скорости расслабления предшествует падению максимальной силы при накоплении утомления.</p>
+      
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Отклонение от нормы</th>
+            <th>Физиология</th>
+            <th>Решение Тренера</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge b-green">± 5%</span><br>В пределах Baseline</td>
+            <td>Оптимальный гомеостаз. Ионы кальция утилизируются штатно.</td>
+            <td>Работа по плану. Допускаются выходы на 1RM (максимумы).</td>
+          </tr>
+          <tr>
+            <td><span class="badge b-yellow">+ 10-15%</span><br>Замедление сброса</td>
+            <td>Накопление метаболического утомления. Снижение эластичности сухожильного комплекса.</td>
+            <td>Снизить объем (количество подходов) на 20-30%. Интенсивность (веса) можно сохранить. Убрать работу до отказа.</td>
+          </tr>
+          <tr>
+            <td><span class="badge b-red">> 20%</span><br>Критическое замедление</td>
+            <td>Дефицит ингибирования мотонейронов. Риск микронадрывов при баллистических нагрузках.</td>
+            <td>Отмена тяжелой базы и плиометрики. Замена на восстановительный тренинг: МФР, мобильность, Zone 2 кардио.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- СЕКЦИЯ 3 -->
+    <div class="section">
+      <h2>3. Матрица Активации (Режимы POWER / SPEED)</h2>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Оценка структурной силы (Peak) и градиента нарастания усилия (nRFD / BPF). Позволяет выявить слабое звено атлета.</p>
+      
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Паттерн графика</th>
+            <th>Диагностика</th>
+            <th>Вектор программирования</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Высокий Peak<br><span style="color:var(--text-muted); font-weight:normal;">Низкий nRFD (Взрыв)</span></td>
+            <td><strong>Late-phase dominance.</strong> ЦНС не способна к мгновенному рекрутированию волокон типа II. Атлет "перемалывает" вес.</td>
+            <td>Интеграция скоростно-силовой работы: Dynamic Effort method (штанга с цепями/резиной), стартовая изометрия.</td>
+          </tr>
+          <tr>
+            <td>Низкий Peak<br><span style="color:var(--text-muted); font-weight:normal;">Высокий nRFD (Взрыв)</span></td>
+            <td><strong>Early-phase dominance.</strong> Высокая эффективность ЦНС на фоне дефицита мышечной массы или структурной слабости хвата.</td>
+            <td>Фокус на гипертрофию и абсолютную силу (Heavy Slow Resistance). Укрепление предплечий и кора.</td>
+          </tr>
+          <tr>
+            <td>Падение Peak на 10%+<br><span style="color:var(--text-muted); font-weight:normal;">При норме VOID</span></td>
+            <td>Истощение креатинфосфатного пула или гликогена. Локальное утомление сократительного аппарата при свежей ЦНС.</td>
+            <td>Перенос фокуса на другие мышечные группы или углеводная загрузка.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- СЕКЦИЯ 4 -->
+    <div class="section">
+      <h2>4. Коммуникация с клиентом (Скрипты)</h2>
+      <p style="font-size: 13px; color: var(--text-muted);">Как конвертировать метрики в экспертный диалог без использования псевдомедицины.</p>
+
+      <div class="script-box">
+        <span>СЦЕНАРИЙ: ПРЕДОТВРАЩЕНИЕ ТРАВМЫ (Плохой VOID)</span>
+        <p>«Посмотри на цифры. Твоя абсолютная сила на месте, но скорость расслабления упала на 20% по сравнению с прошлой неделей. Твои мышцы физиологически остаются в напряжении дольше положенного. Если мы сейчас пойдем делать тяжелую становую, твои мышцы-антагонисты не успеют выключиться, и вся нагрузка ляжет на связки. Я не буду рисковать твоим здоровьем. Сегодня мы меняем план на глубокое восстановление и функционал».</p>
+      </div>
+
+      <div class="script-box">
+        <span>СЦЕНАРИЙ: ПРОДАЖА ПРОГРАММЫ (Низкая Относительная Сила)</span>
+        <p>«Этот тест исключает инерцию. Он показывает чистую структурную прочность. Сейчас твоя относительная сила ниже базовой нормы для твоего веса. Это значит, что в быту твои суставы и позвоночник получают избыточную нагрузку, так как мышечный корсет их не держит. Нам нужно построить фундамент. Предлагаю план на 8 занятий, после чего сделаем повторный срез и оценим прогресс в цифрах».</p>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

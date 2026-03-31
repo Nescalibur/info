@@ -53,6 +53,7 @@ body {
   width: 260px;
   max-width: 80%;
   margin: 20px auto;
+  display: block; 
   opacity: 0.85;
   filter: brightness(1.15) contrast(1.05);
 }

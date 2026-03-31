@@ -424,5 +424,28 @@ html { scroll-behavior: smooth; } /* Плавный скролл к якорям
 }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+/* === МОБИЛЬНАЯ АДАПТАЦИЯ (МЕНЕЕ 768px) === */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 15px; /* Уменьшаем боковые отступы */
+  }
+  .nav-brand img {
+    height: 18px !important; /* Чуть уменьшаем логотип */
+  }
+  .nav-links {
+    gap: 15px; /* Уменьшаем расстояние между ссылками */
+    overflow-x: auto; /* Разрешаем свайп по горизонтали */
+    white-space: nowrap; /* Запрещаем перенос текста на новые строки */
+    -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
+    padding-bottom: 5px; /* Место для скролла */
+  }
+  /* Прячем полосу прокрутки, чтобы было красиво */
+  .nav-links::-webkit-scrollbar {
+    display: none;
+  }
+  .nav-link {
+    font-size: 10px; /* Уменьшаем шрифт меню */
+  }
+}
 /* Сдвиг контента вниз из-за фиксированного меню */
 .hero { padding-top: 70px; }

@@ -363,7 +363,7 @@ html { scroll-behavior: smooth; } /* Плавный скролл к якорям
   transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
   opacity: 0;
 }
-.faq-item.active .faq-answer { max-height: 500px; opacity: 1; }
+.faq-item.active .faq-answer { max-height: 800px; opacity: 1; }
 .faq-answer p {
   padding-bottom: 20px;
   margin: 0;

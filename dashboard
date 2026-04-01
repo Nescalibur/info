@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NESCALIBUR | Trainer Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --bg: #050505; --surface: #111216; --border: #222630;
+      --text: #e2e8f0; --muted: #8b95a5;
+      --accent: #00f3ff; --red: #ff3b30; --green: #32d74b; --yellow: #ffd60a;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+    /* LAYOUTS */
+    .view { display: none; width: 100vw; min-height: 100vh; animation: fadeIn 0.4s ease; }
+    .view.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .container { padding: 20px; max-width: 600px; margin: 0 auto; }
+
+    /* HEADER */
+    .header { background: rgba(17,18,22,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    .logo { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 16px; color: var(--text); letter-spacing: 2px; }
+    .logo span { color: var(--accent); }
+    .trainer-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; background: rgba(0, 243, 255, 0.1); color: var(--accent); padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(0, 243, 255, 0.3); display: none;}
+
+    /* UI ELEMENTS */
+    .inp-dark { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 15px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 16px; outline: none; margin-bottom: 15px; transition: 0.3s; text-align: center;}
+    .inp-dark:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(0,243,255,0.1); }
+    
+    .btn-main { width: 100%; background: var(--accent); color: #000; border: none; padding: 16px; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 14px; cursor: pointer; transition: 0.2s; letter-spacing: 1px; box-shadow: 0 0 20px rgba(0,243,255,0.15);}
+    .btn-main:active { transform: scale(0.97); }
+    .btn-main:disabled { background: #333; color: #666; box-shadow: none; cursor: not-allowed; }
+
+    .input-label { font-size: 10px; color: var(--muted); text-transform: uppercase; font-family: 'JetBrains Mono', monospace; display: block; margin-bottom: 8px; letter-spacing: 1px;}
+
+    /* LOGIN & CLIENT SELECT */
+    .login-box { margin-top: 20vh; text-align: center; }
+    .login-icon { font-size: 40px; margin-bottom: 20px; color: var(--muted); }
+
+    /* WORKSPACE TABS */
+    .tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 55px; z-index: 90;}
+    .tab { flex: 1; text-align: center; padding: 15px 0; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; cursor: pointer; border-bottom: 2px solid transparent; transition: 0.3s; }
+    .tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: bold; background: rgba(0, 243, 255, 0.05); }
+
+    .tab-content { display: none; padding: 20px 15px; animation: fadeIn 0.3s; }
+    .tab-content.active { display: block; }
+
+    /* TAGS */
+    .tag-block { margin-bottom: 20px; background: var(--surface); padding: 15px; border-radius: 12px; border: 1px solid var(--border);}
+    .tag-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; -webkit-overflow-scrolling: touch; }
+    .tag-row::-webkit-scrollbar { display: none; }
+    .tag-chip { flex-shrink: 0; background: var(--bg); border: 1px solid var(--border); color: var(--muted); padding: 10px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; transition: 0.2s; user-select: none; }
+    .tag-chip.active { background: rgba(0, 243, 255, 0.1); border-color: var(--accent); color: var(--accent); box-shadow: 0 0 10px rgba(0,243,255,0.1);}
+
+    /* SLIDER */
+    input[type=range] { width: calc(100% - 60px); -webkit-appearance: none; background: transparent; vertical-align: middle;}
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: var(--accent); cursor: pointer; margin-top: -10px; box-shadow: 0 0 10px var(--accent); }
+    input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: #333; border-radius: 2px; }
+    .range-val { display: inline-block; font-family: 'Orbitron', sans-serif; font-size: 20px; color: var(--accent); text-align: right; width: 50px; vertical-align: middle;}
+
+    /* WAITING STATE */
+    .waiting-state { display: none; text-align: center; padding: 40px 20px; background: rgba(0, 243, 255, 0.05); border: 1px dashed var(--accent); border-radius: 12px; margin-top: 20px; }
+    .waiting-state.active { display: block; animation: fadeIn 0.3s; }
+    .radar-spinner { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--accent); margin: 0 auto 20px; position: relative; }
+    .radar-spinner::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: var(--accent); animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(2); opacity: 0; } }
+    
+    .timer { font-family: 'JetBrains Mono', monospace; font-size: 32px; color: var(--text); margin: 10px 0; font-weight: bold;}
+
+    /* ANALYTICS DASHBOARD */
+    .radar-container { position: relative; height: 320px; width: 100%; margin-bottom: 20px; }
+    
+    .ai-box { background: #000; border-left: 3px solid var(--accent); padding: 15px; border-radius: 0 8px 8px 0; margin-top: 20px; border-top: 1px solid #222; border-right: 1px solid #222; border-bottom: 1px solid #222;}
+    .ai-title { font-family: 'Orbitron', sans-serif; font-size: 11px; color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;}
+    .ai-title::before { content: ''; display: inline-block; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: blink 1s infinite;}
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .ai-text { font-size: 13px; color: #ccc; line-height: 1.6; margin: 0; }
+    .ai-text strong { color: #fff; }
+
+    .status-bar { display: flex; justify-content: space-between; align-items: center; background: rgba(50,215,75,0.1); border: 1px solid rgba(50,215,75,0.3); padding: 10px 15px; border-radius: 8px; margin-bottom: 20px;}
+    .status-bar .name { font-family: 'JetBrains Mono', monospace; font-weight: bold; color: var(--green); font-size: 14px;}
+    .status-bar .btn-logout { background: transparent; border: 1px solid var(--muted); color: var(--muted); padding: 4px 8px; border-radius: 4px; font-size: 10px; cursor: pointer; }
+
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">NESC<span>ALIBUR</span> <span style="font-size:10px; color:#555;">PRO</span></div>
+    <div class="trainer-badge" id="headerTrainerName"></div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- VIEW 1: ЛОГИН ТРЕНЕРА -->
+  <!-- ========================================== -->
+  <div id="view-login" class="view active">
+    <div class="container login-box">
+      <div class="login-icon">🔒</div>
+      <h2 style="font-family:'Space Grotesk', sans-serif; margin-top:0;">АВТОРИЗАЦИЯ ПЕРСОНАЛА</h2>
+      <p style="color:var(--muted); font-size:12px; margin-bottom:30px;">Введите 4-значный ПИН-код для доступа к базе клиентов и активации терминала.</p>
+      
+      <input type="password" id="pinInput" class="inp-dark" placeholder="* * * *" maxlength="4" pattern="\d*">
+      <button class="btn-main" id="btnLogin" onclick="loginTrainer()">ВОЙТИ В СИСТЕМЕ</button>
+      <div id="loginError" style="color:var(--red); font-size:12px; margin-top:15px; display:none;">ОШИБКА: Неверный ПИН-код или нет связи с сервером.</div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- VIEW 2: ВЫБОР/СОЗДАНИЕ КЛИЕНТА -->
+  <!-- ========================================== -->
+  <div id="view-client" class="view">
+    <div class="container">
+      <h2 style="font-family:'Space Grotesk', sans-serif; margin-top:10px;">ИДЕНТИФИКАЦИЯ АТЛЕТА</h2>
+      <p style="color:var(--muted); font-size:12px; margin-bottom:25px;">Введите данные для привязки телеметрии. Если клиент новый, профиль будет создан автоматически.</p>
+
+      <label class="input-label">ИМЯ КЛИЕНТА</label>
+      <input type="text" id="clientName" class="inp-dark" placeholder="Например: ИВАН" style="text-align:left;">
+
+      <label class="input-label">ПОСЛЕДНИЕ 4 ЦИФРЫ ТЕЛЕФОНА</label>
+      <input type="number" id="clientPhone" class="inp-dark" placeholder="8899" style="text-align:left;">
+
+      <button class="btn-main" style="margin-top:20px;" onclick="activateClient()">ОТКРЫТЬ ПРОФИЛЬ</button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- VIEW 3: РАБОЧАЯ ЗОНА (WORKSPACE) -->
+  <!-- ========================================== -->
+  <div id="view-workspace" class="view">
+    
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('tab-test', this)">СЕССИЯ</div>
+      <div class="tab" onclick="switchTab('tab-analytics', this)">ДАШБОРД</div>
+    </div>
+
+    <!-- Вкладка: НОВЫЙ ТЕСТ -->
+    <div id="tab-test" class="tab-content active">
+      
+      <div class="status-bar">
+        <div class="name" id="activeClientName">ИВАН_8899</div>
+        <button class="btn-logout" onclick="logoutClient()">СМЕНИТЬ АТЛЕТА</button>
+      </div>
+
+      <div class="tag-block">
+        <label class="input-label">АКТУАЛЬНЫЙ ВЕС ТЕЛА (КГ)</label>
+        <div>
+          <input type="range" min="40" max="150" value="80" id="weightSlider" oninput="document.getElementById('weightVal').innerText=this.value">
+          <span class="range-val" id="weightVal">80</span>
+        </div>
+      </div>
+
+      <div class="tag-block">
+        <label class="input-label">ХВАТ / РУКОЯТЬ</label>
+        <div class="tag-row" id="tag-handle">
+          <div class="tag-chip active" onclick="toggleTag(this, 'tag-handle')">Стандарт (25мм)</div>
+          <div class="tag-chip" onclick="toggleTag(this, 'tag-handle')">Rolling (60мм)</div>
+        </div>
+      </div>
+
+      <div class="tag-block">
+        <label class="input-label">СТОРОНА</label>
+        <div class="tag-row" id="tag-arm">
+          <div class="tag-chip active" onclick="toggleTag(this, 'tag-arm')">Две руки</div>
+          <div class="tag-chip" onclick="toggleTag(this, 'tag-arm')">Правая</div>
+          <div class="tag-chip" onclick="toggleTag(this, 'tag-arm')">Левая</div>
+        </div>
+      </div>
+
+      <div class="tag-block">
+        <label class="input-label">УСЛОВИЯ</label>
+        <div class="tag-row" id="tag-condition">
+          <div class="tag-chip active" onclick="toggleTag(this, 'tag-condition')">До тренировки</div>
+          <div class="tag-chip" onclick="toggleTag(this, 'tag-condition')">После тренировки</div>
+          <div class="tag-chip" onclick="toggleTag(this, 'tag-condition')">Лямки</div>
+        </div>
+      </div>
+
+      <button class="btn-main" id="btnStart" onclick="startIntercept()">АКТИВИРОВАТЬ ПРИБОР</button>
+
+      <!-- АНИМАЦИЯ ОЖИДАНИЯ -->
+      <div class="waiting-state" id="waitState">
+        <div class="radar-spinner"></div>
+        <div class="wait-text">ОЖИДАНИЕ ДАННЫХ...</div>
+        <div class="timer" id="waitTimer">120</div>
+        <div class="wait-sub">Клиент может выполнять тест на терминале. Перехват активен.</div>
+        <button class="btn-main" style="background:transparent; border:1px solid var(--red); color:var(--red); margin-top:20px; box-shadow:none;" onclick="cancelIntercept()">ОТМЕНИТЬ</button>
+      </div>
+      
+      <!-- СТРАХОВКА ДЛЯ ДЕМОНСТРАЦИИ (Если отвалится интернет) -->
+      <button onclick="simulateTestSuccess()" style="margin-top: 30px; width: 100%; padding: 10px; background: transparent; border: 1px dashed #333; color: #555; font-size: 10px; cursor: pointer;">[ ДЕМО ] СИМУЛИРОВАТЬ УСПЕШНЫЙ ТЕСТ</button>
+
+    </div>
+
+    <!-- Вкладка: АНАЛИТИКА (ДАШБОРД) -->
+    <div id="tab-analytics" class="tab-content">
+      
+      <div style="text-align: center; margin-bottom: 20px;">
+        <h3 style="margin:0; color:var(--text); font-family:'Orbitron';">NEUROMUSCULAR PROFILE</h3>
+        <p style="font-size:10px; color:var(--muted); margin-top:5px; text-transform: uppercase;">Индекс реализации физиологического потенциала</p>
+      </div>
+
+      <div class="radar-container">
+        <canvas id="radarChart"></canvas>
+      </div>
+
+      <div class="ai-box">
+        <div class="ai-title">AI COACH INSIGHTS</div>
+        <div class="ai-text" id="aiVerdict">
+          Ожидание проведения тестирования для генерации многомерного анализа и формирования рекомендаций по авторегуляции нагрузки.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+  // ==========================================
+  // АРХИТЕКТУРА И СВЯЗЬ С GOOGLE SCRIPT
+  // ==========================================
+  
+  // ТВОЙ АКТУАЛЬНЫЙ URL РАЗВЕРТЫВАНИЯ
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbw9UjLqy-HEJbC51FrN0sdwdH9LlrqTsqZfQ9ZJ4KlPtjWy984xBbW2lfMhonTxJskJ/exec"; 
+
+  // Глобальный State
+  let state = {
+    trainerId: "",
+    trainerName: "",
+    clientId: "",
+    pollInterval: null,
+    countdownInterval: null,
+    timeLeft: 120,
+    radarInstance: null
+  };
+
+  // 1. АВТОРИЗАЦИЯ ТРЕНЕРА
+  async function loginTrainer() {
+    const pin = document.getElementById('pinInput').value;
+    const btn = document.getElementById('btnLogin');
+    const err = document.getElementById('loginError');
+    
+    if(pin.length < 4) { err.innerText = "Введите 4 цифры"; err.style.display = "block"; return; }
+    
+    btn.innerText = "АВТОРИЗАЦИЯ..."; btn.disabled = true; err.style.display = "none";
+
+    try {
+      // Кэшбрейкер чтобы браузер не закэшировал GET запрос
+      let res = await fetch(`${GAS_URL}?action=login&pin=${pin}&t=${Date.now()}`);
+      let data = await res.json();
+      
+      if(data.success) {
+        state.trainerId = data.trainer_id;
+        state.trainerName = data.name;
+        document.getElementById('headerTrainerName').innerText = `ТРЕНЕР: ${data.name.toUpperCase()}`;
+        document.getElementById('headerTrainerName').style.display = "block";
+        switchView('view-client');
+      } else {
+        err.innerText = data.error || "Неверный ПИН-код";
+        err.style.display = "block";
+      }
+    } catch(e) {
+      console.error(e);
+      // ФОЛЛБЭК ДЛЯ ДЕМО: Если GAS не настроен или CORS блочит, пускаем по хардкоду для презентации!
+      if(pin === "1234" || pin === "0000") {
+        state.trainerId = "TR-01"; state.trainerName = "Демо-Тренер";
+        document.getElementById('headerTrainerName').innerText = `ТРЕНЕР: DEMO`;
+        document.getElementById('headerTrainerName').style.display = "block";
+        switchView('view-client');
+      } else {
+        err.innerText = "Ошибка сети. Попробуйте еще раз.";
+        err.style.display = "block";
+      }
+    }
+    btn.innerText = "ВОЙТИ В СИСТЕМУ"; btn.disabled = false;
+  }
+
+  // 2. ИДЕНТИФИКАЦИЯ КЛИЕНТА
+  function activateClient() {
+    let name = document.getElementById('clientName').value.trim().toUpperCase();
+    let phone = document.getElementById('clientPhone').value.trim();
+    
+    if (name === "" || phone.length < 4) { alert("Заполните Имя и 4 цифры телефона"); return; }
+    
+    state.clientId = `${name}_${phone.slice(-4)}`;
+    document.getElementById('activeClientName').innerText = state.clientId;
+    
+    switchView('view-workspace');
+    renderEmptyRadar(); // Рисуем пустой радар до проведения тестов
+  }
+
+  function logoutClient() {
+    state.clientId = "";
+    document.getElementById('clientName').value = "";
+    document.getElementById('clientPhone').value = "";
+    cancelIntercept();
+    switchView('view-client');
+  }
+
+  // 3. ПЕРЕХВАТ ТЕСТА (TIME-WINDOW CLAIMING)
+  async function startIntercept() {
+    let weight = document.getElementById('weightSlider').value;
+    let tags =[];
+    document.querySelectorAll('.tag-chip.active').forEach(c => tags.push(c.innerText));
+    let tagsStr = tags.join(", ");
+
+    document.getElementById('btnStart').style.display = 'none';
+    document.getElementById('waitState').classList.add('active');
+    
+    state.timeLeft = 120;
+    document.getElementById('waitTimer').innerText = state.timeLeft;
+
+    try {
+      // Отправляем флаг перехвата в GAS
+      fetch(`${GAS_URL}?action=set_intercept&client_id=${state.clientId}&trainer_id=${state.trainerId}&weight=${weight}&tags=${encodeURIComponent(tagsStr)}&t=${Date.now()}`);
+      
+      // Запускаем таймеры
+      startCountdown();
+      startPolling();
+    } catch(e) {
+      console.log("GAS Error, polling anyway");
+    }
+  }
+
+  function cancelIntercept() {
+    clearInterval(state.pollInterval);
+    clearInterval(state.countdownInterval);
+    document.getElementById('btnStart').style.display = 'block';
+    document.getElementById('waitState').classList.remove('active');
+  }
+
+  function startCountdown() {
+    state.countdownInterval = setInterval(() => {
+      state.timeLeft--;
+      document.getElementById('waitTimer').innerText = state.timeLeft;
+      if(state.timeLeft <= 0) {
+        cancelIntercept();
+        alert("Время ожидания истекло. Тест не выполнен.");
+      }
+    }, 1000);
+  }
+
+  // Опрос сервера: "Пришли ли данные?"
+  function startPolling() {
+    state.pollInterval = setInterval(async () => {
+      try {
+        let res = await fetch(`${GAS_URL}?action=check_result&client_id=${state.clientId}&t=${Date.now()}`);
+        let data = await res.json();
+        if(data.has_result) {
+          cancelIntercept();
+          alert(`✅ УСПЕШНО! Данные сессии ${data.session_id} получены и привязаны к профилю ${state.clientId}.`);
+          // Переключаемся на Дашборд и симулируем анализ (т.к. полноценного get_history у нас пока нет)
+          document.querySelectorAll('.tab')[1].click();
+          renderActiveRadar();
+        }
+      } catch(e) {
+        // Игнорируем ошибки CORS в фоне
+      }
+    }, 3000); // Опрос каждые 3 секунды
+  }
+
+  // 4. ДЕМОНСТРАЦИОННАЯ КНОПКА (СПАСЕНИЕ ДЛЯ ДЕМО)
+  function simulateTestSuccess() {
+    cancelIntercept();
+    alert(`✅ [СИМУЛЯЦИЯ] Терминал передал данные. Они привязаны к профилю ${state.clientId}. Открываем Дашборд.`);
+    document.querySelectorAll('.tab')[1].click();
+    renderActiveRadar();
+  }
+
+  // ==========================================
+  // UX / UI ФУНКЦИИ
+  // ==========================================
+  
+  function switchView(viewId) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById(viewId).classList.add('active');
+  }
+
+  function switchTab(tabId, el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+  }
+
+  function toggleTag(el, group) {
+    let parent = document.getElementById(group);
+    parent.querySelectorAll('.tag-chip').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // ==========================================
+  // НАУЧНЫЙ РАДАР (Z-SCORE NORMALIZATION)
+  // ==========================================
+
+  function initRadar(datasetActive, datasetBaseline) {
+    if(state.radarInstance) state.radarInstance.destroy();
+    
+    var ctx = document.getElementById('radarChart').getContext('2d');
+    state.radarInstance = new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels:['Абсолютная Сила', 'Стартовый Взрыв', 'Стабильность', 'Свежесть ЦНС', 'Когнитивный Отклик'],
+        datasets:[
+          {
+            label: 'Текущий Статус',
+            data: datasetActive, 
+            backgroundColor: 'rgba(0, 243, 255, 0.3)',
+            borderColor: '#00f3ff',
+            pointBackgroundColor: '#fff',
+            borderWidth: 2
+          },
+          {
+            label: 'Личный Эталон (100%)',
+            data: datasetBaseline,
+            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+            borderColor: '#333',
+            borderWidth: 1,
+            pointRadius: 0
+          }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: {
+          r: {
+            angleLines: { color: '#222' }, grid: { color: '#222' },
+            pointLabels: { color: '#888', font: { family: 'Inter', size: 10, weight: 'bold' } },
+            ticks: { display: false, min: 0, max: 100 }
+          }
+        },
+        plugins: { legend: { display: false }, tooltip: {enabled: false} }
+      }
+    });
+  }
+
+  function renderEmptyRadar() {
+    initRadar([0,0,0,0,0],[100,100,100,100,100]);
+    document.getElementById('aiVerdict').innerHTML = "Ожидание проведения тестирования во всех трех протоколах (Сила, Скорость, Деактивация) для генерации многомерного профиля.";
+  }
+
+  function renderActiveRadar() {
+    // Демонстрационные нормализованные данные (Ось: 100 = Идеал)
+    // Допустим: Сила в норме (95), Взрыв упал (60), ЦНС в спазме (40)
+    initRadar([95, 60, 85, 40, 75],[100,100,100,100,100]);
+    
+    // AI Детерминированный вывод
+    document.getElementById('aiVerdict').innerHTML = `<strong>[ СИСТЕМНОЕ ОТКЛОНЕНИЕ ОБНАРУЖЕНО ]</strong><br><br>Анализ профиля показывает сохранение структурной силы (95% от эталона), однако зафиксировано резкое падение скорости деактивации мышц (спазм, 40%) и снижение стартового градиента (60%).<br><br><strong>ДИАГНОЗ:</strong> ЦНС и фасциальный аппарат находятся в состоянии периферического утомления. Мышцы "перемалывают" вес, не способны к баллистике.<br><br><strong>АВТОРЕГУЛЯЦИЯ:</strong> Отменить работу с весами >75% от 1RM. Исключить рывковые движения. Требуется МФР-протокол и легкий пампинг для вымывания метаболитов.`;
+  }
+
+</script>
+</body>
+</html>

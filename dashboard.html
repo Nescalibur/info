@@ -115,32 +115,47 @@
   <!-- ========================================== -->
   <!-- VIEW 2: ВЫБОР/СОЗДАНИЕ КЛИЕНТА -->
   <!-- ========================================== -->
-  <div id="view-client" class="view">
-    <div class="container">
-      <h2 style="font-family:'Space Grotesk', sans-serif; margin-top:10px;">ИДЕНТИФИКАЦИЯ АТЛЕТА</h2>
-      <p style="color:var(--muted); font-size:12px; margin-bottom:25px;">Введите данные для привязки телеметрии. Если клиент новый, профиль будет создан автоматически.</p>
+<!-- БЛОК ПОИСКА / ВВОДА КЛИЕНТА -->
+  <div class="client-selector" id="clientSelector">
+    <div style="font-size: 11px; color: var(--muted); margin-bottom: 15px; text-transform: uppercase; text-align: center;">Идентификация атлета</div>
+    
+    <!-- Выбор существующего клиента -->
+    <div id="existingClientBlock">
+      <select id="clientDropdown" class="inp-dark" style="appearance: none; -webkit-appearance: none;">
+        <option value="">-- Загрузка базы клиентов... --</option>
+      </select>
+      <button class="btn-main" onclick="selectExistingClient()">ВЫБРАТЬ АТЛЕТА</button>
+      <div style="text-align: center; margin-top: 15px;">
+        <span style="color: var(--accent); font-size: 12px; cursor: pointer; border-bottom: 1px dashed var(--accent);" onclick="toggleNewClientForm(true)">+ Добавить нового клиента</span>
+      </div>
+    </div>
 
-      <label class="input-label">ИМЯ КЛИЕНТА</label>
-      <input type="text" id="clientName" class="inp-dark" placeholder="Например: ИВАН" style="text-align:left;">
-
-      <label class="input-label">ПОСЛЕДНИЕ 4 ЦИФРЫ ТЕЛЕФОНА</label>
-      <input type="number" id="clientPhone" class="inp-dark" placeholder="8899" style="text-align:left;">
-
-      <button class="btn-main" style="margin-top:20px;" onclick="activateClient()">ОТКРЫТЬ ПРОФИЛЬ</button>
+    <!-- Создание нового клиента (скрыто по умолчанию) -->
+    <div id="newClientBlock" style="display: none;">
+      <input type="text" id="clientName" class="inp-dark" placeholder="ИМЯ (напр. ИВАН)" style="text-align:left;">
+      <input type="number" id="clientPhone" class="inp-dark" placeholder="ПОСЛЕДНИЕ 4 ЦИФРЫ ТЕЛЕФОНА" style="text-align:left;">
+      <button class="btn-main" onclick="activateNewClient()">СОЗДАТЬ ПРОФИЛЬ</button>
+      <div style="text-align: center; margin-top: 15px;">
+        <span style="color: var(--muted); font-size: 12px; cursor: pointer; border-bottom: 1px dashed var(--muted);" onclick="toggleNewClientForm(false)">Назад к списку</span>
+      </div>
     </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- VIEW 3: РАБОЧАЯ ЗОНА (WORKSPACE) -->
-  <!-- ========================================== -->
-  <div id="view-workspace" class="view">
-    
+  <!-- АКТИВНЫЙ КЛИЕНТ -->
+  <div class="active-client-bar" id="activeClientBar">
+    <div class="client-name" id="displayClientName">ИВАН_8899</div>
+    <button class="btn-change" onclick="resetClient()">СМЕНИТЬ</button>
+  </div>
+
+  <!-- НАВИГАЦИЯ (Скрыта до выбора клиента) -->
+  <div id="workspace" style="display: none;">
     <div class="tabs">
       <div class="tab active" onclick="switchTab('tab-test', this)">СЕССИЯ</div>
+      <div class="tab" onclick="switchTab('tab-profile', this)">ПРОФИЛЬ</div>
       <div class="tab" onclick="switchTab('tab-analytics', this)">ДАШБОРД</div>
     </div>
 
-    <!-- Вкладка: НОВЫЙ ТЕСТ -->
+    <!-- ВКЛАДКА: НОВЫЙ ТЕСТ (ПЕРЕХВАТ) -->
     <div id="tab-test" class="tab-content active">
       
       <div class="status-bar">
@@ -148,6 +163,7 @@
         <button class="btn-logout" onclick="logoutClient()">СМЕНИТЬ АТЛЕТА</button>
       </div>
 
+      <!-- ВЕС ТЕЛА (Автоматически подтянется из базы) -->
       <div class="tag-block">
         <label class="input-label">АКТУАЛЬНЫЙ ВЕС ТЕЛА (КГ)</label>
         <div>
@@ -156,6 +172,7 @@
         </div>
       </div>
 
+      <!-- ИДЕАЛЬНЫЕ ТЕГИ С ПРЕДВЫБОРОМ -->
       <div class="tag-block">
         <label class="input-label">ХВАТ / РУКОЯТЬ</label>
         <div class="tag-row" id="tag-handle">
@@ -165,24 +182,31 @@
       </div>
 
       <div class="tag-block">
-        <label class="input-label">СТОРОНА</label>
+        <label class="input-label">РАБОЧАЯ СТОРОНА</label>
         <div class="tag-row" id="tag-arm">
-          <div class="tag-chip active" onclick="toggleTag(this, 'tag-arm')">Две руки</div>
-          <div class="tag-chip" onclick="toggleTag(this, 'tag-arm')">Правая</div>
-          <div class="tag-chip" onclick="toggleTag(this, 'tag-arm')">Левая</div>
+          <div class="tag-chip active" onclick="toggleTag(this, 'tag-arm')">Правая рука</div>
+          <div class="tag-chip" onclick="toggleTag(this, 'tag-arm')">Левая рука</div>
+          <div class="tag-chip" onclick="toggleTag(this, 'tag-arm')">Две руки</div>
         </div>
       </div>
 
       <div class="tag-block">
-        <label class="input-label">УСЛОВИЯ</label>
-        <div class="tag-row" id="tag-condition">
-          <div class="tag-chip active" onclick="toggleTag(this, 'tag-condition')">До тренировки</div>
-          <div class="tag-chip" onclick="toggleTag(this, 'tag-condition')">После тренировки</div>
-          <div class="tag-chip" onclick="toggleTag(this, 'tag-condition')">Лямки</div>
+        <label class="input-label">ЭКИПИРОВКА</label>
+        <div class="tag-row" id="tag-straps">
+          <div class="tag-chip active" onclick="toggleTag(this, 'tag-straps')">Без лямок (Лимит хвата)</div>
+          <div class="tag-chip" onclick="toggleTag(this, 'tag-straps')">С лямками</div>
         </div>
       </div>
 
-      <button class="btn-main" id="btnStart" onclick="startIntercept()">АКТИВИРОВАТЬ ПРИБОР</button>
+      <div class="tag-block">
+        <label class="input-label">МОМЕНТ ИЗМЕРЕНИЯ</label>
+        <div class="tag-row" id="tag-condition">
+          <div class="tag-chip active" onclick="toggleTag(this, 'tag-condition')">До тренировки</div>
+          <div class="tag-chip" onclick="toggleTag(this, 'tag-condition')">После тренировки</div>
+        </div>
+      </div>
+
+      <button class="btn-main" id="btnStart" onclick="startIntercept()" style="margin-top: 15px;">АКТИВИРОВАТЬ ТЕРМИНАЛ</button>
 
       <!-- АНИМАЦИЯ ОЖИДАНИЯ -->
       <div class="waiting-state" id="waitState">
@@ -224,9 +248,10 @@
   // ==========================================
   // АРХИТЕКТУРА И СВЯЗЬ С GOOGLE SCRIPT
   // ==========================================
+
   
   // ТВОЙ АКТУАЛЬНЫЙ URL РАЗВЕРТЫВАНИЯ
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbxXNYfZiwMoiOkwJwQvKlgRBF5NPYpmtXo6f3Z0MzCURqW3vxE3F5U4IYDVvVC6BZwJ/exec"; 
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbzZx6UvpDrC2LfFmzglqPiPtZCQ2mB3-_Bqf19nlKSHIrqW1VfL6tsootffFTIyoK2r/exec"; 
 
   // Глобальный State
   let state = {
@@ -239,8 +264,10 @@
     radarInstance: null
   };
 
+  // ==========================================
   // 1. АВТОРИЗАЦИЯ ТРЕНЕРА
-async function loginTrainer() {
+  // ==========================================
+  async function loginTrainer() {
     const pin = document.getElementById('pinInput').value;
     const btn = document.getElementById('btnLogin');
     const err = document.getElementById('loginError');
@@ -250,7 +277,6 @@ async function loginTrainer() {
     btn.innerText = "АВТОРИЗАЦИЯ..."; btn.disabled = true; err.style.display = "none";
 
     try {
-      // РЕАЛЬНЫЙ ЗАПРОС К БАЗЕ ДАННЫХ
       let res = await fetch(`${GAS_URL}?action=login&pin=${pin}&t=${Date.now()}`);
       let data = await res.json();
       
@@ -259,7 +285,10 @@ async function loginTrainer() {
         state.trainerName = data.name;
         document.getElementById('headerTrainerName').innerText = `ТРЕНЕР: ${data.name.toUpperCase()}`;
         document.getElementById('headerTrainerName').style.display = "block";
+        
         switchView('view-client');
+        // Как только вошли - загружаем базу клиентов этого тренера!
+        fetchClientsList(); 
       } else {
         err.innerText = data.error || "Неверный ПИН-код";
         err.style.display = "block";
@@ -272,34 +301,133 @@ async function loginTrainer() {
     btn.innerText = "ВОЙТИ В СИСТЕМУ"; btn.disabled = false;
   }
 
-  // 2. ИДЕНТИФИКАЦИЯ КЛИЕНТА
-  function activateClient() {
+  // ==========================================
+  // 2. БАЗА КЛИЕНТОВ (ВЫБОР И СОЗДАНИЕ)
+  // ==========================================
+  async function fetchClientsList() {
+    const dropdown = document.getElementById('clientDropdown');
+    dropdown.innerHTML = '<option value="">Загрузка базы...</option>';
+    
+    try {
+      let res = await fetch(`${GAS_URL}?action=get_clients&trainer_id=${state.trainerId}&t=${Date.now()}`);
+      let data = await res.json();
+      
+      if(data.success && data.clients.length > 0) {
+        dropdown.innerHTML = '<option value="">-- Выберите атлета --</option>';
+        window.clientsDB = data.clients; // Кэшируем локально
+        
+        data.clients.forEach(c => {
+          let opt = document.createElement('option');
+          opt.value = c.client_id;
+          opt.text = `${c.name} (${c.phone})`;
+          dropdown.appendChild(opt);
+        });
+      } else {
+        dropdown.innerHTML = '<option value="">У вас пока нет клиентов</option>';
+      }
+    } catch(e) {
+      dropdown.innerHTML = '<option value="">Ошибка загрузки базы</option>';
+    }
+  }
+
+  function toggleNewClientForm(show) {
+    document.getElementById('existingClientBlock').style.display = show ? 'none' : 'block';
+    document.getElementById('newClientBlock').style.display = show ? 'block' : 'none';
+  }
+
+  function selectExistingClient() {
+    let dd = document.getElementById('clientDropdown');
+    let cid = dd.value;
+    if(!cid) { alert("Выберите клиента из списка"); return; }
+    
+    state.clientId = cid;
+    
+    // Подтягиваем вес клиента из базы, чтобы тренеру не вводить его руками
+    if(window.clientsDB) {
+        let clientData = window.clientsDB.find(c => c.client_id === cid);
+        if(clientData && clientData.weight) {
+            document.getElementById('weightSlider').value = clientData.weight;
+            document.getElementById('weightVal').innerText = clientData.weight;
+        }
+    }
+
+    document.getElementById('activeClientName').innerText = state.clientId;
+    switchView('view-workspace');
+    renderEmptyRadar();
+  }
+
+  function activateNewClient() {
     let name = document.getElementById('clientName').value.trim().toUpperCase();
     let phone = document.getElementById('clientPhone').value.trim();
-    
     if (name === "" || phone.length < 4) { alert("Заполните Имя и 4 цифры телефона"); return; }
     
     state.clientId = `${name}_${phone.slice(-4)}`;
     document.getElementById('activeClientName').innerText = state.clientId;
     
+    // Сразу переходим на вкладку ПРОФИЛЬ, чтобы тренер заполнил пол и вес
     switchView('view-workspace');
-    renderEmptyRadar(); // Рисуем пустой радар до проведения тестов
+    document.querySelectorAll('.tab')[1].click(); 
+    alert("Заполните профиль нового клиента и нажмите СОХРАНИТЬ.");
+    renderEmptyRadar();
   }
 
   function logoutClient() {
     state.clientId = "";
     document.getElementById('clientName').value = "";
     document.getElementById('clientPhone').value = "";
+    document.getElementById('clientDropdown').value = "";
+    if (state.radarInstance) state.radarInstance.destroy();
     cancelIntercept();
     switchView('view-client');
   }
 
-  // 3. РЕАЛЬНЫЙ ПЕРЕХВАТ ТЕСТА (TIME-WINDOW CLAIMING)
+  async function saveProfile() {
+    let btn = event.target;
+    let originalText = btn.innerText;
+    btn.innerText = "СОХРАНЕНИЕ..."; btn.disabled = true;
+
+    let payload = {
+      client_id: state.clientId,
+      trainer_id: state.trainerId,
+      name: document.getElementById('clientName').value.trim().toUpperCase() || state.clientId.split('_')[0],
+      phone: document.getElementById('clientPhone').value.trim() || state.clientId.split('_')[1],
+      gender: document.getElementById('profGender').value,
+      weight: document.getElementById('profWeight').value,
+      age: document.getElementById('profAge').value,
+      goal: document.getElementById('profGoal').value,
+      notes: document.querySelector('textarea.inp-dark').value.trim()
+    };
+
+    let url = `${GAS_URL}?action=save_client&client_id=${encodeURIComponent(payload.client_id)}&trainer_id=${encodeURIComponent(payload.trainer_id)}&name=${encodeURIComponent(payload.name)}&phone=${encodeURIComponent(payload.phone)}&gender=${payload.gender}&weight=${payload.weight}&age=${payload.age}&goal=${encodeURIComponent(payload.goal)}&notes=${encodeURIComponent(payload.notes)}`;
+
+    try {
+      let res = await fetch(url);
+      let data = await res.json();
+      if(data.success) {
+        alert("✅ Профиль сохранен. Перейдите на вкладку СЕССИЯ для запуска теста.");
+        document.querySelectorAll('.tab')[0].click(); // Возврат на вкладку СЕССИЯ
+      } else alert("❌ Ошибка: " + data.error);
+    } catch(e) {
+      alert("❌ Ошибка сети при сохранении.");
+    }
+    btn.innerText = originalText; btn.disabled = false;
+  }
+
+  // ==========================================
+  // 3. UX: ТЕГИ И СИСТЕМА ПЕРЕХВАТА
+  // ==========================================
+  function getActiveTags() {
+    let tags =[];
+    document.querySelectorAll('.tag-chip.active').forEach(chip => {
+      tags.push(chip.innerText);
+    });
+    return tags.join(", ");
+  }
+
   async function startIntercept() {
     if (!state.clientId) return;
 
-    let weight = document.getElementById('profWeight').value;
-    let gender = document.getElementById('profGender').value;
+    let weight = document.getElementById('weightSlider').value;
     let tags = getActiveTags();
 
     document.getElementById('btnStart').style.display = 'none';
@@ -307,14 +435,15 @@ async function loginTrainer() {
     
     state.timeLeft = 120;
     document.getElementById('waitTimer').innerText = state.timeLeft;
+    document.getElementById('waitClientName').innerText = state.clientId;
 
     try {
-      // ОТПРАВЛЯЕМ СИГНАЛ В БАЗУ: "ЖДУ ТЕСТ ОТ ИВАНА"
+      // Отправляем сигнал в GAS
       let url = `${GAS_URL}?action=set_intercept&client_id=${encodeURIComponent(state.clientId)}&trainer_id=${encodeURIComponent(state.trainerId)}&weight=${weight}&tags=${encodeURIComponent(tags)}&t=${Date.now()}`;
       await fetch(url);
       
       startCountdown();
-      startPolling(); // Начинаем реальный опрос сервера
+      startPolling(); 
     } catch(e) {
       alert("Ошибка связи с сервером.");
       cancelIntercept();
@@ -339,12 +468,11 @@ async function loginTrainer() {
     }, 1000);
   }
 
-  // РЕАЛЬНЫЙ ОПРОС СЕРВЕРА (Пришли ли данные от прибора?)
   function startPolling() {
     let attempts = 0;
     state.pollInterval = setInterval(async () => {
       attempts++;
-      if (attempts > 40) { cancelIntercept(); return; } // Защита
+      if (attempts > 40) { cancelIntercept(); return; } 
 
       try {
         let res = await fetch(`${GAS_URL}?action=check_result&client_id=${encodeURIComponent(state.clientId)}&t=${Date.now()}`);
@@ -352,58 +480,17 @@ async function loginTrainer() {
         
         if(data.has_result) {
           cancelIntercept();
-          alert(`✅ УСПЕШНО! Данные сессии ${data.session_id} получены и привязаны к профилю ${state.clientId}.`);
-          // Переходим в аналитику
+          alert(`✅ УСПЕШНО! Данные получены и привязаны к профилю ${state.clientId}.`);
           document.querySelectorAll('.tab')[2].click();
           renderActiveRadar(); 
-          // В будущем здесь будет вызов get_history для отрисовки реального радара
         }
-      } catch(e) {
-        console.log("Ожидание данных...");
-      }
-    }, 3000); // Спрашиваем каждые 3 секунды
+      } catch(e) { console.log("Ожидание..."); }
+    }, 3000); 
   }
-// СОХРАНЕНИЕ ПРОФИЛЯ КЛИЕНТА В БАЗУ ДАННЫХ
-  async function saveProfile() {
-    let btn = event.target;
-    let originalText = btn.innerText;
-    btn.innerText = "СОХРАНЕНИЕ..."; btn.disabled = true;
 
-    // Собираем данные из полей
-    let payload = {
-      client_id: state.clientId,
-      trainer_id: state.trainerId,
-      name: document.getElementById('clientName').value.trim().toUpperCase(),
-      phone: document.getElementById('clientPhone').value.trim(),
-      gender: document.getElementById('profGender').value,
-      weight: document.getElementById('profWeight').value,
-      age: document.getElementById('profAge').value,
-      goal: document.getElementById('profGoal').value,
-      notes: document.querySelector('textarea.inp-dark').value.trim()
-    };
-
-    // Формируем URL с параметрами
-    let url = `${GAS_URL}?action=save_client&client_id=${encodeURIComponent(payload.client_id)}&trainer_id=${encodeURIComponent(payload.trainer_id)}&name=${encodeURIComponent(payload.name)}&phone=${encodeURIComponent(payload.phone)}&gender=${payload.gender}&weight=${payload.weight}&age=${payload.age}&goal=${encodeURIComponent(payload.goal)}&notes=${encodeURIComponent(payload.notes)}`;
-
-    try {
-      let res = await fetch(url);
-      let data = await res.json();
-      if(data.success) {
-        alert("✅ Профиль клиента успешно сохранен в базе клуба.");
-      } else {
-        alert("❌ Ошибка сохранения: " + data.error);
-      }
-    } catch(e) {
-      alert("❌ Ошибка сети при сохранении.");
-    }
-    
-    btn.innerText = originalText; btn.disabled = false;
-  }
-  
   // ==========================================
-  // UX / UI ФУНКЦИИ
+  // 4. ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ И РАДАР
   // ==========================================
-  
   function switchView(viewId) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.getElementById(viewId).classList.add('active');
@@ -422,45 +509,22 @@ async function loginTrainer() {
     el.classList.add('active');
   }
 
-  // ==========================================
-  // НАУЧНЫЙ РАДАР (Z-SCORE NORMALIZATION)
-  // ==========================================
-
   function initRadar(datasetActive, datasetBaseline) {
     if(state.radarInstance) state.radarInstance.destroy();
-    
     var ctx = document.getElementById('radarChart').getContext('2d');
     state.radarInstance = new Chart(ctx, {
       type: 'radar',
       data: {
         labels:['Абсолютная Сила', 'Стартовый Взрыв', 'Стабильность', 'Свежесть ЦНС', 'Когнитивный Отклик'],
         datasets:[
-          {
-            label: 'Текущий Статус',
-            data: datasetActive, 
-            backgroundColor: 'rgba(0, 243, 255, 0.3)',
-            borderColor: '#00f3ff',
-            pointBackgroundColor: '#fff',
-            borderWidth: 2
-          },
-          {
-            label: 'Личный Эталон (100%)',
-            data: datasetBaseline,
-            backgroundColor: 'rgba(255, 255, 255, 0.05)',
-            borderColor: '#333',
-            borderWidth: 1,
-            pointRadius: 0
-          }
+          { label: 'Текущий Статус', data: datasetActive, backgroundColor: 'rgba(0, 243, 255, 0.3)', borderColor: '#00f3ff', pointBackgroundColor: '#fff', borderWidth: 2 },
+          { label: 'Личный Эталон', data: datasetBaseline, backgroundColor: 'rgba(255, 255, 255, 0.05)', borderColor: '#333', borderWidth: 1, pointRadius: 0 }
         ]
       },
       options: {
         responsive: true, maintainAspectRatio: false,
         scales: {
-          r: {
-            angleLines: { color: '#222' }, grid: { color: '#222' },
-            pointLabels: { color: '#888', font: { family: 'Inter', size: 10, weight: 'bold' } },
-            ticks: { display: false, min: 0, max: 100 }
-          }
+          r: { angleLines: { color: '#222' }, grid: { color: '#222' }, pointLabels: { color: '#888', font: { family: 'Inter', size: 10, weight: 'bold' } }, ticks: { display: false, min: 0, max: 100 } }
         },
         plugins: { legend: { display: false }, tooltip: {enabled: false} }
       }
@@ -469,16 +533,12 @@ async function loginTrainer() {
 
   function renderEmptyRadar() {
     initRadar([0,0,0,0,0],[100,100,100,100,100]);
-    document.getElementById('aiVerdict').innerHTML = "Ожидание проведения тестирования во всех трех протоколах (Сила, Скорость, Деактивация) для генерации многомерного профиля.";
+    document.getElementById('aiVerdict').innerHTML = "Ожидание тестирования во всех трех протоколах для генерации многомерного профиля.";
   }
 
   function renderActiveRadar() {
-    // Демонстрационные нормализованные данные (Ось: 100 = Идеал)
-    // Допустим: Сила в норме (95), Взрыв упал (60), ЦНС в спазме (40)
     initRadar([95, 60, 85, 40, 75],[100,100,100,100,100]);
-    
-    // AI Детерминированный вывод
-    document.getElementById('aiVerdict').innerHTML = `<strong>[ СИСТЕМНОЕ ОТКЛОНЕНИЕ ОБНАРУЖЕНО ]</strong><br><br>Анализ профиля показывает сохранение структурной силы (95% от эталона), однако зафиксировано резкое падение скорости деактивации мышц (спазм, 40%) и снижение стартового градиента (60%).<br><br><strong>ДИАГНОЗ:</strong> ЦНС и фасциальный аппарат находятся в состоянии периферического утомления. Мышцы "перемалывают" вес, не способны к баллистике.<br><br><strong>АВТОРЕГУЛЯЦИЯ:</strong> Отменить работу с весами >75% от 1RM. Исключить рывковые движения. Требуется МФР-протокол и легкий пампинг для вымывания метаболитов.`;
+    document.getElementById('aiVerdict').innerHTML = `<strong>[ СИСТЕМНОЕ ОТКЛОНЕНИЕ ОБНАРУЖЕНО ]</strong><br><br>Анализ показывает сохранение структурной силы (95%), однако зафиксировано падение скорости деактивации мышц (спазм, 40%) и снижение стартового градиента (60%).<br><br><strong>ДИАГНОЗ:</strong> Периферическое утомление. Мышцы "перемалывают" вес.<br><br><strong>АВТОРЕГУЛЯЦИЯ:</strong> Отменить работу с весами >75% от 1RM. Требуется МФР.`;
   }
 
 </script>

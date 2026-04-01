@@ -226,7 +226,7 @@
   // ==========================================
   
   // ТВОЙ АКТУАЛЬНЫЙ URL РАЗВЕРТЫВАНИЯ
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbw9UjLqy-HEJbC51FrN0sdwdH9LlrqTsqZfQ9ZJ4KlPtjWy984xBbW2lfMhonTxJskJ/exec"; 
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbxXNYfZiwMoiOkwJwQvKlgRBF5NPYpmtXo6f3Z0MzCURqW3vxE3F5U4IYDVvVC6BZwJ/exec"; 
 
   // Глобальный State
   let state = {
@@ -240,7 +240,7 @@
   };
 
   // 1. АВТОРИЗАЦИЯ ТРЕНЕРА
-  async function loginTrainer() {
+async function loginTrainer() {
     const pin = document.getElementById('pinInput').value;
     const btn = document.getElementById('btnLogin');
     const err = document.getElementById('loginError');
@@ -250,7 +250,7 @@
     btn.innerText = "АВТОРИЗАЦИЯ..."; btn.disabled = true; err.style.display = "none";
 
     try {
-      // Кэшбрейкер чтобы браузер не закэшировал GET запрос
+      // РЕАЛЬНЫЙ ЗАПРОС К БАЗЕ ДАННЫХ
       let res = await fetch(`${GAS_URL}?action=login&pin=${pin}&t=${Date.now()}`);
       let data = await res.json();
       
@@ -266,16 +266,8 @@
       }
     } catch(e) {
       console.error(e);
-      // ФОЛЛБЭК ДЛЯ ДЕМО: Если GAS не настроен или CORS блочит, пускаем по хардкоду для презентации!
-      if(pin === "1234" || pin === "0000") {
-        state.trainerId = "TR-01"; state.trainerName = "Демо-Тренер";
-        document.getElementById('headerTrainerName').innerText = `ТРЕНЕР: DEMO`;
-        document.getElementById('headerTrainerName').style.display = "block";
-        switchView('view-client');
-      } else {
-        err.innerText = "Ошибка сети. Попробуйте еще раз.";
-        err.style.display = "block";
-      }
+      err.innerText = "Ошибка сети. Проверьте ссылку GAS_URL.";
+      err.style.display = "block";
     }
     btn.innerText = "ВОЙТИ В СИСТЕМУ"; btn.disabled = false;
   }
@@ -302,12 +294,13 @@
     switchView('view-client');
   }
 
-  // 3. ПЕРЕХВАТ ТЕСТА (TIME-WINDOW CLAIMING)
+  // 3. РЕАЛЬНЫЙ ПЕРЕХВАТ ТЕСТА (TIME-WINDOW CLAIMING)
   async function startIntercept() {
-    let weight = document.getElementById('weightSlider').value;
-    let tags =[];
-    document.querySelectorAll('.tag-chip.active').forEach(c => tags.push(c.innerText));
-    let tagsStr = tags.join(", ");
+    if (!state.clientId) return;
+
+    let weight = document.getElementById('profWeight').value;
+    let gender = document.getElementById('profGender').value;
+    let tags = getActiveTags();
 
     document.getElementById('btnStart').style.display = 'none';
     document.getElementById('waitState').classList.add('active');
@@ -316,14 +309,15 @@
     document.getElementById('waitTimer').innerText = state.timeLeft;
 
     try {
-      // Отправляем флаг перехвата в GAS
-      fetch(`${GAS_URL}?action=set_intercept&client_id=${state.clientId}&trainer_id=${state.trainerId}&weight=${weight}&tags=${encodeURIComponent(tagsStr)}&t=${Date.now()}`);
+      // ОТПРАВЛЯЕМ СИГНАЛ В БАЗУ: "ЖДУ ТЕСТ ОТ ИВАНА"
+      let url = `${GAS_URL}?action=set_intercept&client_id=${encodeURIComponent(state.clientId)}&trainer_id=${encodeURIComponent(state.trainerId)}&weight=${weight}&tags=${encodeURIComponent(tags)}&t=${Date.now()}`;
+      await fetch(url);
       
-      // Запускаем таймеры
       startCountdown();
-      startPolling();
+      startPolling(); // Начинаем реальный опрос сервера
     } catch(e) {
-      console.log("GAS Error, polling anyway");
+      alert("Ошибка связи с сервером.");
+      cancelIntercept();
     }
   }
 
@@ -340,38 +334,72 @@
       document.getElementById('waitTimer').innerText = state.timeLeft;
       if(state.timeLeft <= 0) {
         cancelIntercept();
-        alert("Время ожидания истекло. Тест не выполнен.");
+        alert("Время ожидания истекло. Тест не был зафиксирован.");
       }
     }, 1000);
   }
 
-  // Опрос сервера: "Пришли ли данные?"
+  // РЕАЛЬНЫЙ ОПРОС СЕРВЕРА (Пришли ли данные от прибора?)
   function startPolling() {
+    let attempts = 0;
     state.pollInterval = setInterval(async () => {
+      attempts++;
+      if (attempts > 40) { cancelIntercept(); return; } // Защита
+
       try {
-        let res = await fetch(`${GAS_URL}?action=check_result&client_id=${state.clientId}&t=${Date.now()}`);
+        let res = await fetch(`${GAS_URL}?action=check_result&client_id=${encodeURIComponent(state.clientId)}&t=${Date.now()}`);
         let data = await res.json();
+        
         if(data.has_result) {
           cancelIntercept();
           alert(`✅ УСПЕШНО! Данные сессии ${data.session_id} получены и привязаны к профилю ${state.clientId}.`);
-          // Переключаемся на Дашборд и симулируем анализ (т.к. полноценного get_history у нас пока нет)
-          document.querySelectorAll('.tab')[1].click();
-          renderActiveRadar();
+          // Переходим в аналитику
+          document.querySelectorAll('.tab')[2].click();
+          renderActiveRadar(); 
+          // В будущем здесь будет вызов get_history для отрисовки реального радара
         }
       } catch(e) {
-        // Игнорируем ошибки CORS в фоне
+        console.log("Ожидание данных...");
       }
-    }, 3000); // Опрос каждые 3 секунды
+    }, 3000); // Спрашиваем каждые 3 секунды
   }
+// СОХРАНЕНИЕ ПРОФИЛЯ КЛИЕНТА В БАЗУ ДАННЫХ
+  async function saveProfile() {
+    let btn = event.target;
+    let originalText = btn.innerText;
+    btn.innerText = "СОХРАНЕНИЕ..."; btn.disabled = true;
 
-  // 4. ДЕМОНСТРАЦИОННАЯ КНОПКА (СПАСЕНИЕ ДЛЯ ДЕМО)
-  function simulateTestSuccess() {
-    cancelIntercept();
-    alert(`✅ [СИМУЛЯЦИЯ] Терминал передал данные. Они привязаны к профилю ${state.clientId}. Открываем Дашборд.`);
-    document.querySelectorAll('.tab')[1].click();
-    renderActiveRadar();
+    // Собираем данные из полей
+    let payload = {
+      client_id: state.clientId,
+      trainer_id: state.trainerId,
+      name: document.getElementById('clientName').value.trim().toUpperCase(),
+      phone: document.getElementById('clientPhone').value.trim(),
+      gender: document.getElementById('profGender').value,
+      weight: document.getElementById('profWeight').value,
+      age: document.getElementById('profAge').value,
+      goal: document.getElementById('profGoal').value,
+      notes: document.querySelector('textarea.inp-dark').value.trim()
+    };
+
+    // Формируем URL с параметрами
+    let url = `${GAS_URL}?action=save_client&client_id=${encodeURIComponent(payload.client_id)}&trainer_id=${encodeURIComponent(payload.trainer_id)}&name=${encodeURIComponent(payload.name)}&phone=${encodeURIComponent(payload.phone)}&gender=${payload.gender}&weight=${payload.weight}&age=${payload.age}&goal=${encodeURIComponent(payload.goal)}&notes=${encodeURIComponent(payload.notes)}`;
+
+    try {
+      let res = await fetch(url);
+      let data = await res.json();
+      if(data.success) {
+        alert("✅ Профиль клиента успешно сохранен в базе клуба.");
+      } else {
+        alert("❌ Ошибка сохранения: " + data.error);
+      }
+    } catch(e) {
+      alert("❌ Ошибка сети при сохранении.");
+    }
+    
+    btn.innerText = originalText; btn.disabled = false;
   }
-
+  
   // ==========================================
   // UX / UI ФУНКЦИИ
   // ==========================================

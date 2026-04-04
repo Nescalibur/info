@@ -130,10 +130,10 @@
       </div>
     </div>
 
-    <!-- Создание нового клиента (скрыто по умолчанию) -->
+    <!-- Создание нового клиента -->
     <div id="newClientBlock" style="display: none;">
-      <input type="text" id="clientName" class="inp-dark" placeholder="ИМЯ (напр. ИВАН)" style="text-align:left;">
-      <input type="number" id="clientPhone" class="inp-dark" placeholder="ПОСЛЕДНИЕ 4 ЦИФРЫ ТЕЛЕФОНА" style="text-align:left;">
+      <input type="text" id="inpName" class="inp-dark" placeholder="ИМЯ (напр. ИВАН)" style="text-align:left;">
+      <input type="number" id="inpPhone" class="inp-dark" placeholder="ПОСЛЕДНИЕ 4 ЦИФРЫ ТЕЛЕФОНА" style="text-align:left;">
       <button class="btn-main" onclick="activateNewClient()">СОЗДАТЬ ПРОФИЛЬ</button>
       <div style="text-align: center; margin-top: 15px;">
         <span style="color: var(--muted); font-size: 12px; cursor: pointer; border-bottom: 1px dashed var(--muted);" onclick="toggleNewClientForm(false)">Назад к списку</span>
@@ -313,8 +313,9 @@
       let data = await res.json();
       
       if(data.success && data.clients.length > 0) {
-        dropdown.innerHTML = '<option value="">-- Выберите атлета --</option>';
-        window.clientsDB = data.clients; // Кэшируем локально
+        // ИСПРАВЛЕНИЕ UX: Четкий призыв к действию
+        dropdown.innerHTML = '<option value="" disabled selected>-- Нажмите сюда для выбора --</option>';
+        window.clientsDB = data.clients; 
         
         data.clients.forEach(c => {
           let opt = document.createElement('option');
@@ -338,11 +339,15 @@
   function selectExistingClient() {
     let dd = document.getElementById('clientDropdown');
     let cid = dd.value;
-    if(!cid) { alert("Выберите клиента из списка"); return; }
+    
+    // ЗАЩИТА: Если тренер не выбрал Ивана, а просто нажал кнопку
+    if(!cid || cid === "") { 
+      alert("Пожалуйста, нажмите на список и выберите клиента!"); 
+      return; 
+    }
     
     state.clientId = cid;
     
-    // Подтягиваем вес клиента из базы, чтобы тренеру не вводить его руками
     if(window.clientsDB) {
         let clientData = window.clientsDB.find(c => c.client_id === cid);
         if(clientData && clientData.weight) {
@@ -357,25 +362,36 @@
   }
 
   function activateNewClient() {
-    let name = document.getElementById('clientName').value.trim().toUpperCase();
-    let phone = document.getElementById('clientPhone').value.trim();
-    if (name === "" || phone.length < 4) { alert("Заполните Имя и 4 цифры телефона"); return; }
+    // ИСПРАВЛЕНИЕ: Используем правильные ID (inpName и inpPhone)
+    let nameElem = document.getElementById('inpName');
+    let phoneElem = document.getElementById('inpPhone');
+    
+    if (!nameElem || !phoneElem) { alert("Системная ошибка UI."); return; }
+
+    let name = nameElem.value.trim().toUpperCase();
+    let phone = phoneElem.value.trim();
+    
+    if (name === "" || phone.length < 4) { 
+      alert("Заполните Имя и 4 цифры телефона"); 
+      return; 
+    }
     
     state.clientId = `${name}_${phone.slice(-4)}`;
     document.getElementById('activeClientName').innerText = state.clientId;
     
-    // Сразу переходим на вкладку ПРОФИЛЬ, чтобы тренер заполнил пол и вес
     switchView('view-workspace');
-    document.querySelectorAll('.tab')[1].click(); 
-    alert("Заполните профиль нового клиента и нажмите СОХРАНИТЬ.");
+    document.querySelectorAll('.tab')[1].click(); // Открываем вкладку профиля
+    alert("Заполните физиологический профиль нового клиента и нажмите СОХРАНИТЬ.");
     renderEmptyRadar();
   }
 
   function logoutClient() {
     state.clientId = "";
-    document.getElementById('clientName').value = "";
-    document.getElementById('clientPhone').value = "";
-    document.getElementById('clientDropdown').value = "";
+    // Безопасная очистка полей (без крашей)
+    if(document.getElementById('inpName')) document.getElementById('inpName').value = "";
+    if(document.getElementById('inpPhone')) document.getElementById('inpPhone').value = "";
+    if(document.getElementById('clientDropdown')) document.getElementById('clientDropdown').value = "";
+    
     if (state.radarInstance) state.radarInstance.destroy();
     cancelIntercept();
     switchView('view-client');
@@ -386,11 +402,12 @@
     let originalText = btn.innerText;
     btn.innerText = "СОХРАНЕНИЕ..."; btn.disabled = true;
 
+    // Безопасный сбор данных
     let payload = {
       client_id: state.clientId,
       trainer_id: state.trainerId,
-      name: document.getElementById('clientName').value.trim().toUpperCase() || state.clientId.split('_')[0],
-      phone: document.getElementById('clientPhone').value.trim() || state.clientId.split('_')[1],
+      name: document.getElementById('inpName') ? document.getElementById('inpName').value.trim().toUpperCase() : state.clientId.split('_')[0],
+      phone: document.getElementById('inpPhone') ? document.getElementById('inpPhone').value.trim() : state.clientId.split('_')[1],
       gender: document.getElementById('profGender').value,
       weight: document.getElementById('profWeight').value,
       age: document.getElementById('profAge').value,
@@ -405,7 +422,8 @@
       let data = await res.json();
       if(data.success) {
         alert("✅ Профиль сохранен. Перейдите на вкладку СЕССИЯ для запуска теста.");
-        document.querySelectorAll('.tab')[0].click(); // Возврат на вкладку СЕССИЯ
+        document.querySelectorAll('.tab')[0].click(); 
+        fetchClientsList(); // Фоново обновляем список клиентов тренера
       } else alert("❌ Ошибка: " + data.error);
     } catch(e) {
       alert("❌ Ошибка сети при сохранении.");

@@ -121,7 +121,7 @@
     
     <!-- Выбор существующего клиента -->
     <div id="existingClientBlock">
-      <select id="clientDropdown" class="inp-dark" style="appearance: none; -webkit-appearance: none;">
+      <select id="clientDropdown" class="inp-dark" style="text-align-last: center; cursor: pointer;">
         <option value="">-- Загрузка базы клиентов... --</option>
       </select>
       <button class="btn-main" onclick="selectExistingClient()">ВЫБРАТЬ АТЛЕТА</button>
@@ -148,7 +148,7 @@
   </div>
 
   <!-- НАВИГАЦИЯ (Скрыта до выбора клиента) -->
-  <div id="workspace" style="display: none;">
+  <div id="view-workspace" class="view">
     <div class="tabs">
       <div class="tab active" onclick="switchTab('tab-test', this)">СЕССИЯ</div>
       <div class="tab" onclick="switchTab('tab-profile', this)">ПРОФИЛЬ</div>
@@ -509,6 +509,20 @@
   // ==========================================
   // 4. ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ И РАДАР
   // ==========================================
+  function resetClient() {
+    state.clientId = "";
+    document.getElementById('clientSelector').style.display = 'block';
+    document.getElementById('activeClientBar').classList.remove('active');
+    
+    // Очищаем поля ввода
+    if(document.getElementById('inpName')) document.getElementById('inpName').value = "";
+    if(document.getElementById('inpPhone')) document.getElementById('inpPhone').value = "";
+    if(document.getElementById('clientDropdown')) document.getElementById('clientDropdown').value = "";
+    
+    cancelIntercept();
+    switchView('view-client'); // Возврат на экран выбора
+  }
+  
   function switchView(viewId) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.getElementById(viewId).classList.add('active');

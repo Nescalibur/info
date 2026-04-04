@@ -106,46 +106,51 @@
       <h2 style="font-family:'Space Grotesk', sans-serif; margin-top:0;">АВТОРИЗАЦИЯ ПЕРСОНАЛА</h2>
       <p style="color:var(--muted); font-size:12px; margin-bottom:30px;">Введите 4-значный ПИН-код для доступа к базе клиентов и активации терминала.</p>
       
-      <input type="password" id="pinInput" class="inp-dark" placeholder="* * * *" maxlength="4" pattern="\d*">
+      <input type="password" id="pinInput" class="inp-dark" placeholder="* * * *" maxlength="4" pattern="\d*" oninput="if(this.value.length === 4) loginTrainer();">
       <button class="btn-main" id="btnLogin" onclick="loginTrainer()">ВОЙТИ В СИСТЕМЕ</button>
       <div id="loginError" style="color:var(--red); font-size:12px; margin-top:15px; display:none;">ОШИБКА: Неверный ПИН-код или нет связи с сервером.</div>
     </div>
   </div>
 
-  <!-- ========================================== -->
+
+<!-- ========================================== -->
   <!-- VIEW 2: ВЫБОР/СОЗДАНИЕ КЛИЕНТА -->
   <!-- ========================================== -->
-<!-- БЛОК ПОИСКА / ВВОДА КЛИЕНТА -->
-  <div class="client-selector" id="clientSelector">
-    <div style="font-size: 11px; color: var(--muted); margin-bottom: 15px; text-transform: uppercase; text-align: center;">Идентификация атлета</div>
+  <div id="view-client" class="view"> <!-- ВАЖНО: ЭТОТ ТЕГ БЫЛ УТЕРЯН -->
     
-    <!-- Выбор существующего клиента -->
-    <div id="existingClientBlock">
-      <select id="clientDropdown" class="inp-dark" style="text-align-last: center; cursor: pointer;">
-        <option value="">-- Загрузка базы клиентов... --</option>
-      </select>
-      <button class="btn-main" onclick="selectExistingClient()">ВЫБРАТЬ АТЛЕТА</button>
-      <div style="text-align: center; margin-top: 15px;">
-        <span style="color: var(--accent); font-size: 12px; cursor: pointer; border-bottom: 1px dashed var(--accent);" onclick="toggleNewClientForm(true)">+ Добавить нового клиента</span>
+    <!-- БЛОК ПОИСКА / ВВОДА КЛИЕНТА -->
+    <div class="client-selector" id="clientSelector">
+      <div style="font-size: 11px; color: var(--muted); margin-bottom: 15px; text-transform: uppercase; text-align: center;">Идентификация атлета</div>
+      
+      <!-- Выбор существующего клиента -->
+      <div id="existingClientBlock">
+        <select id="clientDropdown" class="inp-dark" style="text-align-last: center; cursor: pointer;">
+          <option value="">-- Загрузка базы клиентов... --</option>
+        </select>
+        <button class="btn-main" onclick="selectExistingClient()">ВЫБРАТЬ АТЛЕТА</button>
+        <div style="text-align: center; margin-top: 15px;">
+          <span style="color: var(--accent); font-size: 12px; cursor: pointer; border-bottom: 1px dashed var(--accent);" onclick="toggleNewClientForm(true)">+ Добавить нового клиента</span>
+        </div>
+      </div>
+
+      <!-- Создание нового клиента -->
+      <div id="newClientBlock" style="display: none;">
+        <input type="text" id="inpName" class="inp-dark" placeholder="ИМЯ (напр. ИВАН)" style="text-align:center;">
+        <input type="number" id="inpPhone" class="inp-dark" placeholder="ПОСЛЕДНИЕ 4 ЦИФРЫ ТЕЛЕФОНА" style="text-align:center;">
+        <button class="btn-main" onclick="activateNewClient()">СОЗДАТЬ ПРОФИЛЬ</button>
+        <div style="text-align: center; margin-top: 15px;">
+          <span style="color: var(--muted); font-size: 12px; cursor: pointer; border-bottom: 1px dashed var(--muted);" onclick="toggleNewClientForm(false)">Назад к списку</span>
+        </div>
       </div>
     </div>
 
-    <!-- Создание нового клиента -->
-    <div id="newClientBlock" style="display: none;">
-      <input type="text" id="inpName" class="inp-dark" placeholder="ИМЯ (напр. ИВАН)" style="text-align:left;">
-      <input type="number" id="inpPhone" class="inp-dark" placeholder="ПОСЛЕДНИЕ 4 ЦИФРЫ ТЕЛЕФОНА" style="text-align:left;">
-      <button class="btn-main" onclick="activateNewClient()">СОЗДАТЬ ПРОФИЛЬ</button>
-      <div style="text-align: center; margin-top: 15px;">
-        <span style="color: var(--muted); font-size: 12px; cursor: pointer; border-bottom: 1px dashed var(--muted);" onclick="toggleNewClientForm(false)">Назад к списку</span>
-      </div>
+    <!-- АКТИВНЫЙ КЛИЕНТ -->
+    <div class="active-client-bar" id="activeClientBar">
+      <div class="client-name" id="displayClientName"></div> <!-- Убрали хардкод Ивана -->
+      <button class="btn-change" onclick="resetClient()">СМЕНИТЬ</button>
     </div>
-  </div>
 
-  <!-- АКТИВНЫЙ КЛИЕНТ -->
-  <div class="active-client-bar" id="activeClientBar">
-    <div class="client-name" id="displayClientName">ИВАН_8899</div>
-    <button class="btn-change" onclick="resetClient()">СМЕНИТЬ</button>
-  </div>
+  </div> <!-- ЗАКРЫВАЕМ VIEW-CLIENT -->
 
   <!-- НАВИГАЦИЯ (Скрыта до выбора клиента) -->
   <div id="view-workspace" class="view">
@@ -357,6 +362,7 @@
     }
 
     document.getElementById('activeClientName').innerText = state.clientId;
+    document.getElementById('profileDisplayName').innerText = state.clientId; // НОВОЕ
     switchView('view-workspace');
     renderEmptyRadar();
   }
@@ -378,10 +384,10 @@
     
     state.clientId = `${name}_${phone.slice(-4)}`;
     document.getElementById('activeClientName').innerText = state.clientId;
+    document.getElementById('profileDisplayName').innerText = state.clientId; // НОВОЕ
     
     switchView('view-workspace');
     document.querySelectorAll('.tab')[1].click(); // Открываем вкладку профиля
-    alert("Заполните физиологический профиль нового клиента и нажмите СОХРАНИТЬ.");
     renderEmptyRadar();
   }
 

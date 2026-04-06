@@ -110,6 +110,22 @@
     .hm-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; margin-bottom: 2px;}
     .hm-val { font-family: 'Orbitron', sans-serif; font-size: 16px; color: var(--text); }
     .history-tags { margin-top: 12px; font-size: 9px; color: #666; font-family: 'JetBrains Mono', monospace; }
+
+    /* === TOAST NOTIFICATIONS (СОВРЕМЕННЫЕ УВЕДОМЛЕНИЯ) === */
+    .toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 10px; z-index: 9999; pointer-events: none; }
+    .toast { background: rgba(17, 18, 22, 0.95); backdrop-filter: blur(10px); border: 1px solid var(--border); color: var(--text); padding: 15px 20px; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.8); display: flex; align-items: center; gap: 10px; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+    .toast.success { border-left: 3px solid var(--green); }
+    .toast.error { border-left: 3px solid var(--red); }
+    .toast.fade-out { animation: fadeOut 0.3s forwards; }
+    @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
+
+    /* Глобальный бар клиента над табами */
+    .global-client-bar { display: none; justify-content: space-between; align-items: center; background: rgba(0, 243, 255, 0.05); border: 1px solid rgba(0, 243, 255, 0.2); padding: 12px 20px; margin-bottom: 15px; border-radius: 8px; }
+    .global-client-bar.active { display: flex; animation: fadeIn 0.3s; }
+    .gcb-name { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: bold; color: var(--accent); }
+    .gcb-btn { background: transparent; border: 1px solid var(--muted); color: var(--muted); padding: 6px 12px; border-radius: 6px; font-size: 10px; font-family: 'Inter', sans-serif; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
+    .gcb-btn:hover { border-color: var(--text); color: var(--text); }
   </style>
 </head>
 <body>
@@ -129,7 +145,7 @@
       <h2 style="font-family:'Space Grotesk', sans-serif; margin-top:0;">АВТОРИЗАЦИЯ ПЕРСОНАЛА</h2>
       <p style="color:var(--muted); font-size:12px; margin-bottom:30px;">Введите 4-значный ПИН-код для доступа к базе клиентов и активации терминала.</p>
       
-      <input type="password" id="pinInput" class="inp-dark" placeholder="* * * *" maxlength="4" pattern="\d*" oninput="if(this.value.length === 4) loginTrainer();">
+      <input type="password" id="pinInput" class="inp-dark" placeholder="* * * *" maxlength="4" pattern="\d*" autofocus oninput="if(this.value.length === 4) loginTrainer();">
       <button class="btn-main" id="btnLogin" onclick="loginTrainer()">ВОЙТИ В СИСТЕМУ</button>
       <div id="loginError" style="color:var(--red); font-size:12px; margin-top:15px; display:none;">ОШИБКА: Неверный ПИН-код или нет связи с сервером.</div>
     </div>
@@ -142,12 +158,11 @@
     <div class="client-selector" id="clientSelector">
       <div style="font-size: 11px; color: var(--muted); margin-bottom: 15px; text-transform: uppercase; text-align: center;">Идентификация атлета</div>
       
-      <!-- Выбор существующего клиента -->
+      <!-- Выбор существующего клиента (Без лишних кнопок) -->
       <div id="existingClientBlock">
-        <select id="clientDropdown" class="inp-dark" style="text-align-last: center; cursor: pointer;">
+        <select id="clientDropdown" class="inp-dark" style="text-align-last: center; cursor: pointer;" onchange="selectExistingClient()">
           <option value="">-- Загрузка базы клиентов... --</option>
         </select>
-        <button class="btn-main" onclick="selectExistingClient()">ВЫБРАТЬ АТЛЕТА</button>
         <div style="text-align: center; margin-top: 15px;">
           <span style="color: var(--accent); font-size: 12px; cursor: pointer; border-bottom: 1px dashed var(--accent);" onclick="toggleNewClientForm(true)">+ Добавить нового клиента</span>
         </div>
@@ -174,20 +189,25 @@
   <!-- ========================================== -->
   <!-- VIEW 3: РАБОЧАЯ ЗОНА (WORKSPACE) -->
   <!-- ========================================== -->
-  <div class="tabs">
-      <div class="tab active" onclick="switchTab('tab-test', this)">СЕССИЯ</div>
-      <div class="tab" onclick="switchTab('tab-profile', this)">ПРОФИЛЬ</div>
-      <div class="tab" onclick="switchTab('tab-history', this)">ИСТОРИЯ</div>
-      <div class="tab" onclick="switchTab('tab-analytics', this)">ДАШБОРД</div>
-    </div>
-
-    <!-- ВКЛАДКА 1: НОВЫЙ ТЕСТ (ПЕРЕХВАТ) -->
-    <div id="tab-test" class="tab-content active">
+  <div id="view-workspace" class="view">
+    <div class="container" style="padding-top: 0;">
       
-      <div class="status-bar">
-        <div class="name" id="activeClientNameTest"></div>
-        <button class="btn-logout" onclick="logoutClient()">СМЕНИТЬ АТЛЕТА</button>
+      <!-- ГЛОБАЛЬНЫЙ БАР КЛИЕНТА (ВИДЕН ВСЕГДА) -->
+      <div class="global-client-bar" id="globalClientBar">
+        <div class="gcb-name" id="globalClientName">ИВАН_8899</div>
+        <button class="gcb-btn" onclick="logoutClient()">СМЕНИТЬ АТЛЕТА</button>
       </div>
+
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('tab-test', this)">СЕССИЯ</div>
+        <div class="tab" onclick="switchTab('tab-profile', this)">ПРОФИЛЬ</div>
+        <div class="tab" onclick="switchTab('tab-history', this)">ИСТОРИЯ</div>
+        <div class="tab" onclick="switchTab('tab-analytics', this)">ДАШБОРД</div>
+      </div>
+
+      <!-- ВКЛАДКА 1: НОВЫЙ ТЕСТ (ПЕРЕХВАТ) -->
+      <div id="tab-test" class="tab-content active">
+        <!-- Status-bar удален, так как он теперь глобальный сверху -->
 
       <div class="tag-block">
         <label class="input-label">АКТУАЛЬНЫЙ ВЕС ТЕЛА (КГ)</label>
@@ -296,8 +316,9 @@
         <p style="font-size:10px; color:var(--muted); margin-top:5px; text-transform: uppercase;">История сессий и динамика веса</p>
       </div>
       
-      <!-- Кнопка запроса истории из базы -->
-      <button class="btn-main" style="background: transparent; border: 1px dashed var(--accent); color: var(--accent); margin-bottom: 20px; box-shadow: none;" onclick="loadClientHistory(this)">📥 ЗАГРУЗИТЬ БАЗУ ДАННЫХ</button>
+      <div style="text-align: right; margin-bottom: 10px;">
+         <span style="color:var(--accent); font-size:10px; cursor:pointer;" onclick="loadClientHistory()">🔄 Обновить данные</span>
+      </div>
       
       <!-- Сюда будут падать карточки истории -->
       <div id="historyTimeline" style="display: flex; flex-direction: column;">
@@ -325,7 +346,7 @@
     </div>
 
   </div>
-
+<div class="toast-container" id="toastContainer"></div>
 <script>
   // ==========================================
   // АРХИТЕКТУРА И СВЯЗЬ С GOOGLE SCRIPT
@@ -418,64 +439,77 @@
   function selectExistingClient() {
     let dd = document.getElementById('clientDropdown');
     let cid = dd.value;
-    
-    // ЗАЩИТА: Если тренер не выбрал Ивана, а просто нажал кнопку
-    if(!cid || cid === "") { 
-      alert("Пожалуйста, нажмите на список и выберите клиента!"); 
-      return; 
-    }
+    if(!cid || cid === "") return; 
     
     state.clientId = cid;
     
-    // Подтягиваем вес и пол клиента из базы, чтобы тренеру не вводить их руками
+    // Гидратация профиля (заполняем все поля из кэша)
     if(window.clientsDB) {
         let clientData = window.clientsDB.find(c => c.client_id === cid);
         if(clientData) {
-            if(clientData.weight) {
-                document.getElementById('profWeight').value = clientData.weight;
-                document.getElementById('weightSlider').value = clientData.weight;
-                document.getElementById('weightVal').innerText = clientData.weight;
-            }
-            if(clientData.gender) {
-                document.getElementById('profGender').value = clientData.gender;
-            }
+            document.getElementById('profWeight').value = clientData.weight || 80;
+            document.getElementById('weightSlider').value = clientData.weight || 80;
+            document.getElementById('weightVal').innerText = clientData.weight || 80;
+            if(clientData.gender) document.getElementById('profGender').value = clientData.gender;
+            // Проактивно заполняем остальные поля, если они будут добавлены в выдачу GAS
+            document.getElementById('profAge').value = clientData.age || 30;
+            document.getElementById('profGoal').value = clientData.goal || "Абсолютная сила (Пауэрлифтинг)";
+            document.getElementById('profNotes').value = clientData.notes || "";
         }
     }
 
-    // Синхронизируем имена во всех вкладках
-    if(document.getElementById('activeClientName')) document.getElementById('activeClientName').innerText = state.clientId;
-    if(document.getElementById('activeClientNameTest')) document.getElementById('activeClientNameTest').innerText = state.clientId;
-    if(document.getElementById('profileDisplayName')) document.getElementById('profileDisplayName').innerText = state.clientId;
+    document.getElementById('globalClientName').innerText = state.clientId;
+    document.getElementById('profileDisplayName').innerText = state.clientId; 
     
+    document.getElementById('globalClientBar').classList.add('active');
     switchView('view-workspace');
     renderEmptyRadar();
+    
+    // АВТОМАТИЧЕСКАЯ ФОНОВАЯ ЗАГРУЗКА ИСТОРИИ
+    loadClientHistory();
   }
 
-  function activateNewClient() {
+ function activateNewClient() {
     let nameElem = document.getElementById('inpName');
     let phoneElem = document.getElementById('inpPhone');
     
-    if (!nameElem || !phoneElem) { alert("Системная ошибка UI."); return; }
-
     let name = nameElem.value.trim().toUpperCase();
     let phone = phoneElem.value.trim();
     
-    if (name === "" || phone.length < 4) { 
-      alert("Заполните Имя и 4 цифры телефона"); 
-      return; 
+    // ВАЛИДАЦИЯ
+    if (name === "") { showToast("Введите имя", "error"); return; }
+    if (phone.length !== 4) { showToast("Телефон должен содержать ровно 4 цифры", "error"); return; }
+    
+    let newId = `${name}_${phone}`;
+
+    // ПРОВЕРКА НА ДУБЛИКАТ
+    if(window.clientsDB && window.clientsDB.find(c => c.client_id === newId)) {
+        showToast("Такой атлет уже существует. Выберите его из списка.", "error");
+        toggleNewClientForm(false); // Возвращаем к списку
+        return;
     }
     
-    state.clientId = `${name}_${phone.slice(-4)}`;
+    state.clientId = newId;
+    document.getElementById('globalClientName').innerText = state.clientId;
+    document.getElementById('profileDisplayName').innerText = state.clientId; 
     
-    // Синхронизируем имена во всех вкладках
-    if(document.getElementById('activeClientName')) document.getElementById('activeClientName').innerText = state.clientId;
-    if(document.getElementById('activeClientNameTest')) document.getElementById('activeClientNameTest').innerText = state.clientId;
-    if(document.getElementById('profileDisplayName')) document.getElementById('profileDisplayName').innerText = state.clientId;
-    
+    // ОЧИСТКА ПРОФИЛЯ ПОД НОВИЧКА
+    document.getElementById('profWeight').value = 80;
+    document.getElementById('weightSlider').value = 80;
+    document.getElementById('weightVal').innerText = 80;
+    document.getElementById('profAge').value = 30;
+    document.getElementById('profNotes').value = "";
+
+    document.getElementById('globalClientBar').classList.add('active');
     switchView('view-workspace');
-    document.querySelectorAll('.tab')[1].click(); // Открываем вкладку профиля
-    alert("Заполните физиологический профиль нового клиента и нажмите СОХРАНИТЬ.");
+    
+    // ПРИНУДИТЕЛЬНО Открываем вкладку профиля
+    document.querySelectorAll('.tab')[1].click(); 
+    showToast("Заполните профиль и нажмите СОХРАНИТЬ", "success");
     renderEmptyRadar();
+    
+    // Очищаем историю (клиент новый)
+    document.getElementById('historyTimeline').innerHTML = `<div style="text-align:center; color:#444; font-size:11px; padding: 20px;">Нет истории тестирований.</div>`;
   }
 
   function logoutClient() {
@@ -517,14 +551,14 @@
       .then(data => {
         // Даже если GAS вернул "Unknown action" из-за бага fallthrough в твоем бэкенде, 
         // мы знаем, что данные дошли до Гугла.
-        alert("✅ Профиль сохранен. Перейдите на вкладку СЕССИЯ для запуска теста.");
+        showToast("✅ Профиль сохранен. Перейдите на вкладку СЕССИЯ для запуска теста.");
         document.getElementById('weightSlider').value = payload.weight;
         document.getElementById('weightVal').innerText = payload.weight;
         document.querySelectorAll('.tab')[0].click(); 
         fetchClientsList(); 
       })
       .catch(e => {
-        alert("⚠️ Данные отправлены в облако, но ответ сервера заблокирован (CORS). Это нормально для MVP.");
+        showToast("⚠️ Данные отправлены в облако, но ответ сервера заблокирован (CORS). Это нормально для MVP.");
         document.querySelectorAll('.tab')[0].click(); 
       })
       .finally(() => {
@@ -578,7 +612,7 @@
       document.getElementById('waitTimer').innerText = state.timeLeft;
       if(state.timeLeft <= 0) {
         cancelIntercept();
-        alert("Время ожидания истекло. Тест не был зафиксирован.");
+        showToast("Время ожидания истекло. Тест не был зафиксирован.");
       }
     }, 1000);
   }
@@ -595,7 +629,7 @@
         
         if(data.has_result) {
           cancelIntercept();
-          alert(`✅ УСПЕШНО! Данные получены и привязаны к профилю ${state.clientId}.`);
+          showToast(`✅ УСПЕШНО! Данные получены и привязаны к профилю ${state.clientId}.`);
           document.querySelectorAll('.tab')[2].click();
           renderActiveRadar(); 
         }
@@ -606,7 +640,7 @@
   // Функция для демонстрации (кнопка внизу)
   function simulateTestSuccess() {
     cancelIntercept();
-    alert(`✅[СИМУЛЯЦИЯ] Устройство передало данные. Они привязаны к профилю ${state.clientId}.`);
+    showToast(`✅[СИМУЛЯЦИЯ] Устройство передало данные. Они привязаны к профилю ${state.clientId}.`);
     document.querySelectorAll('.tab')[2].click();
     renderActiveRadar();
   }
@@ -614,6 +648,21 @@
   // ==========================================
   // 4. ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ И РАДАР
   // ==========================================
+
+  // === СИСТЕМА УВЕДОМЛЕНИЙ (TOASTS) ===
+  function showToast(message, type = 'success') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = type === 'success' ? `✅ <span>${message}</span>` : `⚠️ <span>${message}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.classList.add('fade-out');
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+
+  
   function switchView(viewId) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.getElementById(viewId).classList.add('active');
@@ -665,11 +714,10 @@
     document.getElementById('aiVerdict').innerHTML = `<strong>[ СИСТЕМНОЕ ОТКЛОНЕНИЕ ОБНАРУЖЕНО ]</strong><br><br>Анализ показывает сохранение структурной силы (95%), однако зафиксировано падение скорости деактивации мышц (спазм, 40%) и снижение стартового градиента (60%).<br><br><strong>ДИАГНОЗ:</strong> Периферическое утомление. Мышцы "перемалывают" вес.<br><br><strong>АВТОРЕГУЛЯЦИЯ:</strong> Отменить работу с весами >75% от 1RM. Требуется МФР.`;
   }
 // === ГЕНЕРАТОР ИСТОРИИ (ДЕМО ДЛЯ СЕГОДНЯ) ===
-  function loadClientHistory(btn) {
-    btn.innerText = "ЗАГРУЗКА...";
-    btn.disabled = true;
+  function loadClientHistory() {
+    const container = document.getElementById('historyTimeline');
+    container.innerHTML = `<div style="text-align:center; color:var(--accent); font-size:11px; padding: 20px;">Синхронизация с базой...</div>`;
 
-    // Имитация задержки сети
     setTimeout(() => {
       const container = document.getElementById('historyTimeline');
       
@@ -696,7 +744,7 @@
       `;
       
       btn.style.display = 'none'; // Прячем кнопку после загрузки
-    }, 1500);
+    }, 800);
   }
 </script>
 </body>

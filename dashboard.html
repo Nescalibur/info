@@ -713,38 +713,111 @@
     initRadar([95, 60, 85, 40, 75],[100,100,100,100,100]);
     document.getElementById('aiVerdict').innerHTML = `<strong>[ СИСТЕМНОЕ ОТКЛОНЕНИЕ ОБНАРУЖЕНО ]</strong><br><br>Анализ показывает сохранение структурной силы (95%), однако зафиксировано падение скорости деактивации мышц (спазм, 40%) и снижение стартового градиента (60%).<br><br><strong>ДИАГНОЗ:</strong> Периферическое утомление. Мышцы "перемалывают" вес.<br><br><strong>АВТОРЕГУЛЯЦИЯ:</strong> Отменить работу с весами >75% от 1RM. Требуется МФР.`;
   }
-// === ГЕНЕРАТОР ИСТОРИИ (ДЕМО ДЛЯ СЕГОДНЯ) ===
-  function loadClientHistory() {
+// ==========================================
+  // === РЕАЛЬНЫЙ ГЕНЕРАТОР ИСТОРИИ ИЗ БАЗЫ ===
+  // ==========================================
+  async function loadClientHistory() {
+    if (!state.clientId) return;
+    
     const container = document.getElementById('historyTimeline');
-    container.innerHTML = `<div style="text-align:center; color:var(--accent); font-size:11px; padding: 20px;">Синхронизация с базой...</div>`;
+    container.innerHTML = `<div style="text-align:center; color:var(--accent); font-size:11px; padding: 20px;"><div class="radar-spinner" style="width:30px; height:30px; margin-bottom:10px;"></div>Синхронизация с облаком...</div>`;
 
-    setTimeout(() => {
-      const container = document.getElementById('historyTimeline');
+    try {
+      let res = await fetch(`${GAS_URL}?action=get_history&client_id=${encodeURIComponent(state.clientId)}&t=${Date.now()}`);
+      let data = await res.json();
       
-      // Генерируем 3 красивые карточки-заглушки для визуала (потом прикрутим реальный GAS)
-      container.innerHTML = `
-        <div class="history-card">
-          <div class="history-date"><span>СЕГОДНЯ, 14:30</span><span class="history-mode">СИЛА (POWER)</span></div>
-          <div class="history-metrics">
-            <div class="hm-box"><span class="hm-lbl">Пик Силы</span><span class="hm-val accent">104.6 кг</span></div>
-            <div class="hm-box"><span class="hm-lbl">Масса тела</span><span class="hm-val">80 кг</span></div>
-            <div class="hm-box"><span class="hm-lbl">Взрыв (nRFD)</span><span class="hm-val">65 %</span></div>
-          </div>
-          <div class="history-tags">[Правая рука] [С лямками] [До тренировки]</div>
-        </div>
+      if (!data.success) {
+        container.innerHTML = `<div style="text-align:center; color:var(--red); font-size:11px; padding: 20px;">Ошибка загрузки: ${data.error}</div>`;
+        return;
+      }
 
-        <div class="history-card">
-          <div class="history-date"><span>28.03.2026, 19:15</span><span class="history-mode" style="color:var(--yellow);">ДЕАКТИВАЦИЯ (VOID)</span></div>
-          <div class="history-metrics">
-            <div class="hm-box"><span class="hm-lbl">Сброс</span><span class="hm-val" style="color:var(--yellow);">160 мс</span></div>
-            <div class="hm-box"><span class="hm-lbl">Реакция мозга</span><span class="hm-val">220 мс</span></div>
-          </div>
-          <div class="history-tags">[Утомление] [После тренировки]</div>
-        </div>
-      `;
+      if (data.history.length === 0) {
+        container.innerHTML = `<div style="text-align:center; color:#555; font-size:12px; padding: 30px;">Измерений для данного атлета пока не произведено.</div>`;
+        return;
+      }
+
+      let html = "";
       
-      btn.style.display = 'none'; // Прячем кнопку после загрузки
-    }, 800);
+      // Генерация карточек на основе реальных данных
+      data.history.forEach(test => {
+        let color = '#888';
+        let modeName = test.mode;
+        let metricsHtml = "";
+        let alertBadge = ""; // Место для проактивных флагов
+
+        // РЕЖИМ СИЛА
+        if (test.mode === 'POWER') {
+          color = '#ff3b30'; // Красный
+          modeName = "СИЛА (POWER)";
+          
+          // Вычисляем Взрывную Активацию (nRFD в %)
+          let activationPct = 0;
+          if (test.rfd > 0 && test.peak > 0) {
+              activationPct = ((test.rfd * 0.2) / test.peak) * 100;
+              if (activationPct > 100) activationPct = 100;
+          }
+          
+          metricsHtml = `
+            <div class="hm-box"><span class="hm-lbl">Пик Силы</span><span class="hm-val" style="color:${color}">${test.peak} кг</span></div>
+            <div class="hm-box"><span class="hm-lbl">Масса тела</span><span class="hm-val">${test.weight || '--'} кг</span></div>
+            <div class="hm-box"><span class="hm-lbl">Взрыв (nRFD)</span><span class="hm-val">${activationPct.toFixed(0)} %</span></div>
+          `;
+        } 
+        // РЕЖИМ СКОРОСТЬ
+        else if (test.mode === 'SPEED') {
+          color = '#00f3ff'; // Циан
+          modeName = "СКОРОСТЬ (SPEED)";
+          
+          // Вычисляем Баллистический индекс (BPF = Пик / Вес)
+          let bpf = (test.weight > 0) ? (test.peak / test.weight).toFixed(2) : '--';
+          
+          // Проактивный флаг: Антиципация
+          if (test.ms < 100) alertBadge = `<span style="background:var(--red); color:#000; padding:2px 5px; border-radius:3px; font-size:8px; margin-left:10px;">ФАЛЬСТАРТ</span>`;
+
+          metricsHtml = `
+            <div class="hm-box"><span class="hm-lbl">Отклик мозга</span><span class="hm-val" style="color:${color}">${test.ms} мс</span></div>
+            <div class="hm-box"><span class="hm-lbl">Пик Рывка</span><span class="hm-val">${test.peak} кг</span></div>
+            <div class="hm-box"><span class="hm-lbl">Баллистика (BPF)</span><span class="hm-val">${bpf}x BW</span></div>
+          `;
+        } 
+        // РЕЖИМ ДЕАКТИВАЦИЯ
+        else if (test.mode === 'VOID') {
+          color = '#ffd60a'; // Желтый
+          modeName = "ДЕАКТИВАЦИЯ (VOID)";
+          
+          // Проактивный флаг: Фасциальный спазм
+          if (test.rfd > 180) alertBadge = `<span style="background:var(--red); color:#000; padding:2px 5px; border-radius:3px; font-size:8px; margin-left:10px;">⚠️ СПАЗМ ЦНС</span>`;
+
+          metricsHtml = `
+            <div class="hm-box"><span class="hm-lbl">Скорость сброса</span><span class="hm-val" style="color:${color}">${test.rfd} мс</span></div>
+            <div class="hm-box"><span class="hm-lbl">Реакция мозга</span><span class="hm-val">${test.ms} мс</span></div>
+            <div class="hm-box"><span class="hm-lbl">Коэффициент</span><span class="hm-val">${test.impulse} s⁻¹</span></div>
+          `;
+        }
+
+        // Форматируем теги (если есть)
+        let tagsHtml = test.tags ? `<div class="history-tags">[${test.tags.split(',').map(t => t.trim()).join('] [')}]</div>` : '';
+
+        // Сборка карточки
+        html += `
+          <div class="history-card" style="border-left: 3px solid ${color};">
+            <div class="history-date">
+              <span>${test.date}</span>
+              <span class="history-mode" style="color:${color}">${modeName} ${alertBadge}</span>
+            </div>
+            <div class="history-metrics">
+              ${metricsHtml}
+            </div>
+            ${tagsHtml}
+          </div>
+        `;
+      });
+      
+      container.innerHTML = html;
+
+    } catch(e) {
+      container.innerHTML = `<div style="text-align:center; color:var(--red); font-size:11px; padding: 20px;">Сетевая ошибка при загрузке истории.</div>`;
+    }
   }
 </script>
 </body>

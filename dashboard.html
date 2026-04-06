@@ -222,9 +222,10 @@
       </div>
 
       <!-- ВКЛАДКА 1: НОВЫЙ ТЕСТ (ПЕРЕХВАТ) -->
-      <div id="tab-test" class="tab-content active">
-
-      <div class="tag-block">
+    <div id="tab-test" class="tab-content active">
+      
+      <!-- ВЕС ТЕЛА -->
+      <div class="tag-block" style="margin-bottom: 10px;">
         <label class="input-label">АКТУАЛЬНЫЙ ВЕС ТЕЛА (КГ)</label>
         <div>
           <input type="range" min="40" max="150" value="80" id="weightSlider" oninput="document.getElementById('weightVal').innerText=this.value">
@@ -232,40 +233,73 @@
         </div>
       </div>
 
-      <div class="tag-block">
-        <label class="input-label">ХВАТ / РУКОЯТЬ</label>
-        <div class="tag-row" id="tag-handle">
-          <div class="tag-chip active" onclick="toggleTag(this, 'tag-handle')">Стандарт (25мм)</div>
-          <div class="tag-chip" onclick="toggleTag(this, 'tag-handle')">Rolling (60мм)</div>
-        </div>
-      </div>
-
-      <div class="tag-block">
-        <label class="input-label">РАБОЧАЯ СТОРОНА</label>
-        <div class="tag-row" id="tag-arm">
-          <div class="tag-chip active" onclick="toggleTag(this, 'tag-arm')">Правая рука</div>
-          <div class="tag-chip" onclick="toggleTag(this, 'tag-arm')">Левая рука</div>
-          <div class="tag-chip" onclick="toggleTag(this, 'tag-arm')">Две руки</div>
-        </div>
-      </div>
-
-      <div class="tag-block">
-        <label class="input-label">ЭКИПИРОВКА</label>
-        <div class="tag-row" id="tag-straps">
-          <div class="tag-chip active" onclick="toggleTag(this, 'tag-straps')">Без лямок (Лимит хвата)</div>
-          <div class="tag-chip" onclick="toggleTag(this, 'tag-straps')">С лямками</div>
-        </div>
-      </div>
-
-      <div class="tag-block">
-        <label class="input-label">МОМЕНТ ИЗМЕРЕНИЯ</label>
+      <!-- БЛОК КОНТЕКСТА И СОСТОЯНИЯ (ФИЗИОЛОГИЯ) -->
+      <div class="tag-block" style="margin-bottom: 10px;">
+        
+        <!-- МОМЕНТ -->
+        <label class="input-label">Момент измерения</label>
         <div class="tag-row" id="tag-condition">
-          <div class="tag-chip active" onclick="toggleTag(this, 'tag-condition')">До тренировки</div>
-          <div class="tag-chip" onclick="toggleTag(this, 'tag-condition')">После тренировки</div>
+          <div class="tag-chip active" data-tag="До тренировки" onclick="toggleCondition('before', this)">До тренировки</div>
+          <div class="tag-chip" data-tag="После тренировки" onclick="toggleCondition('after', this)">После тренировки</div>
         </div>
+
+        <!-- ВРЕМЯ ВОССТАНОВЛЕНИЯ (Скрывается, если "После тренировки") -->
+        <div id="recovery-time-block" style="margin-top: 15px;">
+          <label class="input-label">Время с прошлой тренировки</label>
+          <div class="timeline-row" id="tag-recovery">
+            <div class="t-chip tag-chip" data-tag="Отдых 12ч" onclick="toggleTag(this, 'tag-recovery')">12ч</div>
+            <div class="t-chip tag-chip" data-tag="Отдых 24ч" onclick="toggleTag(this, 'tag-recovery')">1д</div>
+            <div class="t-chip tag-chip active" data-tag="Отдых 48ч" onclick="toggleTag(this, 'tag-recovery')">2д</div>
+            <div class="t-chip tag-chip" data-tag="Отдых 72ч" onclick="toggleTag(this, 'tag-recovery')">3д</div>
+            <div class="t-chip tag-chip" data-tag="Отдых 96ч+" onclick="toggleTag(this, 'tag-recovery')">4д+</div>
+          </div>
+        </div>
+
+        <!-- СУБЪЕКТИВНАЯ ГОТОВНОСТЬ -->
+        <div style="margin-top: 20px;">
+          <label class="input-label">Субъективное самочувствие (sRPE)</label>
+          <div class="readiness-scale" id="tag-readiness">
+            <div class="r-chip tag-chip" data-val="1" data-tag="Самочувствие: 1/5 (Разбит)" onclick="toggleTag(this, 'tag-readiness')">1</div>
+            <div class="r-chip tag-chip" data-val="2" data-tag="Самочувствие: 2/5 (Утомлен)" onclick="toggleTag(this, 'tag-readiness')">2</div>
+            <div class="r-chip tag-chip active" data-val="3" data-tag="Самочувствие: 3/5 (Норма)" onclick="toggleTag(this, 'tag-readiness')">3</div>
+            <div class="r-chip tag-chip" data-val="4" data-tag="Самочувствие: 4/5 (Бодр)" onclick="toggleTag(this, 'tag-readiness')">4</div>
+            <div class="r-chip tag-chip" data-val="5" data-tag="Самочувствие: 5/5 (Пик)" onclick="toggleTag(this, 'tag-readiness')">5</div>
+          </div>
+          <div class="r-label"><span>Разбит (Стресс)</span><span>Свеж (Пик)</span></div>
+        </div>
+
+        <!-- КОМПАКТНЫЙ ГРИД АППАРАТУРЫ -->
+        <div class="hardware-grid">
+          <div class="hw-col">
+            <label class="input-label">РУКА</label>
+            <div class="tag-row" id="tag-arm">
+              <div class="tag-chip active" data-tag="Правая рука" onclick="toggleTag(this, 'tag-arm')">ПРАВ</div>
+              <div class="tag-chip" data-tag="Левая рука" onclick="toggleTag(this, 'tag-arm')">ЛЕВ</div>
+              <div class="tag-chip" data-tag="Две руки" onclick="toggleTag(this, 'tag-arm')">ОБЕ</div>
+            </div>
+          </div>
+          
+          <div class="hw-col">
+            <label class="input-label">ЛЯМКИ</label>
+            <div class="tag-row" id="tag-straps">
+              <div class="tag-chip active" data-tag="Без лямок" onclick="toggleTag(this, 'tag-straps')">НЕТ</div>
+              <div class="tag-chip" data-tag="С лямками" onclick="toggleTag(this, 'tag-straps')">ДА</div>
+            </div>
+          </div>
+
+          <div class="hw-col" style="grid-column: 1 / -1;">
+            <label class="input-label">РУКОЯТЬ</label>
+            <div class="tag-row" id="tag-handle">
+              <div class="tag-chip active" data-tag="Рукоять Стандарт" onclick="toggleTag(this, 'tag-handle')">СТАНДАРТ 25мм</div>
+              <div class="tag-chip" data-tag="Рукоять Rolling" onclick="toggleTag(this, 'tag-handle')">ROLLING 60мм</div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <button class="btn-main" id="btnStart" onclick="startIntercept()" style="margin-top: 15px;">АКТИВИРОВАТЬ ТЕРМИНАЛ</button>
+      <!-- КНОПКА ТЕРМИНАЛА -->
+      <button class="btn-main" id="btnStart" onclick="startIntercept()" style="margin-top: 5px;">АКТИВИРОВАТЬ ТЕРМИНАЛ</button>
 
       <!-- АНИМАЦИЯ ОЖИДАНИЯ -->
       <div class="waiting-state" id="waitState">

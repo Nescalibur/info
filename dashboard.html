@@ -436,19 +436,32 @@
     document.getElementById('newClientBlock').style.display = show ? 'block' : 'none';
   }
 
- function selectExistingClient() {
+ // Умный синхронизатор UI (ИСПРАВЛЕННЫЙ: теперь он включает Глобальный Бар)
+  function syncClientNameUI(name) {
+    // Вписали правильные ID, включая globalClientName
+    const ids =['globalClientName', 'displayClientName', 'activeClientName', 'activeClientNameTest', 'profileDisplayName', 'waitClientName'];
+    ids.forEach(id => {
+      let el = document.getElementById(id);
+      if (el) el.innerText = name;
+    });
+    
+    // ВОСКРЕШЕНИЕ: Принудительно показываем Глобальный Бар над вкладками
+    let globalBar = document.getElementById('globalClientBar');
+    if (globalBar) globalBar.classList.add('active');
+  }
+
+  function selectExistingClient() {
     let dd = document.getElementById('clientDropdown');
     let cid = dd.value;
     
-    // Броня: Защита от пустых кликов
     if(!cid || cid === "") { 
-      alert("Пожалуйста, нажмите на список и выберите клиента!"); 
+      showToast("Пожалуйста, выберите атлета из списка!", "error"); // ВЕРНУЛИ TOAST
       return; 
     }
     
     state.clientId = cid;
     
-    // Гидратация данных: Подтягиваем ВСЮ информацию из кэша
+    // Гидратация данных
     if(window.clientsDB) {
         let clientData = window.clientsDB.find(c => c.client_id === cid);
         if(clientData) {
@@ -465,39 +478,36 @@
         }
     }
 
-    // Вызываем наш новый безопасный синхронизатор
     syncClientNameUI(state.clientId);
     
     switchView('view-workspace');
     renderEmptyRadar();
-    loadClientHistory(); // Проактивно загружаем историю!
+    loadClientHistory(); 
   }
 
   function activateNewClient() {
     let nameElem = document.getElementById('inpName');
     let phoneElem = document.getElementById('inpPhone');
     
-    if (!nameElem || !phoneElem) { alert("Системная ошибка UI."); return; }
+    if (!nameElem || !phoneElem) { showToast("Системная ошибка UI.", "error"); return; }
 
     let name = nameElem.value.trim().toUpperCase();
     let phone = phoneElem.value.trim();
     
-    // Жесткая валидация
-    if (name === "") { alert("Введите Имя атлета"); return; }
-    if (phone.length !== 4) { alert("Телефон должен содержать ровно 4 цифры"); return; }
+    if (name === "") { showToast("Введите Имя атлета", "error"); return; }
+    if (phone.length !== 4) { showToast("Телефон должен содержать ровно 4 цифры", "error"); return; }
     
     let newId = `${name}_${phone}`;
 
-    // Проверка на дубликат (чтобы не затереть Ивана)
     if(window.clientsDB && window.clientsDB.find(c => c.client_id === newId)) {
-        alert("Такой атлет уже существует. Выберите его из списка.");
+        showToast("Такой атлет уже существует. Выберите его из списка.", "error");
         toggleNewClientForm(false); 
         return;
     }
     
     state.clientId = newId;
     
-    // Очистка профиля под новичка (чтобы данные старого клиента не прилипли к новому)
+    // Очистка профиля под новичка
     document.getElementById('profWeight').value = 80;
     document.getElementById('weightSlider').value = 80;
     document.getElementById('weightVal').innerText = 80;
@@ -505,15 +515,13 @@
     document.getElementById('profAge').value = 30;
     document.getElementById('profNotes').value = "";
 
-    // Вызываем безопасный синхронизатор
-    syncClientNameUI(state.clientId);
+    syncClientNameUI(state.clientId); // Эта функция теперь покажет Глобальный Бар
     
     switchView('view-workspace');
-    document.querySelectorAll('.tab')[1].click(); // Принудительно открываем вкладку профиля
-    alert("Заполните физиологический профиль нового клиента и нажмите СОХРАНИТЬ.");
+    document.querySelectorAll('.tab')[1].click(); 
+    showToast("Заполните профиль нового клиента и нажмите СОХРАНИТЬ.", "success"); // ВЕРНУЛИ TOAST
     renderEmptyRadar();
     
-    // Очищаем историю
     let historyContainer = document.getElementById('historyTimeline');
     if (historyContainer) historyContainer.innerHTML = `<div style="text-align:center; color:#555; font-size:12px; padding: 30px;">Измерений для данного атлета пока не произведено.</div>`;
   }

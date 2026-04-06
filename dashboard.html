@@ -58,20 +58,29 @@
     .tag-chip { flex-shrink: 0; background: var(--bg); border: 1px solid var(--border); color: var(--muted); padding: 10px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; transition: 0.2s; user-select: none; }
     .tag-chip.active { background: rgba(0, 243, 255, 0.1); border-color: var(--accent); color: var(--accent); box-shadow: 0 0 10px rgba(0,243,255,0.1);}
 
-    /* SLIDER */
-    input[type=range] { width: calc(100% - 60px); -webkit-appearance: none; background: transparent; vertical-align: middle;}
-    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: var(--accent); cursor: pointer; margin-top: -10px; box-shadow: 0 0 10px var(--accent); }
-    input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: #333; border-radius: 2px; }
-    .range-val { display: inline-block; font-family: 'Orbitron', sans-serif; font-size: 20px; color: var(--accent); text-align: right; width: 50px; vertical-align: middle;}
-
-    /* WAITING STATE */
-    .waiting-state { display: none; text-align: center; padding: 40px 20px; background: rgba(0, 243, 255, 0.05); border: 1px dashed var(--accent); border-radius: 12px; margin-top: 20px; }
-    .waiting-state.active { display: block; animation: fadeIn 0.3s; }
-    .radar-spinner { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--accent); margin: 0 auto 20px; position: relative; }
-    .radar-spinner::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: var(--accent); animation: pulse 1.5s infinite; }
-    @keyframes pulse { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(2); opacity: 0; } }
     
-    .timer { font-family: 'JetBrains Mono', monospace; font-size: 32px; color: var(--text); margin: 10px 0; font-weight: bold;}
+/*   /* === ШАГОВЫЙ КОНТРОЛЛЕР ВЕСА (ВМЕСТО СЛАЙДЕРА) === */
+    .weight-stepper { display: flex; justify-content: space-between; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px; margin-top: 10px;}
+    .w-btn { width: 45px; height: 45px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--accent); font-size: 24px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; user-select: none;}
+    .w-btn:active { background: var(--accent); color: #000; transform: scale(0.9); }
+    .w-value-box { text-align: center; }
+    .w-value-box .range-val { font-family: 'Orbitron', sans-serif; font-size: 28px; color: #fff; line-height: 1; }
+    .w-value-box .w-unit { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+    /* === ПОЛНОЭКРАННЫЙ РЕЖИМ ОЖИДАНИЯ (OVERLAY) === */
+    .waiting-state { 
+      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+      background: rgba(5, 5, 5, 0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+      z-index: 9999; flex-direction: column; justify-content: center; align-items: center; 
+      opacity: 0; transition: opacity 0.3s ease; padding: 30px; text-align: center;
+    }
+    .waiting-state.active { display: flex; opacity: 1; animation: fadeIn 0.3s; }
+    .waiting-state .btn-cancel { 
+      margin-top: 50px; width: 100%; max-width: 300px; padding: 18px; 
+      background: transparent; border: 2px solid var(--red); color: var(--red); 
+      border-radius: 12px; font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: bold; cursor: pointer; 
+    }
+    .waiting-state .btn-cancel:active { background: rgba(255,59,48,0.1); }
 
     /* ANALYTICS DASHBOARD */
     .radar-container { position: relative; height: 320px; width: 100%; margin-bottom: 20px; }
@@ -224,12 +233,16 @@
       <!-- ВКЛАДКА 1: НОВЫЙ ТЕСТ (ПЕРЕХВАТ) -->
     <div id="tab-test" class="tab-content active">
       
-      <!-- ВЕС ТЕЛА -->
+      <!-- ШАГОВЫЙ ВЕС ТЕЛА -->
       <div class="tag-block" style="margin-bottom: 10px;">
         <label class="input-label">АКТУАЛЬНЫЙ ВЕС ТЕЛА (КГ)</label>
-        <div>
-          <input type="range" min="40" max="150" value="80" id="weightSlider" oninput="document.getElementById('weightVal').innerText=this.value">
-          <span class="range-val" id="weightVal">80</span>
+        <div class="weight-stepper">
+          <div class="w-btn" onclick="changeWeight(-0.5)">−</div>
+          <div class="w-value-box">
+            <div class="range-val" id="weightVal">80.0</div>
+            <div class="w-unit">КИЛОГРАММ</div>
+          </div>
+          <div class="w-btn" onclick="changeWeight(0.5)">+</div>
         </div>
       </div>
 
@@ -273,9 +286,8 @@
           <div class="hw-col">
             <label class="input-label">РУКА</label>
             <div class="tag-row" id="tag-arm">
-              <div class="tag-chip active" data-tag="Правая рука" onclick="toggleTag(this, 'tag-arm')">ПРАВ</div>
-              <div class="tag-chip" data-tag="Левая рука" onclick="toggleTag(this, 'tag-arm')">ЛЕВ</div>
-              <div class="tag-chip" data-tag="Две руки" onclick="toggleTag(this, 'tag-arm')">ОБЕ</div>
+              <div class="tag-chip active" data-tag="Правая рука" onclick="toggleTag(this, 'tag-arm')">ПРАВАЯ</div>
+              <div class="tag-chip" data-tag="Левая рука" onclick="toggleTag(this, 'tag-arm')">ЛЕВАЯ</div>
             </div>
           </div>
           
@@ -299,20 +311,20 @@
       </div>
 
       <!-- КНОПКА ТЕРМИНАЛА -->
-      <button class="btn-main" id="btnStart" onclick="startIntercept()" style="margin-top: 5px;">АКТИВИРОВАТЬ ТЕРМИНАЛ</button>
+      <button class="btn-main" id="btnStart" onclick="startIntercept()" style="margin-top: 5px;">АКТИВИРОВАТЬ NESCALIBUR</button>
 
-      <!-- АНИМАЦИЯ ОЖИДАНИЯ -->
-      <div class="waiting-state" id="waitState">
-        <div class="radar-spinner"></div>
-        <div class="wait-text">ОЖИДАНИЕ ДАННЫХ...</div>
-        <div class="timer" id="waitTimer">120</div>
-        <div class="wait-sub">Клиент может выполнять тест на терминале. Перехват активен.</div>
-        <button class="btn-main" style="background:transparent; border:1px solid var(--red); color:var(--red); margin-top:20px; box-shadow:none;" onclick="cancelIntercept()">ОТМЕНИТЬ</button>
-      </div>
-      
       <!-- СТРАХОВКА ДЛЯ ДЕМОНСТРАЦИИ -->
       <button onclick="simulateTestSuccess()" style="margin-top: 30px; width: 100%; padding: 10px; background: transparent; border: 1px dashed #333; color: #555; font-size: 10px; cursor: pointer;">[ ДЕМО ] СИМУЛИРОВАТЬ УСПЕШНЫЙ ТЕСТ</button>
-    </div>
+
+      <!-- АНИМАЦИЯ ОЖИДАНИЯ (ТЕПЕРЬ ПОЛНОЭКРАННАЯ) -->
+      <div class="waiting-state" id="waitState">
+        <div class="radar-spinner"></div>
+        <div class="wait-text">ТЕРМИНАЛ АКТИВИРОВАН</div>
+        <div class="timer" id="waitTimer">120</div>
+        <div class="wait-sub" style="color: #fff; font-size: 14px; margin-top: 10px;">Ожидание изометрической тяги...</div>
+        <div class="wait-sub" style="color: var(--muted);">Прибор готов к приему данных профиля <span id="waitClientName" style="color:var(--accent); font-weight:bold;"></span></div>
+        <button class="btn-cancel" onclick="cancelIntercept()">ОТМЕНИТЬ ТЕСТ</button>
+      </div>
 
     <!-- ВКЛАДКА 2: ПРОФИЛЬ -->
     <div id="tab-profile" class="tab-content">
@@ -640,38 +652,70 @@
   // ==========================================
   // 4. UX: ТЕГИ И СИСТЕМА ПЕРЕХВАТА
   // ==========================================
+  // Управление шаговым весом (0.5 кг)
+  function changeWeight(delta) {
+    let el = document.getElementById('weightVal');
+    let current = parseFloat(el.innerText);
+    let newVal = current + delta;
+    if (newVal < 40) newVal = 40;
+    if (newVal > 200) newVal = 200; // Лимит можно поднять
+    el.innerText = newVal.toFixed(1);
+    
+    // Опционально: Хаптик-отклик (вибрация телефона) для премиального UX
+    if(navigator.vibrate) navigator.vibrate(10);
+  }
+
+  // Логика скрытия времени восстановления
+  function toggleCondition(type, el) {
+    toggleTag(el, 'tag-condition');
+    const timeBlock = document.getElementById('recovery-time-block');
+    if (type === 'after') {
+        timeBlock.style.display = 'none';
+        // Снимаем выделение, чтобы не ушло в базу
+        document.getElementById('tag-recovery').querySelectorAll('.tag-chip').forEach(t => t.classList.remove('active'));
+    } else {
+        timeBlock.style.display = 'block';
+        // Возвращаем дефолтные 48ч
+        let defaultChip = document.querySelector('#tag-recovery[data-tag="Отдых 48ч"]');
+        if (defaultChip) defaultChip.classList.add('active');
+    }
+  }
+
+  // Умный сборщик тегов (берет data-tag, чтобы в базу шел красивый текст, а не короткий из UI)
   function getActiveTags() {
     let tags =[];
     document.querySelectorAll('.tag-chip.active').forEach(chip => {
-      tags.push(chip.innerText);
+      let tagValue = chip.getAttribute('data-tag');
+      if (tagValue) tags.push(tagValue);
     });
     return tags.join(", ");
   }
 
-   function startIntercept() {
+  async function startIntercept() {
     if (!state.clientId) return;
 
-    let weight = document.getElementById('weightSlider').value;
+    // Берем вес из нашего нового цифрового дисплея
+    let weight = parseFloat(document.getElementById('weightVal').innerText);
     let tags = getActiveTags();
 
-    document.getElementById('btnStart').style.display = 'none';
+    // Полноэкранный лок
     document.getElementById('waitState').classList.add('active');
     
     state.timeLeft = 120;
     document.getElementById('waitTimer').innerText = state.timeLeft;
+    document.getElementById('waitClientName').innerText = state.clientId;
 
     startCountdown();
     startPolling(); 
 
     let url = `${GAS_URL}?action=set_intercept&client_id=${encodeURIComponent(state.clientId)}&trainer_id=${encodeURIComponent(state.trainerId)}&weight=${weight}&tags=${encodeURIComponent(tags)}&t=${Date.now()}`;
     
-    fetch(url).catch(e => console.log("Сетевая пауза, но перехват активен."));
+    fetch(url).catch(e => console.log("Перехват активен (CORS игнор)."));
   }
 
   function cancelIntercept() {
     clearInterval(state.pollInterval);
     clearInterval(state.countdownInterval);
-    document.getElementById('btnStart').style.display = 'block';
     document.getElementById('waitState').classList.remove('active');
   }
 

@@ -91,7 +91,7 @@
     /* Глобальный бар клиента над табами */
     .global-client-bar { display: none; justify-content: space-between; align-items: center; background: rgba(0, 243, 255, 0.05); border: 1px solid rgba(0, 243, 255, 0.2); padding: 12px 20px; margin-bottom: 15px; border-radius: 8px; }
     .global-client-bar.active { display: flex; animation: fadeIn 0.3s; }
-    .gcb-name { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: bold; color: var(--accent); }
+    .gcb-name { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: bold; color: var(--green); }
     .gcb-btn { background: transparent; border: 1px solid var(--muted); color: var(--muted); padding: 6px 12px; border-radius: 6px; font-size: 10px; font-family: 'Inter', sans-serif; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
     .gcb-btn:hover { border-color: var(--text); color: var(--text); }
     
@@ -640,7 +640,7 @@
           cancelIntercept();
           showToast(`✅ УСПЕШНО! Данные получены и привязаны к профилю ${state.clientId}.`);
           loadClientHistory(); // АВТООБНОВЛЕНИЕ ИСТОРИИ
-          document.querySelectorAll('.tab')[3].click(); // ПЕРЕХОД НА ДАШБОРД
+          document.querySelectorAll('.tab')[2].click(); // ПЕРЕХОД НА Историю
           renderActiveRadar(); 
         }
       } catch(e) { console.log("Ожидание..."); }
@@ -651,7 +651,7 @@
     cancelIntercept();
     showToast(`✅[СИМУЛЯЦИЯ] Устройство передало данные. Они привязаны к профилю ${state.clientId}.`);
     loadClientHistory(); // АВТООБНОВЛЕНИЕ ИСТОРИИ
-    document.querySelectorAll('.tab')[3].click(); // ПЕРЕХОД НА ДАШБОРД
+    document.querySelectorAll('.tab')[2].click(); // ПЕРЕХОД НА Историю
     renderActiveRadar();
   }
 
@@ -766,7 +766,7 @@
           `;
         } 
         else if (test.mode === 'VOID') {
-          color = '#ffd60a'; 
+          color = '#c700ac'; 
           modeName = "ДЕАКТИВАЦИЯ (VOID)";
           if (test.rfd > 180) alertBadge = `<span style="background:var(--red); color:#000; padding:2px 5px; border-radius:3px; font-size:8px; margin-left:10px;">⚠️ СПАЗМ ЦНС</span>`;
           metricsHtml = `

@@ -529,10 +529,13 @@
   function logoutClient() {
     state.clientId = "";
     
-    // Безопасная очистка полей (без крашей)
     if(document.getElementById('inpName')) document.getElementById('inpName').value = "";
     if(document.getElementById('inpPhone')) document.getElementById('inpPhone').value = "";
     if(document.getElementById('clientDropdown')) document.getElementById('clientDropdown').value = "";
+    
+    // ПРЯЧЕМ ГЛОБАЛЬНЫЙ БАР
+    let globalBar = document.getElementById('globalClientBar');
+    if (globalBar) globalBar.classList.remove('active');
     
     if (state.radarInstance) state.radarInstance.destroy();
     cancelIntercept();

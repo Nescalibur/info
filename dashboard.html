@@ -171,7 +171,7 @@
       <!-- Создание нового клиента -->
       <div id="newClientBlock" style="display: none;">
       <input type="text" id="inpName" class="inp-dark" placeholder="ИМЯ (напр. ИВАН)" style="text-align:center;">
-      <input type="tel" id="inpPhone" class="inp-dark" placeholder="ПОСЛЕДНИЕ 4 ЦИФРЫ ТЕЛЕФОНА" maxlength="4" inputmode="numeric" style="text-align:center;">
+      <input type="tel" id="inpPhone" class="inp-dark" placeholder="ПОСЛЕДНИЕ 4 ЦИФРЫ" maxlength="4" inputmode="numeric" style="text-align:center;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,4);">
         <button class="btn-main" onclick="activateNewClient()">СОЗДАТЬ ПРОФИЛЬ</button>
         <div style="text-align: center; margin-top: 15px;">
           <span style="color: var(--muted); font-size: 12px; cursor: pointer; border-bottom: 1px dashed var(--muted);" onclick="toggleNewClientForm(false)">Назад к списку</span>
@@ -440,14 +440,15 @@
     let dd = document.getElementById('clientDropdown');
     let cid = dd.value;
     
+    // Броня: Защита от пустых кликов
     if(!cid || cid === "") { 
-      showToast("Пожалуйста, выберите атлета из списка!", "error"); 
+      alert("Пожалуйста, нажмите на список и выберите клиента!"); 
       return; 
     }
     
     state.clientId = cid;
     
-    // ПОЛНАЯ ГИДРАТАЦИЯ ПРОФИЛЯ ИЗ БАЗЫ
+    // Гидратация данных: Подтягиваем ВСЮ информацию из кэша
     if(window.clientsDB) {
         let clientData = window.clientsDB.find(c => c.client_id === cid);
         if(clientData) {
@@ -464,39 +465,39 @@
         }
     }
 
-    // Синхронизация UI
-    document.getElementById('activeClientName').innerText = state.clientId;
-    if(document.getElementById('activeClientNameTest')) document.getElementById('activeClientNameTest').innerText = state.clientId;
-    if(document.getElementById('profileDisplayName')) document.getElementById('profileDisplayName').innerText = state.clientId;
+    // Вызываем наш новый безопасный синхронизатор
+    syncClientNameUI(state.clientId);
     
     switchView('view-workspace');
     renderEmptyRadar();
-    loadClientHistory(); // Фоновая загрузка истории
+    loadClientHistory(); // Проактивно загружаем историю!
   }
 
   function activateNewClient() {
     let nameElem = document.getElementById('inpName');
     let phoneElem = document.getElementById('inpPhone');
     
-    if (!nameElem || !phoneElem) { showToast("Системная ошибка UI.", "error"); return; }
+    if (!nameElem || !phoneElem) { alert("Системная ошибка UI."); return; }
 
     let name = nameElem.value.trim().toUpperCase();
     let phone = phoneElem.value.trim();
     
-    if (name === "") { showToast("Введите имя атлета", "error"); return; }
-    if (phone.length !== 4) { showToast("Телефон должен содержать ровно 4 цифры", "error"); return; }
+    // Жесткая валидация
+    if (name === "") { alert("Введите Имя атлета"); return; }
+    if (phone.length !== 4) { alert("Телефон должен содержать ровно 4 цифры"); return; }
     
     let newId = `${name}_${phone}`;
 
+    // Проверка на дубликат (чтобы не затереть Ивана)
     if(window.clientsDB && window.clientsDB.find(c => c.client_id === newId)) {
-        showToast("Такой атлет уже существует. Выберите его из списка.", "error");
+        alert("Такой атлет уже существует. Выберите его из списка.");
         toggleNewClientForm(false); 
         return;
     }
     
     state.clientId = newId;
     
-    // ОЧИСТКА ВСЕХ ПОЛЕЙ ПОД НОВИЧКА
+    // Очистка профиля под новичка (чтобы данные старого клиента не прилипли к новому)
     document.getElementById('profWeight').value = 80;
     document.getElementById('weightSlider').value = 80;
     document.getElementById('weightVal').innerText = 80;
@@ -504,20 +505,19 @@
     document.getElementById('profAge').value = 30;
     document.getElementById('profNotes').value = "";
 
-    // Синхронизация UI
-    document.getElementById('activeClientName').innerText = state.clientId;
-    if(document.getElementById('activeClientNameTest')) document.getElementById('activeClientNameTest').innerText = state.clientId;
-    if(document.getElementById('profileDisplayName')) document.getElementById('profileDisplayName').innerText = state.clientId;
+    // Вызываем безопасный синхронизатор
+    syncClientNameUI(state.clientId);
     
     switchView('view-workspace');
-    document.querySelectorAll('.tab')[1].click(); 
-    showToast("Заполните физиологический профиль и нажмите СОХРАНИТЬ", "success");
+    document.querySelectorAll('.tab')[1].click(); // Принудительно открываем вкладку профиля
+    alert("Заполните физиологический профиль нового клиента и нажмите СОХРАНИТЬ.");
     renderEmptyRadar();
     
+    // Очищаем историю
     let historyContainer = document.getElementById('historyTimeline');
     if (historyContainer) historyContainer.innerHTML = `<div style="text-align:center; color:#555; font-size:12px; padding: 30px;">Измерений для данного атлета пока не произведено.</div>`;
   }
-
+  
   function logoutClient() {
     state.clientId = "";
     
@@ -655,6 +655,14 @@
   // ==========================================
   // 4. ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ И РАДАР
   // ==========================================
+
+    function syncClientNameUI(name) {
+    const ids =['displayClientName', 'activeClientName', 'activeClientNameTest', 'profileDisplayName', 'waitClientName'];
+    ids.forEach(id => {
+      let el = document.getElementById(id);
+      if (el) el.innerText = name;
+    });
+  }
 
   // === СИСТЕМА УВЕДОМЛЕНИЙ (TOASTS) ===
   function showToast(message, type = 'success') {

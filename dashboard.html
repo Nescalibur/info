@@ -536,8 +536,7 @@
         if(clientData) {
             if(clientData.weight) {
                 document.getElementById('profWeight').value = clientData.weight;
-                document.getElementById('weightSlider').value = clientData.weight;
-                document.getElementById('weightVal').innerText = clientData.weight;
+                document.getElementById('weightVal').innerText = parseFloat(clientData.weight).toFixed(1);
             }
             if(clientData.height) document.getElementById('profHeight').value = clientData.height;
             if(clientData.age) document.getElementById('profAge').value = clientData.age;
@@ -578,8 +577,7 @@
     
     // Очистка профиля под новичка
     document.getElementById('profWeight').value = 80;
-    document.getElementById('weightSlider').value = 80;
-    document.getElementById('weightVal').innerText = 80;
+    document.getElementById('weightVal').innerText = "80.0";
     document.getElementById('profHeight').value = 180;
     document.getElementById('profAge').value = 30;
     document.getElementById('profNotes').value = "";
@@ -634,11 +632,10 @@
     fetch(url)
       .then(res => res.json())
       .then(data => {
-        showToast("✅ Профиль сохранен.");
-        document.getElementById('weightSlider').value = payload.weight;
-        document.getElementById('weightVal').innerText = payload.weight;
+        showToast("✅ Профиль сохранен");
+        document.getElementById('weightVal').innerText = parseFloat(payload.weight).toFixed(1);
         document.querySelectorAll('.tab')[0].click(); 
-        fetchClientsList(); 
+        fetchClientsList(); ; 
       })
       .catch(e => {
         showToast("⚠️ Данные отправлены в облако (ошибка CORS). Это нормально для MVP.", "error");

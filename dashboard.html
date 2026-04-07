@@ -52,7 +52,7 @@
     .tab-content.active { display: block; }
 
     /* TAGS */
-    .tag-block { margin-bottom: 20px; background: var(--surface); padding: 15px; border-radius: 12px; border: 1px solid var(--border);}
+    .tag-block { margin-bottom: 8px; background: var(--surface); padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border);}
     .tag-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; -webkit-overflow-scrolling: touch; }
     .tag-row::-webkit-scrollbar { display: none; }
     .tag-chip { flex-shrink: 0; background: var(--bg); border: 1px solid var(--border); color: var(--muted); padding: 10px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; transition: 0.2s; user-select: none; }
@@ -132,14 +132,22 @@
     @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
 
     /* === КОМПАКТНЫЙ ГРИД АППАРАТНЫХ НАСТРОЕК === */
-    .hardware-grid { display: flex; justify-content: center; gap: 40px; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); text-align: center; }
-    .hw-col { display: flex; flex-direction: column; gap: 8px; }
-    .hw-col .tag-row { flex-wrap: wrap; }
-    .hw-col .tag-chip { padding: 6px 12px; font-size: 10px; }
+     .hardware-grid { 
+        display: grid; 
+        grid-template-columns: 1fr 1fr 1.2fr; /* Рукояти даем чуть больше места из-за слова ROLLING */
+        gap: 5px; 
+        margin-top: 10px; 
+        padding-top: 10px; 
+        border-top: 1px dashed var(--border); 
+    }
+    .hw-col { display: flex; flex-direction: column; gap: 6px; align-items: center; text-align: center; }
+    .hw-col .tag-row { flex-wrap: wrap; justify-content: center; padding-bottom: 0; }
+    /* Делаем кнопки аппаратуры компактными, чтобы они влезли в свои колонки */
+    .hw-col .tag-chip { padding: 6px 8px; font-size: 9px; width: 100%; text-align: center; margin-bottom: 2px;}
 
     /* === ШКАЛА СУБЪЕКТИВНОГО СОСТОЯНИЯ (sRPE) === */
     .readiness-scale { display: flex; justify-content: space-between; gap: 5px; margin-top: 10px; }
-    .r-chip { flex: 1; text-align: center; padding: 12px 0; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: bold; color: var(--muted); cursor: pointer; transition: 0.2s; }
+     .r-chip { flex: 1; text-align: center; padding: 8px 0; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: bold; color: var(--muted); cursor: pointer; transition: 0.2s; }
     
     /* Цветовая кодировка от 1 (Красный) до 5 (Циан) */
     .r-chip[data-val="1"].active { background: rgba(255,59,48,0.15); border-color: var(--red); color: var(--red); box-shadow: 0 0 10px rgba(255,59,48,0.2); }
@@ -303,6 +311,7 @@
 
         <!-- КОМПАКТНЫЙ ГРИД АППАРАТУРЫ -->
         <div class="hardware-grid">
+          <!-- КОЛОНКА 1: РУКА -->
           <div class="hw-col">
             <label class="input-label">РУКА</label>
             <div class="tag-row" id="tag-arm">
@@ -311,6 +320,7 @@
             </div>
           </div>
           
+          <!-- КОЛОНКА 2: ЛЯМКИ -->
           <div class="hw-col">
             <label class="input-label">ЛЯМКИ</label>
             <div class="tag-row" id="tag-straps">
@@ -319,21 +329,20 @@
             </div>
           </div>
 
-          <!-- КОМПАКТНАЯ РУКОЯТЬ (В ОДНУ СТРОКУ) -->
-      <div class="tag-block inline-tag" style="margin-bottom: 10px;">
-        <label class="input-label">РУКОЯТЬ</label>
-        <div class="tag-row" id="tag-handle">
-          <div class="tag-chip active" onclick="toggleTag(this, 'tag-handle')">СТАНДАРТ</div>
-          <div class="tag-chip" onclick="toggleTag(this, 'tag-handle')">ROLLING</div>
-        </div>
-      </div>
-
-      </div>
-
+          <!-- КОЛОНКА 3: РУКОЯТЬ -->
+          <div class="hw-col">
+            <label class="input-label">РУКОЯТЬ</label>
+            <div class="tag-row" id="tag-handle">
+              <div class="tag-chip active" onclick="toggleTag(this, 'tag-handle')">СТАНДАРТ</div>
+              <div class="tag-chip" onclick="toggleTag(this, 'tag-handle')">ROLLING</div>
+            </div>
           </div>
+        </div> <!-- Конец hardware-grid -->
+
+      </div> <!-- ВАЖНО: Конец глобального tag-block -->
 
       <!-- КНОПКА ТЕРМИНАЛА -->
-      <button class="btn-main" id="btnStart" onclick="startIntercept()" style="margin-top: 5px;">АКТИВИРОВАТЬ NESCALIBUR</button>
+      <button class="btn-main" id="btnStart" onclick="startIntercept()">АКТИВИРОВАТЬ NESCALIBUR</button>
 
       <!-- СТРАХОВКА ДЛЯ ДЕМОНСТРАЦИИ -->
       <button onclick="simulateTestSuccess()" style="margin-top: 30px; width: 100%; padding: 10px; background: transparent; border: 1px dashed #333; color: #555; font-size: 10px; cursor: pointer;">[ ДЕМО ] СИМУЛИРОВАТЬ УСПЕШНЫЙ ТЕСТ</button>

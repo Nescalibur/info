@@ -184,6 +184,32 @@
     .inline-tag .input-label { margin-bottom: 0; }
     .inline-tag .tag-row { padding-bottom: 0; gap: 5px; }
     .inline-tag .tag-chip { padding: 8px 12px; font-size: 10px; }
+
+    /* === BENTO GRID ARCHITECTURE === */
+    .bento-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+    .bento-tile { background: var(--surface-light); border: 1px solid var(--border); border-radius: 16px; padding: 15px; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+    .bento-full { grid-column: 1 / -1; }
+    .bento-header { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px; z-index: 2; }
+    
+    /* GRS (GLOBAL READINESS SCORE) */
+    .grs-box { display: flex; align-items: center; justify-content: space-between; }
+    .grs-value { font-family: 'Orbitron', sans-serif; font-size: 42px; font-weight: 900; line-height: 1; }
+    .grs-label { font-size: 10px; color: var(--muted); max-width: 80px; line-height: 1.2; }
+    
+    /* DIVERGENCE ENGINE (АЛЕРТЫ) */
+    .divergence-alert { margin-top: 10px; padding: 8px 12px; background: rgba(255, 59, 48, 0.1); border-left: 2px solid var(--red); border-radius: 4px; font-size: 10px; color: #ff8a80; font-family: 'Inter', sans-serif; display: none; animation: pulse-alert 2s infinite; }
+    @keyframes pulse-alert { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+    /* KINESIOLOGICAL HEATMAP (ВИТРУВИАНЕЦ) */
+    .heatmap-container { display: flex; justify-content: center; align-items: center; height: 120px; position: relative; margin-top: 5px; }
+    .heatmap-svg { height: 100%; width: 100%; drop-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
+    .hm-limb { transition: fill 0.5s ease, stroke 0.5s ease; }
+    .lsi-value { position: absolute; bottom: -5px; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; background: var(--bg); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
+    .lsi-label-l { position: absolute; left: 0; top: 10px; font-size: 9px; color: var(--muted); }
+    .lsi-label-r { position: absolute; right: 0; top: 10px; font-size: 9px; color: var(--muted); }
+
+    /* GHOST RADAR */
+    .bento-radar { height: 140px; width: 100%; margin-top: auto; margin-bottom: auto;}
   </style>
 </head>
 <body>
@@ -420,37 +446,71 @@
     <!-- ВКЛАДКА 4: АНАЛИТИКА (ДАШБОРД) -->
     <div id="tab-analytics" class="tab-content">
       
-      <!-- Блок калибровки (Показывается, пока мало тестов) -->
       <div id="calibrationBlock" style="display: none; text-align: center; padding: 40px 20px; background: rgba(255, 214, 10, 0.05); border: 1px dashed var(--yellow); border-radius: 12px; margin-top: 20px;">
         <div class="radar-spinner" style="border-color: var(--yellow); width: 40px; height: 40px; margin-bottom: 15px;"></div>
         <h3 style="color: var(--yellow); font-family: 'Orbitron'; margin: 0 0 10px 0;">КАЛИБРОВКА ПАТТЕРНОВ</h3>
-        <p style="font-size: 12px; color: var(--muted); margin: 0;">Для активации нейромышечной аналитики и расчета Базовой Линии требуется минимум 3 теста в идентичных условиях (Одинаковый хват, рука и экипировка).</p>
+        <p id="calibrationText" style="font-size: 12px; color: var(--muted); margin: 0;">Для расчета Базовой Линии требуется 3 теста.</p>
       </div>
 
-      <!-- Основной аналитический блок -->
-      <div id="insightBlock" style="display: block;">
-        <div style="text-align: center; margin-bottom: 20px;">
-          <h3 style="margin:0; color:var(--text); font-family:'Orbitron';">NEUROMUSCULAR PRINT</h3>
-          <p style="font-size:10px; color:var(--muted); margin-top:5px; text-transform: uppercase;">Z-Score отклонение от Базовой Линии атлета</p>
+      <!-- BENTO GRID ARCHITECTURE -->
+      <div id="insightBlock" class="bento-grid" style="display: none;">
+        
+        <!-- ПЛИТКА 1: GRS & DIVERGENCE -->
+        <div class="bento-tile bento-full">
+          <div class="bento-header" style="display:flex; justify-content:space-between;">
+            <span>ИНДЕКС ГОТОВНОСТИ (GRS)</span>
+            <span id="grsTrend" style="color: var(--green);">▲ +4%</span>
+          </div>
+          <div class="grs-box">
+            <div class="grs-value" id="grsScore" style="color: var(--green);">--</div>
+            <div class="grs-label">ИНТЕГРИРОВАННАЯ ОЦЕНКА ЦНС И МЫШЦ</div>
+          </div>
+          <div class="divergence-alert" id="divergenceAlert">
+            <strong>⚠️ МАСКИРОВАННОЕ ИСТОЩЕНИЕ:</strong> Субъективная оценка завышена. ЦНС работает на резервах адреналина. Риск травмы.
+          </div>
         </div>
 
-        <div class="radar-container">
-          <canvas id="radarChart"></canvas>
+        <!-- ПЛИТКА 2: HEATMAP (ВИТРУВИАНЕЦ) -->
+        <div class="bento-tile">
+          <div class="bento-header">КИНЕМАТИКА</div>
+          <div class="heatmap-container">
+            <div class="lsi-label-l">ЛЕВ</div>
+            <div class="lsi-label-r">ПРАВ</div>
+            
+            <!-- ВИТРУВИАНСКИЙ СИЛУЭТ (SVG) -->
+            <svg viewBox="0 0 100 120" class="heatmap-svg" xmlns="http://www.w3.org/2000/svg">
+              <!-- Корпус и Голова -->
+              <path d="M50,15 A8,8 0 1,1 49.9,15 M38,35 L62,35 L55,85 L45,85 Z" stroke="#333" fill="none" stroke-width="1.5"/>
+              <!-- Левая рука (Пользователя) -->
+              <path id="svgLeftArm" class="hm-limb" d="M38,35 L20,60 L25,85 L35,55 Z" fill="#222" stroke="#444" stroke-width="1"/>
+              <circle id="svgLeftGrip" class="hm-limb" cx="22.5" cy="90" r="4" fill="#222"/>
+              <!-- Правая рука (Пользователя) -->
+              <path id="svgRightArm" class="hm-limb" d="M62,35 L80,60 L75,85 L65,55 Z" fill="#222" stroke="#444" stroke-width="1"/>
+              <circle id="svgRightGrip" class="hm-limb" cx="77.5" cy="90" r="4" fill="#222"/>
+            </svg>
+            
+            <div class="lsi-value" id="lsiValue">LSI: --%</div>
+          </div>
         </div>
 
-        <div class="ai-box" style="border-left-color: var(--accent);">
-          <div class="ai-title" style="color: var(--accent);">AI COACH INSIGHTS</div>
-          <div id="aiVerdictHeader" style="font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 14px; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px;">
-            [ ПРОФИЛЬ ОПРЕДЕЛЯЕТСЯ ]
-          </div>
-          <div class="ai-text" id="aiVerdictText">
-            Загрузите историю тестов для получения вердикта на основе алгоритма K-Nearest Neighbors.
-          </div>
-          <div class="ai-text" id="aiVerdictRec" style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #333; color: #fff;">
-            <!-- Сюда упадет рекомендация -->
+        <!-- ПЛИТКА 3: GHOST RADAR -->
+        <div class="bento-tile">
+          <div class="bento-header">ПРОФИЛЬ</div>
+          <div class="bento-radar">
+            <canvas id="radarChart"></canvas>
           </div>
         </div>
+
+        <!-- ПЛИТКА 4: AI COACH INSIGHTS -->
+        <div class="bento-tile bento-full ai-box" style="margin-top: 0; background: transparent; border: none; padding: 0;">
+          <div class="ai-title" style="color: var(--accent); margin-bottom: 15px;">AI COACH INSIGHTS</div>
+          <div id="aiVerdictHeader" style="font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 13px; font-weight: bold; margin-bottom: 8px; border-bottom: 1px solid #222; padding-bottom: 8px;">[ АНАЛИЗ... ]
+          </div>
+          <div class="ai-text" id="aiVerdictText" style="font-size: 12px; color: #aaa;"></div>
+        </div>
+
       </div>
+    </div>
 
     </div>
       
@@ -949,7 +1009,9 @@
       
       container.innerHTML = html;
 
-      // === ИНТЕГРАЦИЯ AI ДАШБОРДА ===
+      // ========================================================
+      // ИНТЕГРАЦИЯ AI ДАШБОРДА (BENTO GRID & HEATMAP)
+      // ========================================================
       if (data.insight) {
         if (data.insight.is_calibrating) {
             document.getElementById('calibrationBlock').style.display = 'block';
@@ -957,27 +1019,91 @@
             document.getElementById('calibrationText').innerText = data.insight.text;
         } else {
             document.getElementById('calibrationBlock').style.display = 'none';
-            document.getElementById('insightBlock').style.display = 'block';
+            document.getElementById('insightBlock').style.display = 'grid'; // Bento Grid
 
             let z = data.insight.z_scores;
-            // Перевод Z-Score (-2.0 до +2.0) в проценты Радара (0 до 100). 50% = Норма (Z=0)
-            const mapZ = (zVal) => { let p = 50 + (parseFloat(zVal) * 25); return p > 100 ? 100 : p < 0 ? 0 : p; };
+            let sRPE = data.insight.sRPE; // Субъективное самочувствие 1-5
+            
+            // 1. Z-SCORE -> PERCENTAGE (Нормализация для Радара и GRS)
+            const mapZ = (zVal) => { let p = 50 + (parseFloat(zVal) * 20); return p > 100 ? 100 : p < 0 ? 0 : p; };
 
-            // Инверсия времени (Меньше мс = Лучше = Больше % на радаре)
             let r_peak = mapZ(z.peak);
             let r_rfd  = mapZ(z.rfd);
-            let r_ms   = mapZ(-z.ms); 
-            
+            let r_ms   = mapZ(-z.ms); // Инверсия времени
+
+            // 2. GLOBAL READINESS SCORE (Сводный индекс)
+            let grs = Math.round((r_peak * 0.4) + (r_rfd * 0.4) + (r_ms * 0.2));
+            let grsEl = document.getElementById('grsScore');
+            grsEl.innerText = grs;
+            if (grs >= 65) { grsEl.style.color = 'var(--green)'; document.getElementById('grsTrend').innerText = '▲ OPTIMAL'; document.getElementById('grsTrend').style.color = 'var(--green)'; }
+            else if (grs >= 40) { grsEl.style.color = 'var(--yellow)'; document.getElementById('grsTrend').innerText = '▶ FATIGUE'; document.getElementById('grsTrend').style.color = 'var(--yellow)'; }
+            else { grsEl.style.color = 'var(--red)'; document.getElementById('grsTrend').innerText = '▼ CRITICAL'; document.getElementById('grsTrend').style.color = 'var(--red)'; }
+
+            // 3. DIVERGENCE ENGINE (Расхождение sRPE и Объективности)
+            let divAlert = document.getElementById('divergenceAlert');
+            // Если атлет говорит, что он свеж (4-5), а сила упала сильно (Z < -1.0)
+            if (sRPE >= 4 && z.peak < -1.0) {
+                divAlert.style.display = 'block';
+                divAlert.innerHTML = '<strong>⚠️ МАСКИРОВАННОЕ ИСТОЩЕНИЕ:</strong> Субъективная оценка завышена. ЦНС на адреналине. Снизить рабочий вес на 20% во избежание травмы!';
+            } else {
+                divAlert.style.display = 'none';
+            }
+
+            // 4. KINESIOLOGICAL HEATMAP (ВИТРУВИАНЕЦ И АСИММЕТРИЯ)
+            // Ищем лучшие тесты для Левой и Правой из истории (mode = POWER)
+            let maxL = 0, maxR = 0;
+            let lastL_Tags = "", lastR_Tags = "";
+            data.history.forEach(t => {
+                if (t.mode === 'POWER') {
+                    let uTags = t.tags.toUpperCase();
+                    if (uTags.includes('ЛЕВАЯ') && t.peak > maxL) { maxL = t.peak; lastL_Tags = uTags; }
+                    if (uTags.includes('ПРАВАЯ') && t.peak > maxR) { maxR = t.peak; lastR_Tags = uTags; }
+                }
+            });
+
+            let lsiVal = document.getElementById('lsiValue');
+            let svgLArm = document.getElementById('svgLeftArm');
+            let svgLGrip = document.getElementById('svgLeftGrip');
+            let svgRArm = document.getElementById('svgRightArm');
+            let svgRGrip = document.getElementById('svgRightGrip');
+
+            // Сброс цветов
+            const baseColor = '#222', activeColor = 'var(--accent)', dangerColor = 'var(--red)';[svgLArm, svgLGrip, svgRArm, svgRGrip].forEach(el => el.setAttribute('fill', baseColor));
+
+            if (maxL > 0 && maxR > 0) {
+                let diff = Math.abs(maxR - maxL);
+                let maxForce = Math.max(maxR, maxL);
+                let lsiPct = (diff / maxForce) * 100;
+                
+                lsiVal.innerText = `LSI: ${lsiPct.toFixed(1)}%`;
+                if (lsiPct > 15) {
+                    lsiVal.style.color = dangerColor; lsiVal.style.borderColor = dangerColor;
+                    // Подсвечиваем слабую сторону
+                    if (maxL < maxR) svgLArm.setAttribute('fill', dangerColor);
+                    else svgRArm.setAttribute('fill', dangerColor);
+                } else {
+                    lsiVal.style.color = 'var(--muted)'; lsiVal.style.borderColor = 'var(--border)';
+                    svgLArm.setAttribute('fill', activeColor);
+                    svgRArm.setAttribute('fill', activeColor);
+                }
+
+                // АНАЛИЗ ЛИМИТА ХВАТА (Если слабая сторона тянулась БЕЗ ЛЯМОК)
+                if (maxL < maxR && lastL_Tags.includes('БЕЗ ЛЯМОК')) svgLGrip.setAttribute('fill', dangerColor);
+                if (maxR < maxL && lastR_Tags.includes('БЕЗ ЛЯМОК')) svgRGrip.setAttribute('fill', dangerColor);
+            } else {
+                lsiVal.innerText = "НЕТ ДАННЫХ L/R";
+            }
+
+            // 5. GHOST RADAR (Паутина с Призрачной Базой)
             let radarData =[50, 50, 50, 50, 50]; 
-            if (data.insight.mode === 'POWER') { radarData[0] = r_peak; radarData[2] = (data.insight.sRPE/5)*100; } 
-            else if (data.insight.mode === 'SPEED') { radarData[4] = r_ms; radarData[1] = r_peak; radarData[2] = (data.insight.sRPE/5)*100; } 
-            else if (data.insight.mode === 'VOID') { radarData[3] = r_rfd; radarData[4] = r_ms; radarData[2] = (data.insight.sRPE/5)*100; }
+            if (data.insight.mode === 'POWER') { radarData[0] = r_peak; radarData[1] = r_rfd; radarData[2] = (sRPE/5)*100; } 
+            else if (data.insight.mode === 'SPEED') { radarData[4] = r_ms; radarData[1] = r_peak; radarData[2] = (sRPE/5)*100; } 
+            else if (data.insight.mode === 'VOID') { radarData[3] = r_rfd; radarData[4] = r_ms; radarData[2] = (sRPE/5)*100; }
 
-            initRadar(radarData,[50, 50, 50, 50, 50]);
+            initRadar(radarData,[50, 50, 50, 50, 50]); // 50 - это идеальный правильный пятиугольник Baseline
 
+            // 6. AI ВЕРДИКТ
             let color = (data.insight.profile.includes("УГНЕТЕНИЕ") || data.insight.profile.includes("СПАЗМ") || data.insight.profile.includes("ПЕРЕТРЕН")) ? 'var(--red)' : 'var(--accent)';
-            document.querySelector('.ai-box').style.borderLeftColor = color;
-            document.querySelector('.ai-title').style.color = color;
             document.getElementById('aiVerdictHeader').style.color = color;
             document.getElementById('aiVerdictHeader').innerText = `[ ${data.insight.profile} ]`;
             document.getElementById('aiVerdictText').innerHTML = data.insight.text;

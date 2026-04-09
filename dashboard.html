@@ -658,9 +658,13 @@
 
     syncClientNameUI(state.clientId);
     
-    switchView('view-workspace');
+     switchView('view-workspace');
     renderEmptyRadar();
-    loadClientHistory(); // Проактивно загружаем историю!
+    
+    // Бронированный вызов: очищаем контейнер сразу, вызываем загрузку с микро-задержкой
+    let historyContainer = document.getElementById('historyTimeline');
+    if(historyContainer) historyContainer.innerHTML = '';
+    setTimeout(() => { loadClientHistory(); }, 50); 
   }
 
   function activateNewClient() {
@@ -699,6 +703,7 @@
     showToast("Заполните физиологический профиль нового клиента и нажмите СОХРАНИТЬ.", "success"); 
     renderEmptyRadar();
     
+    // Бронированная очистка истории для новичка
     let historyContainer = document.getElementById('historyTimeline');
     if (historyContainer) historyContainer.innerHTML = `<div style="text-align:center; color:#555; font-size:12px; padding: 30px;">Измерений для данного атлета пока не произведено.</div>`;
   }
@@ -891,10 +896,19 @@
   function initRadar(datasetActive, datasetBaseline) {
     if(state.radarInstance) state.radarInstance.destroy();
     var ctx = document.getElementById('radarChart').getContext('2d');
+    
+    // Адаптивный размер шрифта: на мобилках мельче
+    let fontSize = window.innerWidth < 400 ? 8 : 10;
+
     state.radarInstance = new Chart(ctx, {
       type: 'radar',
       data: {
-        labels:['Абсолютная Сила', 'Стартовый Взрыв', 'Стабильность', 'Свежесть ЦНС', 'Когнитивный Отклик'],
+        // МНОГОСТРОЧНЫЕ ЛЕЙБЛЫ: Защита от обрезки текста на краях экрана
+        labels:[
+          ['Абсолютная', 'Сила (MVC)'],['Стартовый', 'Взрыв (nRFD)'], 
+          ['Тонус', '(sRPE)'],['Свежесть', 'Фасций'], 
+          ['Рефлекс', 'ЦНС']
+        ],
         datasets:[
           { label: 'Текущий Статус', data: datasetActive, backgroundColor: 'rgba(0, 243, 255, 0.3)', borderColor: '#00f3ff', pointBackgroundColor: '#fff', borderWidth: 2 },
           { label: 'Личный Эталон', data: datasetBaseline, backgroundColor: 'rgba(255, 255, 255, 0.05)', borderColor: '#333', borderWidth: 1, pointRadius: 0 }
@@ -903,7 +917,12 @@
       options: {
         responsive: true, maintainAspectRatio: false,
         scales: {
-          r: { angleLines: { color: '#222' }, grid: { color: '#222' }, pointLabels: { color: '#888', font: { family: 'Inter', size: 10, weight: 'bold' } }, ticks: { display: false, min: 0, max: 100 } }
+          r: { 
+            angleLines: { color: '#222' }, 
+            grid: { color: '#222' }, 
+            pointLabels: { color: '#888', font: { family: 'Inter', size: fontSize, weight: 'bold' } }, 
+            ticks: { display: false, min: 0, max: 100 } 
+          }
         },
         plugins: { legend: { display: false }, tooltip: {enabled: false} }
       }
@@ -989,10 +1008,10 @@
           `;
         } 
         else if (test.mode === 'VOID') {
-          color = '#ffd60a'; modeName = "ДЕАКТИВАЦИЯ (VOID)";
+          color = '#bf5af2'; modeName = "ДЕАКТИВАЦИЯ (VOID)";
           metricsHtml = `
-            <div class="hm-box"><span class="hm-lbl">Сброс</span><span class="hm-val" style="color:${color}">${test.rfd} мс</span></div>
-            <div class="hm-box"><span class="hm-lbl">Отклик</span><span class="hm-val">${test.ms} мс</span></div>
+            <div class="hm-box"><span class="hm-lbl">Расслабление мышц</span><span class="hm-val" style="color:${color}">${test.rfd} мс</span></div>
+            <div class="hm-box"><span class="hm-lbl">Когнитивный отклик</span><span class="hm-val">${test.ms} мс</span></div>
           `;
         }
 

@@ -861,7 +861,7 @@
   }
 
   // ==========================================
-  // === РЕАЛЬНЫЙ ГЕНЕРАТОР ИСТОРИИ ИЗ БАЗЫ ===
+  // === РЕАЛЬНЫЙ ГЕНЕРАТОР ИСТОРИИ И АСИММЕТРИИ ===
   // ==========================================
   async function loadClientHistory() {
     if (!state.clientId) return;
@@ -883,47 +883,56 @@
         return;
       }
 
-      let html = "";
+      // ПРОАКТИВНЫЙ АНАЛИЗ АСИММЕТРИИ (Фронтенд)
+      let latestRight = data.history.find(t => t.mode === 'POWER' && t.tags.toUpperCase().includes('ПРАВАЯ'));
+      let latestLeft = data.history.find(t => t.mode === 'POWER' && t.tags.toUpperCase().includes('ЛЕВАЯ'));
+      let asymmetryHtml = "";
+
+      if (latestRight && latestLeft) {
+          let diff = Math.abs(latestRight.peak - latestLeft.peak);
+          let max = Math.max(latestRight.peak, latestLeft.peak);
+          let pct = (diff / max) * 100;
+          let weaker = latestRight.peak > latestLeft.peak ? "Левая" : "Правая";
+          
+          if (pct > 10) {
+              asymmetryHtml = `
+              <div style="background: rgba(255,59,48,0.1); border: 1px solid var(--red); padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+                  <strong style="color: var(--red); font-size: 11px; display:block; margin-bottom:4px;">🚨 ДИСБАЛАНС СИЛЫ: ${pct.toFixed(1)}%</strong>
+                  <span style="color: #ccc; font-size: 10px;">${weaker} сторона отстает. Риск компенсаторных травм позвоночника при тяжелой базе. Рекомендована унилатеральная подсобка.</span>
+              </div>`;
+          }
+      }
+
+      let html = asymmetryHtml;
       
+      // Генерация красивых карточек (Только 2 параметра!)
       data.history.forEach(test => {
         let color = '#888';
         let modeName = test.mode;
         let metricsHtml = "";
-        let alertBadge = ""; 
+        let w = test.weight || 80;
 
         if (test.mode === 'POWER') {
-          color = '#ff3b30'; 
-          modeName = "СИЛА (POWER)";
-          let activationPct = 0;
-          if (test.rfd > 0 && test.peak > 0) {
-              activationPct = ((test.rfd * 0.2) / test.peak) * 100;
-              if (activationPct > 100) activationPct = 100;
-          }
+          color = '#ff3b30'; modeName = "СИЛА (POWER)";
+          let rfi = (test.peak / w).toFixed(2);
           metricsHtml = `
             <div class="hm-box"><span class="hm-lbl">Пик Силы</span><span class="hm-val" style="color:${color}">${test.peak} кг</span></div>
-            <div class="hm-box"><span class="hm-lbl">Масса тела</span><span class="hm-val">${test.weight || '--'} кг</span></div>
-            <div class="hm-box"><span class="hm-lbl">Взрыв (nRFD)</span><span class="hm-val">${activationPct.toFixed(0)} %</span></div>
+            <div class="hm-box"><span class="hm-lbl">Отн. Сила (RFI)</span><span class="hm-val">${rfi}x BW</span></div>
           `;
         } 
         else if (test.mode === 'SPEED') {
-          color = '#00f3ff'; 
-          modeName = "СКОРОСТЬ (SPEED)";
-          let bpf = (test.weight > 0) ? (test.peak / test.weight).toFixed(2) : '--';
-          if (test.ms < 100) alertBadge = `<span style="background:var(--red); color:#000; padding:2px 5px; border-radius:3px; font-size:8px; margin-left:10px;">ФАЛЬСТАРТ</span>`;
+          color = '#00f3ff'; modeName = "СКОРОСТЬ (SPEED)";
+          let bpf = (test.peak / w).toFixed(2);
           metricsHtml = `
-            <div class="hm-box"><span class="hm-lbl">Отклик мозга</span><span class="hm-val" style="color:${color}">${test.ms} мс</span></div>
-            <div class="hm-box"><span class="hm-lbl">Пик Рывка</span><span class="hm-val">${test.peak} кг</span></div>
-            <div class="hm-box"><span class="hm-lbl">Баллистика (BPF)</span><span class="hm-val">${bpf}x BW</span></div>
+            <div class="hm-box"><span class="hm-lbl">Реакция</span><span class="hm-val" style="color:${color}">${test.ms} мс</span></div>
+            <div class="hm-box"><span class="hm-lbl">Баллистика (BPF)</span><span class="hm-val">${bpf}x</span></div>
           `;
         } 
         else if (test.mode === 'VOID') {
-          color = '#c700ac'; 
-          modeName = "ДЕАКТИВАЦИЯ (VOID)";
-          if (test.rfd > 180) alertBadge = `<span style="background:var(--red); color:#000; padding:2px 5px; border-radius:3px; font-size:8px; margin-left:10px;">⚠️ СПАЗМ ЦНС</span>`;
+          color = '#ffd60a'; modeName = "ДЕАКТИВАЦИЯ (VOID)";
           metricsHtml = `
-            <div class="hm-box"><span class="hm-lbl">Скорость сброса</span><span class="hm-val" style="color:${color}">${test.rfd} мс</span></div>
-            <div class="hm-box"><span class="hm-lbl">Реакция мозга</span><span class="hm-val">${test.ms} мс</span></div>
-            <div class="hm-box"><span class="hm-lbl">Коэффициент</span><span class="hm-val">${test.impulse} s⁻¹</span></div>
+            <div class="hm-box"><span class="hm-lbl">Сброс</span><span class="hm-val" style="color:${color}">${test.rfd} мс</span></div>
+            <div class="hm-box"><span class="hm-lbl">Отклик</span><span class="hm-val">${test.ms} мс</span></div>
           `;
         }
 
@@ -931,86 +940,51 @@
 
         html += `
           <div class="history-card" style="border-left: 3px solid ${color};">
-            <div class="history-date">
-              <span>${test.date}</span>
-              <span class="history-mode" style="color:${color}">${modeName} ${alertBadge}</span>
-            </div>
+            <div class="history-date"><span>${test.date}</span><span class="history-mode" style="color:${color}">${modeName}</span></div>
             <div class="history-metrics">${metricsHtml}</div>
             ${tagsHtml}
           </div>
         `;
       });
+      
       container.innerHTML = html;
 
-      // ========================================================
-      // ИНТЕГРАЦИЯ AI И ОТРИСОВКА РАДАРА НА БАЗЕ Z-SCORES
-      // ========================================================
+      // === ИНТЕГРАЦИЯ AI ДАШБОРДА ===
       if (data.insight) {
         if (data.insight.is_calibrating) {
-            // Мало данных. Показываем калибровку.
             document.getElementById('calibrationBlock').style.display = 'block';
             document.getElementById('insightBlock').style.display = 'none';
+            document.getElementById('calibrationText').innerText = data.insight.text;
         } else {
-            // Данных достаточно. Рисуем Радар!
             document.getElementById('calibrationBlock').style.display = 'none';
             document.getElementById('insightBlock').style.display = 'block';
 
             let z = data.insight.z_scores;
-            
-            // Функция нормализации: Z-Score (-3.0 до +3.0) превращаем в % (0 до 100)
-            // Формула: 50% - это наша Базовая линия (Z=0). 
-            // 1 Z-score сдвигает график на 16.6% (так, что Z=+3 = 100%)
-            const mapZ = (zVal) => {
-                let pct = 50 + (parseFloat(zVal) * 16.6);
-                if (pct > 100) return 100;
-                if (pct < 0) return 0;
-                return pct;
-            };
+            // Перевод Z-Score (-2.0 до +2.0) в проценты Радара (0 до 100). 50% = Норма (Z=0)
+            const mapZ = (zVal) => { let p = 50 + (parseFloat(zVal) * 25); return p > 100 ? 100 : p < 0 ? 0 : p; };
 
-            // ФИЗИОЛОГИЧЕСКАЯ ИНВЕРСИЯ ВРЕМЕНИ
-            // Для метрик времени (Отклик и Сброс) МЕНЬШЕЕ время = ЛУЧШИЙ результат (отрицательный Z-Score)
-            // Поэтому мы умножаем Z_MS на -1 перед отрисовкой, чтобы "Улучшение" тянуло радар наружу!
+            // Инверсия времени (Меньше мс = Лучше = Больше % на радаре)
             let r_peak = mapZ(z.peak);
             let r_rfd  = mapZ(z.rfd);
             let r_ms   = mapZ(-z.ms); 
             
-            // Распределяем данные по 5 осям. То, что мы не измеряли в этом режиме, остается на 50% (норме)
-            let radarData = [50, 50, 50, 50, 50]; 
-            // Индексы: 0:АбсСила, 1:Взрыв(nRFD), 2:Стабильность, 3:Свежесть(Сброс), 4:Отклик(Реакция)
-            
-            if (data.insight.mode === 'POWER') {
-                radarData[0] = r_peak; // Абсолютная Сила
-                radarData[1] = r_rfd;  // Взрыв
-                // Ось 2: Стабильность (эмуляция sRPE на радаре)
-                radarData[2] = (data.insight.sRPE / 5) * 100; 
-            } else if (data.insight.mode === 'SPEED') {
-                radarData[4] = r_ms;   // Когнитивный отклик
-                radarData[1] = r_peak; // Баллистический Пик (В SPEED пик - это взрыв)
-                radarData[2] = (data.insight.sRPE / 5) * 100;
-            } else if (data.insight.mode === 'VOID') {
-                radarData[3] = r_rfd;  // Свежесть ЦНС (Drop Time, инвертировано в GAS Z-Score)
-                radarData[4] = r_ms;   // Отклик мозга (Latency, инвертировано)
-                radarData[2] = (data.insight.sRPE / 5) * 100;
-            }
+            let radarData =[50, 50, 50, 50, 50]; 
+            if (data.insight.mode === 'POWER') { radarData[0] = r_peak; radarData[2] = (data.insight.sRPE/5)*100; } 
+            else if (data.insight.mode === 'SPEED') { radarData[4] = r_ms; radarData[1] = r_peak; radarData[2] = (data.insight.sRPE/5)*100; } 
+            else if (data.insight.mode === 'VOID') { radarData[3] = r_rfd; radarData[4] = r_ms; radarData[2] = (data.insight.sRPE/5)*100; }
 
-            // Отрисовка
             initRadar(radarData,[50, 50, 50, 50, 50]);
 
-            // Вставка AI Вердикта из Google Script (RULES_MATRIX)
-            let color = (data.insight.profile.includes("УГНЕТЕНИЕ") || data.insight.profile.includes("СПАЗМ") || data.insight.profile.includes("ПЕРЕТРЕН") || data.insight.profile.includes("УТОМЛЕНИЕ")) ? 'var(--red)' : 'var(--accent)';
-            
+            let color = (data.insight.profile.includes("УГНЕТЕНИЕ") || data.insight.profile.includes("СПАЗМ") || data.insight.profile.includes("ПЕРЕТРЕН")) ? 'var(--red)' : 'var(--accent)';
             document.querySelector('.ai-box').style.borderLeftColor = color;
             document.querySelector('.ai-title').style.color = color;
             document.getElementById('aiVerdictHeader').style.color = color;
-            
             document.getElementById('aiVerdictHeader').innerText = `[ ${data.insight.profile} ]`;
             document.getElementById('aiVerdictText').innerHTML = data.insight.text;
-            document.getElementById('aiVerdictRec').innerHTML = `<strong>АВТОРЕГУЛЯЦИЯ:</strong> ${data.insight.recommendation || "Продолжайте тренировки по плану."}`;
         }
       }
-
     } catch(e) {
-      container.innerHTML = `<div style="text-align:center; color:var(--red); font-size:11px; padding: 20px;">Сетевая ошибка при загрузке истории: ${e.message}</div>`;
+      container.innerHTML = `<div style="text-align:center; color:var(--red); font-size:11px; padding: 20px;">Сетевая ошибка при загрузке истории.</div>`;
     }
   }
 

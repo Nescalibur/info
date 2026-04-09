@@ -6,66 +6,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NESCALIBUR | Методичка тренера</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --bg:#090a0f;
-  --surface:#12141a;
-  --border:#222630;
-  --text:#e2e8f0;
+  --bg:#0b0c10;
+  --card:#14161c;
+  --border:#252a35;
+  --text:#e6edf3;
   --muted:#8b95a5;
   --accent:#00f3ff;
-  --red:#ff3b30;
+  --red:#ff453a;
   --yellow:#ffd60a;
   --green:#32d74b;
 }
 
-* {
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
+* {box-sizing:border-box;margin:0;padding:0;}
 
 body {
-  margin:0;
+  font-family:'Inter',sans-serif;
   background:var(--bg);
   color:var(--text);
-  font-family:'Inter',sans-serif;
 }
 
+.container {
+  max-width:640px;
+  margin:auto;
+  padding:14px;
+}
+
+/* HEADER */
 .header {
   position:sticky;
   top:0;
-  background:rgba(18,20,26,0.9);
-  backdrop-filter:blur(10px);
+  background:#111318;
   border-bottom:1px solid var(--border);
-  padding:14px;
+  padding:12px;
   z-index:100;
 }
 
 .header h1 {
-  margin:0;
   font-family:'JetBrains Mono';
   font-size:14px;
   color:var(--accent);
 }
 
 .header p {
-  margin:4px 0 0;
   font-size:10px;
   color:var(--muted);
-  text-transform:uppercase;
 }
 
-.container {
-  max-width:600px;
-  margin:auto;
-  padding:12px;
-  padding-bottom:60px;
-}
-
+/* BLOCKS */
 .block {
-  background:rgba(255,255,255,0.03);
+  background:var(--card);
   border:1px solid var(--border);
   border-radius:10px;
   padding:12px;
@@ -73,47 +66,43 @@ body {
 }
 
 .block h3 {
-  margin:0 0 8px;
-  font-size:13px;
   font-family:'JetBrains Mono';
+  font-size:12px;
+  margin-bottom:6px;
 }
 
 .block p {
-  margin:0 0 6px;
   font-size:12px;
   color:#cbd5e1;
+  margin-bottom:4px;
 }
 
-.danger {
-  background:rgba(255,59,48,0.08);
-  border-left:3px solid var(--red);
-}
+.danger {border-left:3px solid var(--red);}
+.warn {border-left:3px solid var(--yellow);}
 
-.warning {
-  background:rgba(255,214,10,0.08);
-  border-left:3px solid var(--yellow);
-}
-
+/* MODULE */
 .module {
-  background:var(--surface);
   border:1px solid var(--border);
   border-radius:10px;
   margin-bottom:12px;
+  overflow:hidden;
 }
 
 .module-header {
   padding:14px;
+  background:var(--card);
   cursor:pointer;
   display:flex;
   justify-content:space-between;
+  align-items:center;
 }
 
 .module-title {
   font-family:'JetBrains Mono';
   font-size:13px;
   display:flex;
-  gap:8px;
   align-items:center;
+  gap:8px;
 }
 
 .dot {
@@ -122,37 +111,36 @@ body {
   border-radius:50%;
 }
 
-.dot-power {background:var(--red);}
-.dot-void {background:#bf5af2;}
+.power {background:var(--red);}
+.speed {background:var(--accent);}
+.void {background:#bf5af2;}
 
 .module-content {
-  max-height:0;
-  overflow:hidden;
-  transition:0.3s;
+  display:none;
+  background:#0f1116;
 }
 
 .module.active .module-content {
-  max-height:2000px;
-  border-top:1px solid var(--border);
+  display:block;
 }
 
 .content {
   padding:12px;
 }
 
+/* CARDS */
 .card {
   border:1px solid var(--border);
   border-radius:8px;
   padding:10px;
   margin-bottom:8px;
-  background:rgba(255,255,255,0.02);
 }
 
 .badge {
   font-size:9px;
-  padding:3px 6px;
-  border-radius:4px;
   font-family:'JetBrains Mono';
+  padding:2px 6px;
+  border-radius:4px;
 }
 
 .green {color:var(--green);border:1px solid var(--green);}
@@ -161,7 +149,7 @@ body {
 
 .title {
   font-size:12px;
-  font-weight:bold;
+  font-weight:600;
   margin:4px 0;
 }
 
@@ -169,7 +157,6 @@ body {
   font-size:11px;
   color:var(--muted);
 }
-
 </style>
 
 </head>
@@ -178,88 +165,120 @@ body {
 
 <div class="header">
   <h1>NESCALIBUR</h1>
-  <p>Протокол интерпретации изометрии</p>
+  <p>Протокол интерпретации</p>
 </div>
 
 <div class="container">
 
 <div class="block danger">
-<h3>МЕДИЦИНСКАЯ БЕЗОПАСНОСТЬ</h3>
-<p>Перед тестированием обязательна разминка 5–10 минут.</p>
-<p>При наличии травм, болей, гипертонии или заболеваний — требуется консультация врача.</p>
-<p>Метод включает одностороннюю высокоинтенсивную изометрическую нагрузку.</p>
+<h3>БЕЗОПАСНОСТЬ</h3>
+<p>Обязательная разминка 5–10 минут.</p>
+<p>При травмах или заболеваниях — допуск врача.</p>
+<p>Метод: односторонняя высокоинтенсивная изометрия.</p>
 </div>
 
-<div class="block warning">
-<h3>ОГРАНИЧЕНИЯ ПРОТОКОЛА</h3>
-<p>1. Тяга выполняется строго одной рукой.</p>
-<p>2. Максимальная нагрузка: 250 кг.</p>
-<p>3. Используется фиксированная высота 42 см.</p>
+<div class="block warn">
+<h3>ОГРАНИЧЕНИЯ</h3>
+<p>• Только одна рука</p>
+<p>• Максимум 250 кг</p>
+<p>• Высота строго 42 см</p>
 </div>
 
 <div class="block">
 <h3>СТАНДАРТ 42 СМ</h3>
-<p>Высота 42 см выбрана как биомеханически воспроизводимая позиция.</p>
-<p>Она формирует стабильные суставные углы и минимизирует вариативность между тестами.</p>
-//<p>Любое изменение высоты разрушает сопоставимость данных.</p>
+<p>Фиксированная высота обеспечивает повторяемую механику и сопоставимость данных между тестами.</p>
 </div>
+
+<!-- СИЛА -->
 
 <div class="module">
-<div class="module-header" onclick="this.parentElement.classList.toggle('active')">
-<div class="module-title"><span class="dot dot-power"></span>СИЛА</div>
+<div class="module-header">
+<div class="module-title"><span class="dot power"></span>СИЛА</div>
 <div>+</div>
 </div>
-
 <div class="module-content">
 <div class="content">
 
 <div class="card">
-<span class="badge green">НОРМА</span>
-<div class="title">Баланс силы и ЦНС</div>
-<div class="desc">Оптимальная синхронизация нейронного драйва и мышечной структуры</div>
+<span class="badge green">АТЛЕТ</span>
+<div class="title">Высокая сила + быстрый старт</div>
+<div class="desc">Баланс структуры и ЦНС</div>
 </div>
 
 <div class="card">
-<span class="badge yellow">ЗАДЕРЖКА</span>
-<div class="title">Сила есть, но медленный старт</div>
-<div class="desc">Дефицит RFD. Требуется взрывная работа</div>
+<span class="badge yellow">ТЯГАЧ</span>
+<div class="title">Сила есть, старт медленный</div>
+<div class="desc">Дефицит RFD → добавить скорость</div>
 </div>
 
 <div class="card">
 <span class="badge red">ДЕФИЦИТ</span>
-<div class="title">Недостаточная сила</div>
-<div class="desc">Слабость мышечного корсета. Риск травм</div>
+<div class="title">Слабая структура</div>
+<div class="desc">Риск травм → гипертрофия</div>
 </div>
 
 </div>
 </div>
 </div>
+
+<!-- СКОРОСТЬ -->
 
 <div class="module">
-<div class="module-header" onclick="this.parentElement.classList.toggle('active')">
-<div class="module-title"><span class="dot dot-void"></span>ДЕАКТИВАЦИЯ</div>
+<div class="module-header">
+<div class="module-title"><span class="dot speed"></span>СКОРОСТЬ</div>
 <div>+</div>
 </div>
-
 <div class="module-content">
 <div class="content">
 
 <div class="card">
-<span class="badge green">СВЕЖЕСТЬ</span>
-<div class="title">Быстрое расслабление</div>
-<div class="desc">Низкий уровень остаточного напряжения</div>
+<span class="badge green">140–180 мс</span>
+<div class="title">Оптимальная реакция</div>
+<div class="desc">ЦНС готова к сложной работе</div>
 </div>
 
 <div class="card">
-<span class="badge yellow">ТОНУС</span>
-<div class="title">Рабочее состояние</div>
-<div class="desc">Физиологическая норма</div>
+<span class="badge yellow"><100 мс</span>
+<div class="title">Фальстарт</div>
+<div class="desc">Предугадывание сигнала</div>
 </div>
 
 <div class="card">
-<span class="badge red">СПАЗМ</span>
-<div class="title">Замедленная деактивация</div>
-<div class="desc">Высокий риск травмы. Ограничить нагрузки</div>
+<span class="badge red">>220 мс</span>
+<div class="title">Торможение ЦНС</div>
+<div class="desc">Риск потери контроля</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- VOID -->
+
+<div class="module">
+<div class="module-header">
+<div class="module-title"><span class="dot void"></span>ДЕАКТИВАЦИЯ</div>
+<div>+</div>
+</div>
+<div class="module-content">
+<div class="content">
+
+<div class="card">
+<span class="badge green"><120 мс</span>
+<div class="title">Свежесть</div>
+<div class="desc">Быстрое расслабление</div>
+</div>
+
+<div class="card">
+<span class="badge yellow">120–160 мс</span>
+<div class="title">Норма</div>
+<div class="desc">Рабочее состояние</div>
+</div>
+
+<div class="card">
+<span class="badge red">>160 мс</span>
+<div class="title">Спазм</div>
+<div class="desc">Высокий риск травмы</div>
 </div>
 
 </div>
@@ -269,11 +288,11 @@ body {
 </div>
 
 <script>
-document.querySelectorAll('.module-header').forEach(el=>{
-  el.addEventListener('click',()=>{
-    el.parentElement.classList.toggle('active')
-  })
-})
+document.querySelectorAll('.module-header').forEach(header=>{
+  header.onclick=()=>{
+    header.parentElement.classList.toggle('active');
+  }
+});
 </script>
 
 </body>

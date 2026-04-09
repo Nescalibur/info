@@ -1,231 +1,188 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>NESCALIBUR | Руководство Тренера</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #090a0f; --surface: #12141a; --border: #222630;
-      --text: #e2e8f0; --muted: #8b95a5;
-      --accent: #00f3ff; --red: #ff3b30; --yellow: #ffd60a; --green: #32d74b;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body { margin: 0; padding: 0; background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.5; }
-    
-    /* ШАПКА */
-    .header { background: rgba(18, 20, 26, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 15px 20px; position: sticky; top: 0; z-index: 100; }
-    .header h1 { margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 16px; color: var(--accent); letter-spacing: 1px; }
-    .header p { margin: 4px 0 0 0; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px;}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-    .container { padding: 15px; padding-bottom: 60px; }
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+}
 
-    /* ВВОДНЫЙ БЛОК */
-    .intro-box { background: rgba(0, 243, 255, 0.05); border-left: 3px solid var(--accent); padding: 15px; border-radius: 6px; margin-bottom: 20px; }
-    .intro-box h3 { margin: 0 0 10px 0; font-size: 14px; font-family: 'JetBrains Mono', monospace; }
-    .intro-box p { margin: 0 0 10px 0; font-size: 13px; color: #cbd5e1; }
-    .intro-box p:last-child { margin: 0; }
+.header {
+  background: rgba(18, 20, 26, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
 
-    /* СЕКЦИИ АККОРДЕОНА */
-    .module { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 15px; overflow: hidden; }
-    .module-header { padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: var(--surface); }
-    .module-title { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: bold; margin: 0; display: flex; align-items: center; gap: 10px; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-    .dot-power { background: var(--red); box-shadow: 0 0 8px var(--red); }
-    .dot-speed { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
-    .dot-void { background: #bf5af2; box-shadow: 0 0 8px #bf5af2; }
-    
-    .icon-toggle { color: var(--muted); transition: transform 0.3s; font-size: 20px; line-height: 1; }
-    .module.active .icon-toggle { transform: rotate(45deg); }
-    
-    .module-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: #0c0d12; }
-    .module.active .module-content { max-height: 2000px; border-top: 1px solid var(--border); }
-    .content-inner { padding: 15px; }
+.header h1 {
+  margin: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--accent);
+}
 
-    /* ТАБЛИЦЫ */
-    .metric-title { font-size: 11px; color: var(--muted); text-transform: uppercase; margin-bottom: 5px; font-weight: bold; letter-spacing: 0.5px;}
-    .metric-desc { font-size: 13px; margin-bottom: 15px; color: #e2e8f0; }
-    
-    .status-card { border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 10px; background: rgba(255,255,255,0.02); }
-    .status-header { display: flex; align-items: center; margin-bottom: 8px; }
-    .badge { padding: 4px 6px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; margin-right: 10px; min-width: 55px; text-align: center;}
-    .bg-green { background: rgba(50,215,75,0.15); color: var(--green); border: 1px solid rgba(50,215,75,0.3); }
-    .bg-yellow { background: rgba(255,214,10,0.15); color: var(--yellow); border: 1px solid rgba(255,214,10,0.3); }
-    .bg-red { background: rgba(255,59,48,0.15); color: var(--red); border: 1px solid rgba(255,59,48,0.3); }
-    
-    .status-title { font-size: 13px; font-weight: bold; margin: 0; }
-    .status-action { font-size: 12px; color: var(--muted); margin: 5px 0 10px 0; }
-    
-    .dialog-box { background: #000; border-left: 2px solid #444; padding: 10px 12px; border-radius: 0 6px 6px 0; }
-    .dialog-box span { font-size: 9px; color: #666; text-transform: uppercase; display: block; margin-bottom: 4px; }
-    .dialog-box p { margin: 0; font-size: 12px; font-style: italic; color: #bbb; line-height: 1.4; }
+.header p {
+  margin: 4px 0 0;
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
 
-  </style>
-</head>
-<body>
+.container {
+  padding: 12px;
+  padding-bottom: 60px;
+  max-width: 600px;
+  margin: auto;
+}
 
-  <div class="header">
-    <h1>NESCALIBUR // МЕТОДИЧКА</h1>
-    <p>Интерпретация изометрических данных для тренеров</p>
-  </div>
+.box {
+  background: rgba(0, 243, 255, 0.05);
+  border-left: 3px solid var(--accent);
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
 
-  <div class="container">
+.box h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-family: 'JetBrains Mono', monospace;
+}
 
-    <!-- ВВОДНЫЙ БЛОК -->
-    <div class="intro-box">
-      <h3>БАЗОВЫЕ ПРИНЦИПЫ</h3>
-      <p><strong>1. Изометрия:</strong> Мы измеряем силу в статике. Отсутствие движения снаряда (эксцентрической фазы) сводит риск травм к минимуму. Разминка перед тестом обязательна.</p>
-      <p><strong>2. Высота 42 см:</strong> Стандартная высота, ставящая суставы атлета любого роста (от 160 до 195 см) в позицию максимального рычага. Изменять высоту запрещено — это уничтожит валидность базы данных.</p>
-      <p><strong>3. Правило "Отпечатка":</strong> Первые 3 теста клиента — калибровочные. Мы не сравниваем его с нормативами из интернета. Мы отслеживаем отклонение (дельту) от его личной нормы.</p>
+.box p {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: #cbd5e1;
+}
+
+.module {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.module-header {
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.module-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dot-power { background: var(--red); }
+.dot-speed { background: var(--accent); }
+.dot-void { background: #bf5af2; }
+
+.module-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.3s;
+  background: #0c0d12;
+}
+
+.module.active .module-content {
+  max-height: 2000px;
+  border-top: 1px solid var(--border);
+}
+
+.content-inner {
+  padding: 12px;
+}
+
+.status-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 8px;
+  background: rgba(255,255,255,0.02);
+}
+
+.badge {
+  padding: 3px 5px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-family: 'JetBrains Mono';
+}
+
+.bg-green { color: var(--green); border: 1px solid var(--green); }
+.bg-yellow { color: var(--yellow); border: 1px solid var(--yellow); }
+.bg-red { color: var(--red); border: 1px solid var(--red); }
+
+.status-title {
+  font-size: 12px;
+  font-weight: bold;
+  margin: 4px 0;
+}
+
+.status-action {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.danger {
+  background: rgba(255,59,48,0.08);
+  border-left: 3px solid var(--red);
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+}
+    <div class="status-card">
+      <span class="badge bg-green">НОРМА</span>
+      <div class="status-title">Баланс силы и включения</div>
+      <div class="status-action">ЦНС и мышечная система синхронизированы</div>
     </div>
 
-    <!-- РЕЖИМ 1: СИЛА -->
-    <div class="module">
-      <div class="module-header" onclick="this.parentElement.classList.toggle('active')">
-        <h2 class="module-title"><span class="dot dot-power"></span>РЕЖИМ: СИЛА</h2>
-        <span class="icon-toggle">+</span>
-      </div>
-      <div class="module-content">
-        <div class="content-inner">
-          <div class="metric-title">Относительная сила (Пик / Масса тела)</div>
-          <p class="metric-desc">Показывает структурную прочность мышечного корсета. Норма для атлета при тяге одной рукой: 1.0–1.4 своего веса.</p>
-          
-          <div class="metric-title">Стартовый градиент силы (Взрывная активация)</div>
-          <p class="metric-desc">Доля максимума, набранная за первые 200 миллисекунд. Показывает, насколько быстро нервная система включает мышцы.</p>
-
-          <div class="status-card">
-            <div class="status-header">
-              <span class="badge bg-green">АТЛЕТ</span>
-              <p class="status-title">Высокий пик + Высокий градиент</p>
-            </div>
-            <p class="status-action">Идеальный баланс. ЦНС и мышцы работают синхронно.</p>
-            <div class="dialog-box">
-              <span>Скрипт для клиента:</span>
-              <p>«Отличный баланс. Твоя нервная система мгновенно включает все резервы. Сегодня идем ставить рекорды в тяжелой базе».</p>
-            </div>
-          </div>
-
-          <div class="status-card">
-            <div class="status-header">
-              <span class="badge bg-yellow">ТЯГАЧ</span>
-              <p class="status-title">Высокий пик + Низкий градиент</p>
-            </div>
-            <p class="status-action">Структурная сила есть, но ЦНС "засыпает". Интегрировать стартовую динамику (прыжки, легкие веса на скорость).</p>
-            <div class="dialog-box">
-              <span>Скрипт для клиента:</span>
-              <p>«Силы много, но ты 'перемалываешь' вес. Мышцы включаются медленно. Чтобы пробить плато, сегодня добавляем взрывную плиометрику».</p>
-            </div>
-          </div>
-
-          <div class="status-card">
-            <div class="status-header">
-              <span class="badge bg-red">ДЕФИЦИТ</span>
-              <p class="status-title">Низкий пик (Относительная сила < 0.8)</p>
-            </div>
-            <p class="status-action">Мышечный корсет слаб. Высокий риск бытовых травм. Фокус на гипертрофию и изоляцию.</p>
-            <div class="dialog-box">
-              <span>Скрипт для клиента:</span>
-              <p>«Цифры показывают слабость стабилизаторов. Твоим суставам не хватает поддержки мышц. Осевые нагрузки пока опасны, закачиваем спину и хват».</p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="status-card">
+      <span class="badge bg-yellow">СИЛА БЕЗ СТАРТА</span>
+      <div class="status-title">Замедленная активация</div>
+      <div class="status-action">Добавить взрывные движения</div>
     </div>
 
-    <!-- РЕЖИМ 2: СКОРОСТЬ -->
-    <div class="module">
-      <div class="module-header" onclick="this.parentElement.classList.toggle('active')">
-        <h2 class="module-title"><span class="dot dot-speed"></span>РЕЖИМ: СКОРОСТЬ</h2>
-        <span class="icon-toggle">+</span>
-      </div>
-      <div class="module-content">
-        <div class="content-inner">
-          <div class="metric-title">Время реакции мозга</div>
-          <p class="metric-desc">Сумма когнитивного осознания сигнала и задержки проведения импульса к мышцам. Биологический предел: 100 мс.</p>
-
-          <div class="metric-title">Баллистический пик (Сила рывка)</div>
-          <p class="metric-desc">Способность выдать мощный импульс сразу после реакции.</p>
-
-          <div class="status-card">
-            <div class="status-header">
-              <span class="badge bg-green">140-180 мс</span>
-              <p class="status-title">Пиковая резкость</p>
-            </div>
-            <p class="status-action">Нервная система свежая. Показана сложная координационная работа.</p>
-          </div>
-
-          <div class="status-card">
-            <div class="status-header">
-              <span class="badge bg-yellow">Менее 100 мс</span>
-              <p class="status-title">Антиципация (Предугадывание)</p>
-            </div>
-            <p class="status-action">Клиент начал движение до осознания цвета. Результат физиологически невозможен. Тест не засчитан.</p>
-          </div>
-
-          <div class="status-card">
-            <div class="status-header">
-              <span class="badge bg-red">Более 220 мс</span>
-              <p class="status-title">Угнетение моторной коры</p>
-            </div>
-            <p class="status-action">Замедленная реакция на фоне стресса или недосыпа. Убрать сложные свободные веса во избежание травм.</p>
-            <div class="dialog-box">
-              <span>Скрипт для клиента:</span>
-              <p>«ЦНС истощена, скорость сигнала упала. Если дам тебе сейчас сложную штангу — потеряешь контроль. Идем на тренажеры с жесткой траекторией».</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- РЕЖИМ 3: ДЕАКТИВАЦИЯ -->
-    <div class="module">
-      <div class="module-header" onclick="this.parentElement.classList.toggle('active')">
-        <h2 class="module-title"><span class="dot dot-void"></span>РЕЖИМ: ДЕАКТИВАЦИЯ</h2>
-        <span class="icon-toggle">+</span>
-      </div>
-      <div class="module-content">
-        <div class="content-inner">
-          <div class="alert-box" style="margin-bottom: 15px; padding: 10px;">
-            <p style="font-size:11px;"><strong>ГЛАВНЫЙ МАРКЕР ПЕРЕТРЕНА.</strong> Показывает время физического расслабления мышцы (сброс 90% -> 10%). Спазм наступает раньше, чем падает сила.</p>
-          </div>
-
-          <div class="status-card">
-            <div class="status-header">
-              <span class="badge bg-green">< 120 мс</span>
-              <p class="status-title">Эластичность / Свежесть</p>
-            </div>
-            <p class="status-action">Ионы кальция утилизируются мгновенно. Мышцы готовы к тяжелой работе.</p>
-          </div>
-
-          <div class="status-card">
-            <div class="status-header">
-              <span class="badge bg-yellow">120-160 мс</span>
-              <p class="status-title">Базовый тонус</p>
-            </div>
-            <p class="status-action">Физиологическая норма. Работа по стандартному тренировочному плану.</p>
-          </div>
-
-          <div class="status-card">
-            <div class="status-header">
-              <span class="badge bg-red">> 160 мс</span>
-              <p class="status-title">Фасциальный спазм</p>
-            </div>
-            <p class="status-action">Дефицит ингибирования. Мышцы-антагонисты не выключаются. <strong>Высокий риск надрыва связок при рывках.</strong> Отмена базы. Фокус на растяжку.</p>
-            <div class="dialog-box">
-              <span>Скрипт для клиента:</span>
-              <p>«Стоп. Прибор фиксирует остаточный спазм. Твои мышцы не умеют расслабляться после вчерашнего стресса. Если возьмем штангу — порвешься. Сегодня делаем МФР (раскатку) и восстановительное кардио».</p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="status-card">
+      <span class="badge bg-red">ДЕФИЦИТ</span>
+      <div class="status-title">Недостаточная структурная сила</div>
+      <div class="status-action">Фокус на базовую гипертрофию</div>
     </div>
 
   </div>
+</div>
+    <div class="status-card">
+      <span class="badge bg-green">СВЕЖЕСТЬ</span>
+      <div class="status-title">Быстрое расслабление</div>
+      <div class="status-action">Низкий риск травм</div>
+    </div>
 
-  <script>
-    // Простой скрипт для аккордеона, если тренер кликает по заголовкам
-    // Класс .active переключается прямо в HTML атрибуте onclick, скрипт нужен лишь для страховки.
-  </script>
-</body>
-</html>
+    <div class="status-card">
+      <span class="badge bg-yellow">ТОНУС</span>
+      <div class="status-title">Норма</div>
+      <div class="status-action">Работа по плану</div>
+    </div>
+
+    <div class="status-card">
+      <span class="badge bg-red">СПАЗМ</span>
+      <div class="status-title">Замедленное расслабление</div>
+      <div class="status-action">Отмена тяжёлых нагрузок</div>
+    </div>
+
+  </div>
+</div>

@@ -1,297 +1,237 @@
 <!DOCTYPE html>
-
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NESCALIBUR | Методичка тренера</title>
+<title>NESCALIBUR — Методичка тренера</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 :root {
   --bg:#0b0c10;
-  --card:#14161c;
-  --border:#252a35;
+  --card:#15171c;
+  --border:#2a2f3a;
   --text:#e6edf3;
   --muted:#8b95a5;
-  --accent:#00f3ff;
-  --red:#ff453a;
+  --accent:#00f0ff;
+  --red:#ff3b30;
   --yellow:#ffd60a;
   --green:#32d74b;
 }
 
-* {box-sizing:border-box;margin:0;padding:0;}
-
-body {
-  font-family:'Inter',sans-serif;
+body{
+  margin:0;
+  font-family:Inter;
   background:var(--bg);
   color:var(--text);
 }
 
-.container {
-  max-width:640px;
-  margin:auto;
-  padding:14px;
-}
-
-/* HEADER */
-.header {
+.header{
   position:sticky;
   top:0;
-  background:#111318;
-  border-bottom:1px solid var(--border);
+  background:#111;
   padding:12px;
-  z-index:100;
+  border-bottom:1px solid var(--border);
 }
 
-.header h1 {
-  font-family:'JetBrains Mono';
+h1{
   font-size:14px;
+  margin:0;
+  font-family:"JetBrains Mono";
   color:var(--accent);
 }
 
-.header p {
-  font-size:10px;
-  color:var(--muted);
+.container{
+  padding:12px;
+  max-width:600px;
+  margin:auto;
 }
 
-/* BLOCKS */
-.block {
+.box{
+  background:rgba(0,240,255,0.05);
+  border-left:3px solid var(--accent);
+  padding:10px;
+  margin-bottom:12px;
+  border-radius:6px;
+}
+
+.module{
   background:var(--card);
   border:1px solid var(--border);
   border-radius:10px;
-  padding:12px;
-  margin-bottom:12px;
-}
-
-.block h3 {
-  font-family:'JetBrains Mono';
-  font-size:12px;
-  margin-bottom:6px;
-}
-
-.block p {
-  font-size:12px;
-  color:#cbd5e1;
-  margin-bottom:4px;
-}
-
-.danger {border-left:3px solid var(--red);}
-.warn {border-left:3px solid var(--yellow);}
-
-/* MODULE */
-.module {
-  border:1px solid var(--border);
-  border-radius:10px;
-  margin-bottom:12px;
+  margin-bottom:10px;
   overflow:hidden;
 }
 
-.module-header {
-  padding:14px;
-  background:var(--card);
+.module-header{
+  padding:12px;
   cursor:pointer;
   display:flex;
   justify-content:space-between;
-  align-items:center;
 }
 
-.module-title {
-  font-family:'JetBrains Mono';
-  font-size:13px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-.dot {
-  width:8px;
-  height:8px;
-  border-radius:50%;
-}
-
-.power {background:var(--red);}
-.speed {background:var(--accent);}
-.void {background:#bf5af2;}
-
-.module-content {
+.module-content{
   display:none;
-  background:#0f1116;
+  padding:10px;
+  border-top:1px solid var(--border);
 }
 
-.module.active .module-content {
+.module.active .module-content{
   display:block;
 }
 
-.content {
-  padding:12px;
+.badge{
+  font-size:10px;
+  padding:3px 6px;
+  border-radius:4px;
+  font-family:"JetBrains Mono";
 }
 
-/* CARDS */
-.card {
+.green{color:var(--green);border:1px solid var(--green);}
+.yellow{color:var(--yellow);border:1px solid var(--yellow);}
+.red{color:var(--red);border:1px solid var(--red);}
+
+.card{
   border:1px solid var(--border);
-  border-radius:8px;
-  padding:10px;
+  padding:8px;
+  border-radius:6px;
   margin-bottom:8px;
 }
 
-.badge {
-  font-size:9px;
-  font-family:'JetBrains Mono';
-  padding:2px 6px;
-  border-radius:4px;
-}
-
-.green {color:var(--green);border:1px solid var(--green);}
-.yellow {color:var(--yellow);border:1px solid var(--yellow);}
-.red {color:var(--red);border:1px solid var(--red);}
-
-.title {
-  font-size:12px;
+.title{
   font-weight:600;
-  margin:4px 0;
+  font-size:13px;
 }
 
-.desc {
-  font-size:11px;
+.desc{
+  font-size:12px;
   color:var(--muted);
 }
-</style>
 
+.dialog{
+  font-size:12px;
+  margin-top:5px;
+  color:#bbb;
+  font-style:italic;
+}
+
+.danger{
+  background:rgba(255,0,0,0.08);
+  padding:8px;
+  border-left:3px solid var(--red);
+  margin-bottom:10px;
+}
+</style>
 </head>
 
 <body>
 
 <div class="header">
-  <h1>NESCALIBUR</h1>
-  <p>Протокол интерпретации</p>
+<h1>NESCALIBUR // ПРОТОКОЛ ТРЕНЕРА</h1>
 </div>
 
 <div class="container">
 
-<div class="block danger">
-<h3>БЕЗОПАСНОСТЬ</h3>
-<p>Обязательная разминка 5–10 минут.</p>
-<p>При травмах или заболеваниях — допуск врача.</p>
-<p>Метод: односторонняя высокоинтенсивная изометрия.</p>
+<div class="box">
+<b>ПРАВИЛА ТЕСТА:</b><br>
+• Только 1 рука (унилатерально)<br>
+• Высота 42 см — стандарт биомеханики (оптимальный угол рычага)<br>
+• Ограничение: ≤ 250 кг<br>
+• Обязательна разминка<br>
+• При противопоказаниях — тест запрещён
 </div>
 
-<div class="block warn">
-<h3>ОГРАНИЧЕНИЯ</h3>
-<p>• Только одна рука</p>
-<p>• Максимум 250 кг</p>
-<p>• Высота строго 42 см</p>
-</div>
-
-<div class="block">
-<h3>СТАНДАРТ 42 СМ</h3>
-<p>Фиксированная высота обеспечивает повторяемую механику и сопоставимость данных между тестами.</p>
+<div class="danger">
+Любое отклонение показателей = риск травмы.  
+Тренер несёт ответственность за интерпретацию.
 </div>
 
 <!-- СИЛА -->
-
 <div class="module">
-<div class="module-header">
-<div class="module-title"><span class="dot power"></span>СИЛА</div>
-<div>+</div>
+<div class="module-header" onclick="this.parentElement.classList.toggle('active')">
+СИЛА
 </div>
+
 <div class="module-content">
-<div class="content">
 
 <div class="card">
-<span class="badge green">АТЛЕТ</span>
-<div class="title">Высокая сила + быстрый старт</div>
-<div class="desc">Баланс структуры и ЦНС</div>
-</div>
-
-<div class="card">
-<span class="badge yellow">ТЯГАЧ</span>
-<div class="title">Сила есть, старт медленный</div>
-<div class="desc">Дефицит RFD → добавить скорость</div>
+<span class="badge green">НОРМА</span>
+<div class="title">Баланс</div>
+<div class="desc">Сила и RFD синхронны</div>
+<div class="dialog">«Можно идти в тяжёлую базу»</div>
 </div>
 
 <div class="card">
-<span class="badge red">ДЕФИЦИТ</span>
-<div class="title">Слабая структура</div>
-<div class="desc">Риск травм → гипертрофия</div>
+<span class="badge yellow">СИЛА > RFD</span>
+<div class="title">Медленный старт</div>
+<div class="desc">ЦНС тормозит</div>
+<div class="dialog">«Добавляем взрывные движения»</div>
 </div>
 
+<div class="card">
+<span class="badge red">RFD > СИЛЫ</span>
+<div class="title">Нестабильность</div>
+<div class="desc">Недостаток структуры</div>
+<div class="dialog">«Убираем скорость, строим базу»</div>
 </div>
+
 </div>
 </div>
 
 <!-- СКОРОСТЬ -->
-
 <div class="module">
-<div class="module-header">
-<div class="module-title"><span class="dot speed"></span>СКОРОСТЬ</div>
-<div>+</div>
+<div class="module-header" onclick="this.parentElement.classList.toggle('active')">
+СКОРОСТЬ
 </div>
+
 <div class="module-content">
-<div class="content">
 
 <div class="card">
-<span class="badge green">140–180 мс</span>
-<div class="title">Оптимальная реакция</div>
-<div class="desc">ЦНС готова к сложной работе</div>
-</div>
-
-<div class="card">
-<span class="badge yellow"><100 мс</span>
-<div class="title">Фальстарт</div>
-<div class="desc">Предугадывание сигнала</div>
-</div>
-
-<div class="card">
-<span class="badge red">>220 мс</span>
-<div class="title">Торможение ЦНС</div>
-<div class="desc">Риск потери контроля</div>
-</div>
-
-</div>
-</div>
-</div>
-
-<!-- VOID -->
-
-<div class="module">
-<div class="module-header">
-<div class="module-title"><span class="dot void"></span>ДЕАКТИВАЦИЯ</div>
-<div>+</div>
-</div>
-<div class="module-content">
-<div class="content">
-
-<div class="card">
-<span class="badge green"><120 мс</span>
-<div class="title">Свежесть</div>
-<div class="desc">Быстрое расслабление</div>
-</div>
-
-<div class="card">
-<span class="badge yellow">120–160 мс</span>
+<span class="badge green">140-180мс</span>
 <div class="title">Норма</div>
-<div class="desc">Рабочее состояние</div>
+<div class="desc">ЦНС свежая</div>
 </div>
 
 <div class="card">
-<span class="badge red">>160 мс</span>
+<span class="badge red">>220мс</span>
+<div class="title">Торможение</div>
+<div class="desc">Перегрузка ЦНС</div>
+<div class="dialog">«Убираем сложные движения»</div>
+</div>
+
+</div>
+</div>
+
+<!-- ДЕАКТИВАЦИЯ -->
+<div class="module">
+<div class="module-header" onclick="this.parentElement.classList.toggle('active')">
+ДЕАКТИВАЦИЯ
+</div>
+
+<div class="module-content">
+
+<div class="card">
+<span class="badge green"><120мс</span>
+<div class="title">Свежесть</div>
+<div class="desc">Мышцы расслабляются быстро</div>
+</div>
+
+<div class="card">
+<span class="badge red">>160мс</span>
 <div class="title">Спазм</div>
 <div class="desc">Высокий риск травмы</div>
+<div class="dialog">«Отмена тяжёлых упражнений»</div>
 </div>
 
-</div>
 </div>
 </div>
 
 </div>
 
 <script>
-document.querySelectorAll('.module-header').forEach(header=>{
-  header.onclick=()=>{
-    header.parentElement.classList.toggle('active');
-  }
+document.querySelectorAll('.module-header').forEach(el=>{
+  el.onclick=()=>el.parentElement.classList.toggle('active');
 });
 </script>
 

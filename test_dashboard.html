@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NESCALIBUR | Pro Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090a0f; --surface: #12141a; --border: #222630;
+      --text: #e2e8f0; --muted: #8b95a5;
+      --red: #ff3b30; --green: #32d74b; --yellow: #ffd60a; --cyan: #00f3ff;
+    }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; padding-bottom: 30px; }
+    * { box-sizing: border-box; }
+
+    .container { max-width: 600px; margin: 0 auto; padding: 15px; }
+    
+    /* HEADER INFO */
+    .client-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    .client-name { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: bold; color: #fff; margin: 0; }
+    .client-meta { font-size: 11px; color: var(--muted); }
+
+    /* SENTINEL (TRAFFIC LIGHT) */
+    .sentinel-box { background: rgba(255, 59, 48, 0.1); border-left: 4px solid var(--red); padding: 20px; border-radius: 8px; margin-bottom: 20px; position: relative; overflow: hidden; }
+    .s-status { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--red); font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .s-status::before { content: ''; width: 8px; height: 8px; background: var(--red); border-radius: 50%; box-shadow: 0 0 10px var(--red); animation: pulse 1.5s infinite; }
+    .s-score { font-size: 48px; font-weight: 800; line-height: 1; font-family: 'Inter', sans-serif; margin-bottom: 15px; letter-spacing: -2px;}
+    .s-score span { font-size: 14px; color: var(--muted); font-weight: normal; letter-spacing: 0; margin-left: 5px; }
+    .s-action { font-size: 13px; color: #e2e8f0; line-height: 1.5; border-top: 1px dashed rgba(255,59,48,0.3); padding-top: 10px; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+    /* GRID LAYOUT */
+    .bento { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; }
+    .card-full { grid-column: 1 / -1; }
+    .c-head { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.5px; }
+
+    /* VITRUVIAN KINESIOLOGY */
+    .kinesiology { display: flex; justify-content: space-between; align-items: center; }
+    .k-stats { display: flex; flex-direction: column; gap: 10px; width: 45%; }
+    .k-val { font-size: 18px; font-weight: bold; }
+    .k-lbl { font-size: 10px; color: var(--muted); }
+    .k-alert { font-size: 10px; color: var(--red); background: rgba(255,59,48,0.1); padding: 4px 6px; border-radius: 4px; border: 1px solid rgba(255,59,48,0.3); margin-top: 5px; display: inline-block; }
+    .vitruvian { width: 40%; display: flex; justify-content: center; }
+    .v-svg { height: 120px; drop-shadow: 0 0 10px rgba(0,0,0,0.5); }
+
+    /* TREND CHARTS */
+    .chart-box { height: 120px; width: 100%; position: relative; }
+
+    /* METRICS LIST */
+    .m-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #1a1c23; }
+    .m-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .m-name { font-size: 12px; color: #cbd5e1; }
+    .m-name span { display: block; font-size: 9px; color: var(--muted); font-family: 'JetBrains Mono'; margin-top: 2px;}
+    .m-val { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: bold; text-align: right; }
+    
+    .btn-export { width: 100%; background: #fff; color: #000; font-weight: bold; font-family: 'JetBrains Mono'; padding: 15px; border-radius: 8px; border: none; margin-top: 15px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="client-header">
+    <div>
+      <p class="client-name">ALEXEY_8899</p>
+      <span class="client-meta">Мужчина, 32 года, 88.5 кг</span>
+    </div>
+    <div style="text-align: right;">
+      <span style="font-family: 'JetBrains Mono'; font-size: 10px; color: var(--muted);">ДАТА: СЕГОДНЯ</span>
+    </div>
+  </div>
+
+  <!-- SENTINEL SYSTEM -->
+  <div class="sentinel-box">
+    <div class="s-status">КРИТИЧЕСКОЕ ИСТОЩЕНИЕ ЦНС</div>
+    <div class="s-score">42<span>/ 100 GRS</span></div>
+    <div class="s-action">
+      <strong>ВЕРДИКТ ИИ:</strong> Обнаружено накопленное центральное утомление. Падение скорости реакции на 18% при сохранении структурной силы. <br><br>
+      <strong>РЕКОМЕНДАЦИЯ:</strong> Тренировка на гипертрофию или тяжелая база СЕГОДНЯ ЗАПРЕЩЕНЫ. Провести МФР, растяжку и кардио во 2-й зоне (40 мин).
+    </div>
+  </div>
+
+  <div class="bento">
+    <!-- KINESIOLOGY (VITRUVIAN) -->
+    <div class="card card-full">
+      <div class="c-head">БИОМЕХАНИКА И АСИММЕТРИЯ</div>
+      <div class="kinesiology">
+        <div class="k-stats">
+          <div>
+            <div class="k-lbl">ПРАВАЯ РУКА (ДОМИНАНТА)</div>
+            <div class="k-val">112.5 кг</div>
+          </div>
+          <div>
+            <div class="k-lbl">ЛЕВАЯ РУКА (ОТСТАЕТ)</div>
+            <div class="k-val" style="color: var(--red);">94.0 кг</div>
+            <div class="k-alert">LSI ДЕФИЦИТ: 16.4%</div>
+          </div>
+        </div>
+        <div class="vitruvian">
+          <svg viewBox="0 0 100 120" class="v-svg" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50,15 A8,8 0 1,1 49.9,15 M38,35 L62,35 L55,85 L45,85 Z" stroke="#333" fill="none" stroke-width="1.5"/>
+            <!-- Левая рука (Подсвечена красным) -->
+            <path d="M38,35 L20,60 L25,85 L35,55 Z" fill="#ff3b30" stroke="#ff3b30" stroke-width="1" opacity="0.6"/>
+            <!-- Правая рука (Норма) -->
+            <path d="M62,35 L80,60 L75,85 L65,55 Z" fill="#00f3ff" stroke="#00f3ff" stroke-width="1" opacity="0.3"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- ТРЕНДЫ (ИСКРА) -->
+    <div class="card card-full">
+      <div class="c-head">ДИНАМИКА ЦНС (30 ДНЕЙ)</div>
+      <div class="chart-box">
+        <canvas id="trendChart"></canvas>
+      </div>
+    </div>
+
+    <!-- ТОЧНЫЕ МЕТРИКИ СЕГОДНЯ -->
+    <div class="card card-full">
+      <div class="c-head">РАСШИФРОВКА ТЕСТОВ (СЕГОДНЯ)</div>
+      
+      <div class="m-row">
+        <div class="m-name">Стабильность Усилия (CVf)<span>Индекс мышечного тремора (Норма < 5%)</span></div>
+        <div class="m-val" style="color: var(--red);">8.2% ▲</div>
+      </div>
+      <div class="m-row">
+        <div class="m-name">Когнитивный Отклик<span>Режим SPEED (Норма 180-220 мс)</span></div>
+        <div class="m-val" style="color: var(--red);">285 мс ▲</div>
+      </div>
+      <div class="m-row">
+        <div class="m-name">Скорость Расслабления<span>Режим VOID (Норма 110-150 мс)</span></div>
+        <div class="m-val" style="color: var(--green);">130 мс ▼</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-export">ЭКСПОРТ ДЛЯ КЛИЕНТА ↗</button>
+</div>
+
+<script>
+  // Рендер минималистичного тренда ЦНС
+  const ctx = document.getElementById('trendChart').getContext('2d');
+  
+  // Градиент для заливки (красный = усталость внизу, зеленый = свежесть вверху)
+  let gradient = ctx.createLinearGradient(0, 0, 0, 120);
+  gradient.addColorStop(0, 'rgba(50, 215, 75, 0.2)');
+  gradient.addColorStop(1, 'rgba(255, 59, 48, 0.2)');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['1','2','3','4','5','6','7','Сегодня'],
+      datasets: [{
+        data:[85, 82, 70, 90, 88, 60, 50, 42], // GRS падает
+        borderColor: '#fff',
+        borderWidth: 2,
+        backgroundColor: gradient,
+        fill: true,
+        tension: 0.4, // Плавные кривые
+        pointRadius:[0,0,0,0,0,0,0, 6], // Точка только в конце
+        pointBackgroundColor: '#ff3b30'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
+      scales: {
+        x: { display: false },
+        y: { display: false, min: 0, max: 100 }
+      }
+    }
+  });
+</script>
+</body>
+</html>

@@ -74,73 +74,73 @@
     </div>
 
     <div class="bento-zone">
-      <!-- БЛОК 1: БИОМЕХАНИКА И РОЛИ -->
-      <div class="bento-row">
-        <div class="bento-card card-text">
-          <div class="t-block">
-            <h3>// ДЛЯ АТЛЕТА</h3>
-            <p>Узнай свой реальный предел. Выбей высший ранг. Предотврати перетренированность до получения травмы.</p>
-          </div>
-          <div class="t-block">
-            <h3>// ДЛЯ ТРЕНЕРА</h3>
-            <p>Точный срез состояния ЦНС. Контроль асимметрии левой/правой стороны. Доказательство прогресса в цифрах.</p>
-          </div>
-        </div>
-        <div class="bento-card card-gfx">
-          <!-- SVG БИОМЕХАНИКА (Технический сканер) -->
-          <svg class="svg-container" viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
-            <!-- Радарные круги на фоне -->
-            <circle cx="50" cy="75" r="40" fill="none" stroke="#00f3ff" stroke-width="0.5" stroke-dasharray="2,4" opacity="0.5"/>
-            <circle cx="50" cy="75" r="60" fill="none" stroke="#00f3ff" stroke-width="0.2" opacity="0.3"/>
-            <!-- Куб Нескалибур -->
-            <rect x="38" y="130" width="24" height="12" fill="none" stroke="#fff" stroke-width="1"/>
-            <!-- Голова -->
-            <circle cx="65" cy="30" r="6" fill="#00f3ff" opacity="0.8"/>
-            <!-- Позвоночник -->
-            <path d="M65,36 L45,85" fill="none" stroke="#00f3ff" stroke-width="1.5"/>
-            <!-- Ноги -->
-            <path d="M45,85 L60,110 L45,145" fill="none" stroke="#00f3ff" stroke-width="1.5"/>
-            <path d="M45,85 L50,115 L35,145" fill="none" stroke="#00f3ff" stroke-width="0.8" opacity="0.6"/>
-            <!-- Рука тянущая -->
-            <path d="M60,45 L50,90 L50,130" fill="none" stroke="#fff" stroke-width="2.5"/> <!-- Усиленный белый вектор -->
-            <!-- Рука отведенная -->
-            <path d="M60,45 L85,60 L95,85" fill="none" stroke="#00f3ff" stroke-width="1" stroke-dasharray="1,1"/>
-            <!-- Прицел сканера на пояснице -->
-            <rect x="40" y="80" width="10" height="10" fill="none" stroke="#fff" stroke-width="0.5"/>
-            <line x1="35" y1="85" x2="40" y2="85" stroke="#fff" stroke-width="0.5"/>
-          </svg>
-        </div>
+      
+      <!-- БЛОК 1: БИОМЕХАНИКА (Место под твою PNG картинку) -->
+      <div class="bento-card bento-full" style="height: 220px; text-align: center; border-color: #333;">
+        <div class="hud-title" style="color: #555;">[ ВСТАВИТЬ СГЕНЕРИРОВАННУЮ ИЗОМЕТРИЮ ЗДЕСЬ ]</div>
+        <p style="font-size: 10px; color: #666;">Правильная стойка: колени 135°, спина прямая, вторая рука отведена в сторону.</p>
       </div>
 
-      <!-- БЛОК 2: РЕЖИМЫ И ЭКОСИСТЕМА -->
-      <div class="bento-card bento-full">
+      <!-- БЛОК 2: РЕЖИМЫ (РУССКИЙ ЯЗЫК) -->
+      <div class="bento-card bento-full" style="height: auto; padding-bottom: 20px;">
         <div class="hud-title">ДИАГНОСТИЧЕСКИЕ ПРОТОКОЛЫ</div>
         <div class="mode-pills">
-          <div class="pill"><strong>POWER</strong><span>Абсолютная сила</span></div>
-          <div class="pill"><strong>SPEED</strong><span>Реакция ЦНС</span></div>
-          <div class="pill"><strong>VOID</strong><span>Усталость фасций</span></div>
+          <div class="pill"><strong>СИЛА</strong><span>Пиковая мощь</span></div>
+          <div class="pill"><strong>РЕАКЦИЯ</strong><span>Взрывной рефлекс</span></div>
+          <div class="pill"><strong>ДЕАКТИВАЦИЯ</strong><span>Сброс напряжения</span></div>
         </div>
+      </div>
+
+      <!-- БЛОК 3: "АЙСБЕРГ" (ГЛУБИНА ДАННЫХ) -->
+      <div class="bento-card bento-full" style="height: auto; background: linear-gradient(180deg, rgba(0,243,255,0.05) 0%, rgba(0,0,0,0.8) 100%); border: 1px solid #112233;">
+        <div class="hud-title">УРОВНИ ПОГРУЖЕНИЯ В ДАННЫЕ</div>
         
-        <div style="margin-top: 15px;">
-          <div class="hud-title">ЭКОСИСТЕМА ДАННЫХ</div>
-          <div class="flow-line">
-            <div class="f-dot"></div><div class="f-text">ТЕРМИНАЛ</div>
-            <div class="f-line"></div>
-            <div class="f-dot"></div><div class="f-text">СМАРТФОН</div>
-            <div class="f-line"></div>
-            <div class="f-dot"></div><div class="f-text">ДАШБОРД ТРЕНЕРА</div>
+        <!-- Уровень 1: Поверхность -->
+        <div style="display: flex; align-items: center; margin-top: 10px; position: relative;">
+          <div style="width: 12px; height: 12px; background: #00f3ff; box-shadow: 0 0 10px #00f3ff; border-radius: 2px; z-index: 2;"></div>
+          <div style="margin-left: 15px;">
+            <div style="font-family: 'Orbitron'; font-size: 14px; color: #fff; line-height: 1;">ЭКРАН ТЕРМИНАЛА</div>
+            <div style="font-size: 9px; color: #00f3ff; font-family: 'JetBrains Mono';">Мгновенный факт. Усилие и время.</div>
+          </div>
+        </div>
+
+        <!-- Соединительная линия вниз -->
+        <div style="width: 2px; height: 30px; background: dashed 2px #00f3ff; opacity: 0.5; margin-left: 5px;"></div>
+
+        <!-- Уровень 2: Средняя глубина -->
+        <div style="display: flex; align-items: center; position: relative;">
+          <div style="width: 12px; height: 12px; background: #0088aa; border-radius: 2px; z-index: 2;"></div>
+          <div style="margin-left: 15px;">
+            <div style="font-family: 'Orbitron'; font-size: 14px; color: #ccc; line-height: 1;">ТВОЙ СМАРТФОН</div>
+            <div style="font-size: 9px; color: #888; font-family: 'JetBrains Mono';">Цифровая карточка, ранг и график.</div>
+          </div>
+        </div>
+
+        <!-- Соединительная линия в бездну -->
+        <div style="width: 2px; height: 40px; background: dashed 2px #444; margin-left: 5px;"></div>
+
+        <!-- Уровень 3: Дно айсберга (Для тренера) -->
+        <div style="display: flex; align-items: center; position: relative;">
+          <div style="width: 12px; height: 12px; background: #222; border: 1px solid #444; border-radius: 2px; z-index: 2;"></div>
+          <div style="margin-left: 15px;">
+            <div style="font-family: 'Orbitron'; font-size: 14px; color: #666; line-height: 1;">PRO-ДАШБОРД ТРЕНЕРА</div>
+            <div style="font-size: 9px; color: #555; font-family: 'JetBrains Mono';">Оценка утомления, асимметрия, история.</div>
           </div>
         </div>
       </div>
+
     </div>
 
-    <div class="footer">
-      <div class="footer-text">
-        <h2>ИЗОМЕТРИКА: МАКСИМУМ СИЛЫ. НОЛЬ РИСКА.</h2>
-        <p>БЕЗ ДВИЖЕНИЯ СУСТАВОВ // АБСОЛЮТНАЯ ТОЧНОСТЬ</p>
+    <!-- ПОДВАЛ: УТИЛИТАРНЫЙ ЗАХВАТ -->
+    <div class="footer" style="padding: 25px 30px; border-top: 2px solid #333;">
+      <div class="footer-text" style="max-width: 65%;">
+        <h2 style="font-family: 'Inter'; font-weight: 900; font-size: 18px; color: #fff; margin: 0 0 5px 0; line-height: 1.1; text-transform: uppercase;">ТВОЙ РЕКОРД НАВСЕГДА В ЦИФРЕ.</h2>
+        <p style="font-size: 10px; color: #8b95a5; font-family: 'Inter'; margin: 0;">СКАНИРУЙ КОД С ЭКРАНА СТАНЦИИ, ЧТОБЫ СОХРАНИТЬ РЕЗУЛЬТАТ.</p>
       </div>
-      <div class="qr-fake">QR</div>
+      <!-- QR-код ведет на визитку Nescalibur -->
+      <div style="width: 70px; height: 70px; background: #fff; border-radius: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div style="font-family: 'Orbitron'; font-size: 20px; color: #000; font-weight: 900;">QR</div>
+      </div>
     </div>
-  </div>
 </body>
 </html>

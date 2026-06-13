@@ -2,123 +2,183 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>NESCALIBUR | VERSION 1: ARTERIAL ARMOR</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Oswald:wght@500;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <title>NESCALIBUR | ARTERIAL ARMOR V1.2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Oswald:wght@500;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
   <style>
-    body { background: #0a0a0a; display: flex; justify-content: center; padding: 40px; margin: 0; }
+    body { background: #050505; display: flex; justify-content: center; padding: 40px; margin: 0; }
     /* Пропорции 85x200 см */
-    .rollup { width: 425px; height: 1000px; background: #050505; position: relative; overflow: hidden; color: #fff; box-shadow: 0 20px 50px rgba(255, 26, 26, 0.15); border: 1px solid #1a0000; font-family: 'Inter', sans-serif; }
+    .rollup { width: 425px; height: 1000px; background: #070303; position: relative; overflow: hidden; color: #fff; box-shadow: 0 20px 60px rgba(255, 30, 30, 0.1); border: 1px solid #1a0505; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; }
     
-    /* Эффект "Мышечной брони" (Градиенты Эйко) */
-    .muscle-glow { position: absolute; top: 10%; right: -20%; width: 400px; height: 600px; background: radial-gradient(ellipse, rgba(200, 10, 10, 0.15) 0%, rgba(0,0,0,0) 70%); transform: rotate(15deg); z-index: 0; }
+    /* Эффект свечения */
+    .glow-red { position: absolute; top: -5%; right: -20%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(255, 26, 26, 0.15) 0%, rgba(0,0,0,0) 70%); border-radius: 50%; z-index: 0; pointer-events: none; }
     
-    .header { position: relative; z-index: 2; padding: 30px; border-bottom: 2px solid #ff1a1a; background: linear-gradient(180deg, #110000 0%, #050505 100%); }
-    .brand { font-family: 'Oswald', sans-serif; font-size: 28px; color: #fff; letter-spacing: 4px; margin: 0; text-transform: uppercase; }
+    /* ШАПКА */
+    .header { position: relative; z-index: 2; padding: 25px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ff1a1a; background: rgba(10,0,0,0.8); }
+    .brand { font-family: 'Oswald', sans-serif; font-size: 24px; color: #fff; margin: 0; letter-spacing: 2px;}
     .brand span { color: #ff1a1a; }
+    .sys-id { font-family: 'JetBrains Mono'; font-size: 8px; color: #ff1a1a; border: 1px solid #ff1a1a; padding: 3px 6px; letter-spacing: 1px;}
+
+    /* ГЛАВНЫЙ ЗАГОЛОВОК */
+    .hero { padding: 35px 30px 20px 30px; position: relative; z-index: 2; }
+    .hero h1 { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 42px; line-height: 1; margin: 0 0 10px 0; color: #fff; text-transform: uppercase; text-shadow: 0 0 15px rgba(255, 26, 26, 0.4); }
+    .hero p { font-family: 'JetBrains Mono'; font-size: 11px; color: #888; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;}
+
+    /* БЛОК: РОЛИ И ВИЗУАЛ */
+    .split-zone { padding: 10px 30px; position: relative; z-index: 2; display: flex; gap: 15px; flex: 1;}
+    .text-column { width: 50%; display: flex; flex-direction: column; gap: 20px; justify-content: center;}
     
-    .hero { padding: 30px; position: relative; z-index: 2; }
-    .hero h1 { font-family: 'Oswald', sans-serif; font-size: 46px; line-height: 1; margin: 0 0 10px 0; color: #fff; text-shadow: 0 0 20px rgba(255, 26, 26, 0.5); }
-    .hero p { font-size: 13px; color: #a0a0a0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+    .target-box { position: relative; padding-left: 12px; }
+    .target-box::before { content:''; position: absolute; left: 0; top: 0; height: 100%; width: 2px; background: #ff1a1a; }
+    .target-box h3 { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #ff1a1a; margin: 0 0 6px 0; font-weight: 800;}
+    .target-box p { font-size: 11px; color: #a0a0a0; margin: 0; line-height: 1.4; }
 
-    .split-zone { display: flex; padding: 0 30px; position: relative; z-index: 2; height: 350px; }
-    .text-column { width: 50%; padding-right: 15px; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
-    .target-box { border-left: 3px solid #ff1a1a; padding-left: 10px; }
-    .target-box h3 { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #ff1a1a; margin: 0 0 5px 0; }
-    .target-box ul { margin: 0; padding-left: 15px; font-size: 11px; color: #ddd; line-height: 1.5; }
+    /* Место под изометрию */
+    .gfx-column { width: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px dashed #330a0a; background: rgba(255,26,26,0.02); position: relative;}
+    .gfx-placeholder-text { font-family: 'JetBrains Mono'; font-size: 8px; color: #666; text-align: center; padding: 10px; }
 
-    /* ВИТРУВИАНЕЦ 2.0 (SVG Биомеханика) */
-    .gfx-column { width: 50%; position: relative; }
-    .svg-container { width: 100%; height: 100%; filter: drop-shadow(0 0 8px rgba(255, 26, 26, 0.8)); }
+    /* БЛОК: РЕЖИМЫ (ИНФОГРАФИКА) */
+    .modes-zone { padding: 0 30px; margin-top: 10px; position: relative; z-index: 2; }
+    .hud-title { font-family: 'JetBrains Mono'; font-size: 10px; color: #555; margin-bottom: 12px; letter-spacing: 1px; }
+    .modes-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .mode-card { background: #0c0202; border: 1px solid #330a0a; border-top: 2px solid #ff1a1a; padding: 12px 10px; text-align: center; }
+    .mode-card h4 { font-family: 'Oswald', sans-serif; font-size: 14px; margin: 0 0 4px 0; color: #fff; letter-spacing: 1px;}
+    .mode-card p { font-size: 9px; color: #888; margin: 0; line-height: 1.2;}
 
-    .modes-zone { padding: 30px; background: #0a0000; position: relative; z-index: 2; border-top: 1px solid #220000; border-bottom: 1px solid #220000;}
-    .modes-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px; }
-    .mode-card { background: #000; border: 1px solid #330000; padding: 10px; text-align: center; }
-    .mode-card h4 { font-family: 'Oswald', sans-serif; font-size: 16px; margin: 0 0 5px 0; color: #fff; }
-    .mode-card p { font-size: 9px; color: #888; margin: 0; }
+    /* БЛОК: АЙСБЕРГ (ПЕРЕРАБОТАННЫЙ) */
+    .iceberg-zone { padding: 25px 30px; margin-top: 20px; background: linear-gradient(180deg, rgba(20,2,2,0.8) 0%, rgba(5,5,5,1) 100%); border-top: 1px solid #220000; position: relative; z-index: 2; }
     
-    .eco-flow { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #333; padding-top: 20px; }
-    .eco-node { text-align: center; width: 30%; }
-    .eco-node div { font-family: 'JetBrains Mono'; font-size: 10px; font-weight: bold; color: #ff1a1a; margin-bottom: 4px; }
-    .eco-node p { font-size: 8px; color: #666; margin: 0; }
-    .eco-arrow { color: #333; font-size: 14px; }
+    .iceberg-container { position: relative; padding-left: 20px; }
+    /* Глубинная линия */
+    .depth-line { position: absolute; left: 4px; top: 10px; bottom: 10px; width: 2px; background: linear-gradient(180deg, #ff1a1a 0%, #660000 40%, #111 100%); }
 
-    .footer { position: absolute; bottom: 0; width: 100%; padding: 25px 30px 40px 30px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; background: #000; }
-    .cta-text h2 { font-family: 'Oswald', sans-serif; font-size: 18px; color: #fff; margin: 0 0 5px 0; }
-    .cta-text p { font-size: 10px; color: #888; margin: 0; text-transform: uppercase; }
-    .qr-fake { width: 60px; height: 60px; border: 2px solid #ff1a1a; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono'; font-size: 14px; color: #ff1a1a; background: #1a0000; }
+    .ice-node { position: relative; margin-bottom: 25px; }
+    .ice-node:last-child { margin-bottom: 0; }
+    /* Узлы (точки на линии) */
+    .ice-node::before { content: ''; position: absolute; left: -20px; top: 2px; width: 6px; height: 6px; border-radius: 50%; background: #ff1a1a; box-shadow: 0 0 8px #ff1a1a; }
+    .ice-node.mid::before { background: #880000; box-shadow: none; border: 1px solid #ff1a1a; }
+    .ice-node.deep::before { background: #222; border: 1px solid #444; }
+
+    /* Типографика уровней */
+    .ice-title { font-family: 'Oswald', sans-serif; font-size: 16px; margin: 0 0 2px 0; text-transform: uppercase; letter-spacing: 1px; }
+    .ice-desc { font-family: 'Inter'; font-size: 10px; margin: 0; line-height: 1.3; }
+    
+    .lvl-1 .ice-title { color: #fff; text-shadow: 0 0 5px rgba(255,255,255,0.3); }
+    .lvl-1 .ice-desc { color: #ff9999; }
+    
+    .lvl-2 .ice-title { color: #aaa; }
+    .lvl-2 .ice-desc { color: #777; }
+    
+    .lvl-3 .ice-title { color: #555; }
+    .lvl-3 .ice-desc { color: #444; font-family: 'JetBrains Mono'; font-size: 9px;}
+
+    /* ПОДВАЛ (АГРЕССИВНЫЙ) */
+    .footer { background: #000; border-top: 2px solid #ff1a1a; padding: 30px; display: flex; align-items: center; justify-content: space-between; z-index: 10; margin-top: auto;}
+    .footer-text { max-width: 65%; }
+    .footer-text h2 { font-family: 'Oswald', sans-serif; font-size: 22px; color: #fff; margin: 0 0 5px 0; line-height: 1.1; letter-spacing: 1px;}
+    .footer-text p { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #888; margin: 0; }
+    
+    .qr-box { width: 75px; height: 75px; background: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 4px; box-shadow: 0 0 15px rgba(255,26,26,0.3); }
+    .qr-box span { font-family: 'Inter'; font-weight: 900; font-size: 24px; color: #000; }
   </style>
 </head>
 <body>
   <div class="rollup">
-    <div class="muscle-glow"></div>
+    <div class="glow-red"></div>
     
     <div class="header">
       <h2 class="brand">NESC<span>ALIBUR</span></h2>
+      <div class="sys-id">DATA_LOGGING_ACTIVE</div>
     </div>
 
     <div class="hero">
-      <h1>ОЦИФРУЙ<br>СВОЮ<br>СИЛУ</h1>
-      <p>СТАНЦИЯ АНАЛИЗА НЕЙРОМЫШЕЧНОГО ПРОФИЛЯ</p>
+      <h1>ОЦИФРУЙ СВОЮ<br>ИСТИННУЮ СИЛУ</h1>
+      <p>Станция анализа нейромышечного прогресса</p>
     </div>
 
+    <!-- ЗОНА БИОМЕХАНИКИ И ЦЕЛЕЙ -->
     <div class="split-zone">
       <div class="text-column">
         <div class="target-box">
           <h3>[ АТЛЕТУ ]</h3>
-          <ul><li>Узнай свой реальный предел</li><li>Выбей высший ранг</li><li>Предотврати перетрен</li></ul>
+          <p>Узнай свой реальный предел. Выбей высший ранг. Предотврати перетрен до получения травмы.</p>
         </div>
         <div class="target-box">
           <h3>[ ТРЕНЕРУ ]</h3>
-          <ul><li>Срез состояния ЦНС</li><li>Контроль асимметрии</li><li>Цифровое доказательство</li></ul>
+          <p>Точный срез состояния ЦНС. Контроль асимметрии тела. Доказательство прогресса в цифрах.</p>
         </div>
       </div>
+      
       <div class="gfx-column">
-        <!-- SVG БИОМЕХАНИКА (Тяга одной рукой, полуприсед) -->
-        <svg class="svg-container" viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
-          <!-- Опорные линии / Векторы -->
-          <line x1="50" y1="130" x2="50" y2="20" stroke="#330000" stroke-width="1" stroke-dasharray="2,2"/>
-          <!-- Куб Нескалибур -->
-          <rect x="40" y="130" width="20" height="15" fill="none" stroke="#ff1a1a" stroke-width="1.5"/>
-          <!-- Голова -->
-          <circle cx="65" cy="30" r="7" fill="none" stroke="#fff" stroke-width="1.5"/>
-          <!-- Позвоночник (прямой, под углом) -->
-          <path d="M65,37 L45,85" fill="none" stroke="#fff" stroke-width="2"/>
-          <!-- Ноги (сгиб колена ~135 град) -->
-          <path d="M45,85 L60,110 L45,145" fill="none" stroke="#fff" stroke-width="2"/>
-          <path d="M45,85 L50,115 L35,145" fill="none" stroke="#aa0000" stroke-width="1.5"/> <!-- Дальняя нога -->
-          <!-- Рука тянущая (вниз к кубу) -->
-          <path d="M60,45 L50,90 L50,130" fill="none" stroke="#ff1a1a" stroke-width="2.5"/> <!-- Артериальный акцент на рабочей цепи -->
-          <!-- Рука отведенная (стабилизация) -->
-          <path d="M60,45 L85,60 L95,85" fill="none" stroke="#555" stroke-width="1.5"/>
-          <!-- Нейро-узлы -->
-          <circle cx="60" cy="45" r="2" fill="#ff1a1a"/> <!-- Плечо -->
-          <circle cx="45" cy="85" r="2" fill="#fff"/> <!-- Таз -->
-          <circle cx="50" cy="130" r="2" fill="#ff1a1a"/> <!-- Хват -->
-        </svg>
+        <!-- СЮДА ТЫ ВСТАВИШЬ СГЕНЕРИРОВАННУЮ ИЗОМЕТРИЮ БЕЗ ФОНА -->
+        <!-- И ДОРИСУЕШЬ ЦЕПЬ С ПЛАТФОРМОЙ В ФИГМЕ -->
+        <div class="gfx-placeholder-text">
+           > IMAGE LAYER <br><br>
+           Cyberpunk Wireframe<br>
+           Mid-Thigh Pull Stance<br>
+           (No Chain/Platform)
+        </div>
+        <!-- Вектор вектора силы (дорисуешь в фигме) -->
+        <div style="position: absolute; bottom: 20px; width: 2px; height: 40px; background: #ff1a1a; box-shadow: 0 0 5px #ff1a1a;"></div>
+        <div style="position: absolute; bottom: 60px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 8px solid #ff1a1a;"></div>
       </div>
     </div>
 
+    <!-- РЕЖИМЫ (ИНФОГРАФИКА) -->
     <div class="modes-zone">
+      <div class="hud-title">// ДИАГНОСТИЧЕСКИЕ ПРОТОКОЛЫ</div>
       <div class="modes-grid">
-        <div class="mode-card"><h4>POWER</h4><p>Абсолютная сила<br>(Пик. усилие)</p></div>
-        <div class="mode-card"><h4>SPEED</h4><p>Рефлекс ЦНС<br>(Взрыв. драйв)</p></div>
-        <div class="mode-card"><h4>VOID</h4><p>Утомление<br>(Сброс фасций)</p></div>
-      </div>
-      <div class="eco-flow">
-        <div class="eco-node"><div>ТЕРМИНАЛ</div><p>Мгновенный срез</p></div>
-        <div class="eco-arrow">→</div>
-        <div class="eco-node"><div>СМАРТФОН</div><p>Ранг и карточка</p></div>
-        <div class="eco-arrow">→</div>
-        <div class="eco-node"><div>PRO-ПАНЕЛЬ</div><p>Дашборд тренера</p></div>
+        <div class="mode-card">
+          <h4>СИЛА</h4>
+          <p>Пиковая мощь</p>
+        </div>
+        <div class="mode-card">
+          <h4>РЕАКЦИЯ</h4>
+          <p>Взрывной рефлекс</p>
+        </div>
+        <div class="mode-card">
+          <h4>ДЕАКТИВАЦИЯ</h4>
+          <p>Сброс напряжения</p>
+        </div>
       </div>
     </div>
 
-    <div class="footer">
-      <div class="cta-text">
-        <h2>ИЗОМЕТРИКА: СИЛА БЕЗ ТРАВМ.</h2>
-        <p>100% БЕЗОПАСНО. БЕЗ ДВИЖЕНИЯ СУСТАВОВ. ТОЧНОСТЬ 80HZ.</p>
+    <!-- ГЛУБИНА АНАЛИЗА (АЙСБЕРГ v2.0) -->
+    <div class="iceberg-zone">
+      <div class="hud-title" style="margin-bottom: 20px;">// УРОВНИ АНАЛИТИКИ</div>
+      
+      <div class="iceberg-container">
+        <div class="depth-line"></div>
+        
+        <!-- SURFACE -->
+        <div class="ice-node lvl-1">
+          <h4 class="ice-title">ЭКРАН ТЕРМИНАЛА</h4>
+          <p class="ice-desc">Мгновенный факт. Усилие и время задержки в реальном времени.</p>
+        </div>
+
+        <!-- MID-DEPTH -->
+        <div class="ice-node mid lvl-2">
+          <h4 class="ice-title">ТВОЙ СМАРТФОН</h4>
+          <p class="ice-desc">Подробная цифровая карточка. Твой ранг и график приложения силы.</p>
+        </div>
+
+        <!-- ABYSS -->
+        <div class="ice-node deep lvl-3">
+          <h4 class="ice-title">PRO-ДАШБОРД ТРЕНЕРА</h4>
+          <p class="ice-desc">Оценка утомления, индекс асимметрии, база данных и долгосрочные тренды.</p>
+        </div>
       </div>
-      <div class="qr-fake">QR</div>
+    </div>
+
+    <!-- АГРЕССИВНЫЙ ПОДВАЛ -->
+    <div class="footer">
+      <div class="footer-text">
+        <h2>ТВОЙ РЕКОРД<br>НАВСЕГДА В ЦИФРЕ.</h2>
+        <p>СКАНИРУЙ КОД С ЭКРАНА СТАНЦИИ, ЧТОБЫ СОХРАНИТЬ РЕЗУЛЬТАТ.</p>
+      </div>
+      <!-- ЗАГЛУШКА ПОД РЕАЛЬНЫЙ QR-КОД -->
+      <div class="qr-box">
+        <span>QR</span>
+      </div>
     </div>
   </div>
 </body>

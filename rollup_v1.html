@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>NESCALIBUR | VERSION 1: ARTERIAL ARMOR</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Oswald:wght@500;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body { background: #0a0a0a; display: flex; justify-content: center; padding: 40px; margin: 0; }
+    /* Пропорции 85x200 см */
+    .rollup { width: 425px; height: 1000px; background: #050505; position: relative; overflow: hidden; color: #fff; box-shadow: 0 20px 50px rgba(255, 26, 26, 0.15); border: 1px solid #1a0000; font-family: 'Inter', sans-serif; }
+    
+    /* Эффект "Мышечной брони" (Градиенты Эйко) */
+    .muscle-glow { position: absolute; top: 10%; right: -20%; width: 400px; height: 600px; background: radial-gradient(ellipse, rgba(200, 10, 10, 0.15) 0%, rgba(0,0,0,0) 70%); transform: rotate(15deg); z-index: 0; }
+    
+    .header { position: relative; z-index: 2; padding: 30px; border-bottom: 2px solid #ff1a1a; background: linear-gradient(180deg, #110000 0%, #050505 100%); }
+    .brand { font-family: 'Oswald', sans-serif; font-size: 28px; color: #fff; letter-spacing: 4px; margin: 0; text-transform: uppercase; }
+    .brand span { color: #ff1a1a; }
+    
+    .hero { padding: 30px; position: relative; z-index: 2; }
+    .hero h1 { font-family: 'Oswald', sans-serif; font-size: 46px; line-height: 1; margin: 0 0 10px 0; color: #fff; text-shadow: 0 0 20px rgba(255, 26, 26, 0.5); }
+    .hero p { font-size: 13px; color: #a0a0a0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+
+    .split-zone { display: flex; padding: 0 30px; position: relative; z-index: 2; height: 350px; }
+    .text-column { width: 50%; padding-right: 15px; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+    .target-box { border-left: 3px solid #ff1a1a; padding-left: 10px; }
+    .target-box h3 { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #ff1a1a; margin: 0 0 5px 0; }
+    .target-box ul { margin: 0; padding-left: 15px; font-size: 11px; color: #ddd; line-height: 1.5; }
+
+    /* ВИТРУВИАНЕЦ 2.0 (SVG Биомеханика) */
+    .gfx-column { width: 50%; position: relative; }
+    .svg-container { width: 100%; height: 100%; filter: drop-shadow(0 0 8px rgba(255, 26, 26, 0.8)); }
+
+    .modes-zone { padding: 30px; background: #0a0000; position: relative; z-index: 2; border-top: 1px solid #220000; border-bottom: 1px solid #220000;}
+    .modes-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px; }
+    .mode-card { background: #000; border: 1px solid #330000; padding: 10px; text-align: center; }
+    .mode-card h4 { font-family: 'Oswald', sans-serif; font-size: 16px; margin: 0 0 5px 0; color: #fff; }
+    .mode-card p { font-size: 9px; color: #888; margin: 0; }
+    
+    .eco-flow { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #333; padding-top: 20px; }
+    .eco-node { text-align: center; width: 30%; }
+    .eco-node div { font-family: 'JetBrains Mono'; font-size: 10px; font-weight: bold; color: #ff1a1a; margin-bottom: 4px; }
+    .eco-node p { font-size: 8px; color: #666; margin: 0; }
+    .eco-arrow { color: #333; font-size: 14px; }
+
+    .footer { position: absolute; bottom: 0; width: 100%; padding: 25px 30px 40px 30px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; background: #000; }
+    .cta-text h2 { font-family: 'Oswald', sans-serif; font-size: 18px; color: #fff; margin: 0 0 5px 0; }
+    .cta-text p { font-size: 10px; color: #888; margin: 0; text-transform: uppercase; }
+    .qr-fake { width: 60px; height: 60px; border: 2px solid #ff1a1a; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono'; font-size: 14px; color: #ff1a1a; background: #1a0000; }
+  </style>
+</head>
+<body>
+  <div class="rollup">
+    <div class="muscle-glow"></div>
+    
+    <div class="header">
+      <h2 class="brand">NESC<span>ALIBUR</span></h2>
+    </div>
+
+    <div class="hero">
+      <h1>ОЦИФРУЙ<br>СВОЮ<br>СИЛУ</h1>
+      <p>СТАНЦИЯ АНАЛИЗА НЕЙРОМЫШЕЧНОГО ПРОФИЛЯ</p>
+    </div>
+
+    <div class="split-zone">
+      <div class="text-column">
+        <div class="target-box">
+          <h3>[ АТЛЕТУ ]</h3>
+          <ul><li>Узнай свой реальный предел</li><li>Выбей высший ранг</li><li>Предотврати перетрен</li></ul>
+        </div>
+        <div class="target-box">
+          <h3>[ ТРЕНЕРУ ]</h3>
+          <ul><li>Срез состояния ЦНС</li><li>Контроль асимметрии</li><li>Цифровое доказательство</li></ul>
+        </div>
+      </div>
+      <div class="gfx-column">
+        <!-- SVG БИОМЕХАНИКА (Тяга одной рукой, полуприсед) -->
+        <svg class="svg-container" viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+          <!-- Опорные линии / Векторы -->
+          <line x1="50" y1="130" x2="50" y2="20" stroke="#330000" stroke-width="1" stroke-dasharray="2,2"/>
+          <!-- Куб Нескалибур -->
+          <rect x="40" y="130" width="20" height="15" fill="none" stroke="#ff1a1a" stroke-width="1.5"/>
+          <!-- Голова -->
+          <circle cx="65" cy="30" r="7" fill="none" stroke="#fff" stroke-width="1.5"/>
+          <!-- Позвоночник (прямой, под углом) -->
+          <path d="M65,37 L45,85" fill="none" stroke="#fff" stroke-width="2"/>
+          <!-- Ноги (сгиб колена ~135 град) -->
+          <path d="M45,85 L60,110 L45,145" fill="none" stroke="#fff" stroke-width="2"/>
+          <path d="M45,85 L50,115 L35,145" fill="none" stroke="#aa0000" stroke-width="1.5"/> <!-- Дальняя нога -->
+          <!-- Рука тянущая (вниз к кубу) -->
+          <path d="M60,45 L50,90 L50,130" fill="none" stroke="#ff1a1a" stroke-width="2.5"/> <!-- Артериальный акцент на рабочей цепи -->
+          <!-- Рука отведенная (стабилизация) -->
+          <path d="M60,45 L85,60 L95,85" fill="none" stroke="#555" stroke-width="1.5"/>
+          <!-- Нейро-узлы -->
+          <circle cx="60" cy="45" r="2" fill="#ff1a1a"/> <!-- Плечо -->
+          <circle cx="45" cy="85" r="2" fill="#fff"/> <!-- Таз -->
+          <circle cx="50" cy="130" r="2" fill="#ff1a1a"/> <!-- Хват -->
+        </svg>
+      </div>
+    </div>
+
+    <div class="modes-zone">
+      <div class="modes-grid">
+        <div class="mode-card"><h4>POWER</h4><p>Абсолютная сила<br>(Пик. усилие)</p></div>
+        <div class="mode-card"><h4>SPEED</h4><p>Рефлекс ЦНС<br>(Взрыв. драйв)</p></div>
+        <div class="mode-card"><h4>VOID</h4><p>Утомление<br>(Сброс фасций)</p></div>
+      </div>
+      <div class="eco-flow">
+        <div class="eco-node"><div>ТЕРМИНАЛ</div><p>Мгновенный срез</p></div>
+        <div class="eco-arrow">→</div>
+        <div class="eco-node"><div>СМАРТФОН</div><p>Ранг и карточка</p></div>
+        <div class="eco-arrow">→</div>
+        <div class="eco-node"><div>PRO-ПАНЕЛЬ</div><p>Дашборд тренера</p></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="cta-text">
+        <h2>ИЗОМЕТРИКА: СИЛА БЕЗ ТРАВМ.</h2>
+        <p>100% БЕЗОПАСНО. БЕЗ ДВИЖЕНИЯ СУСТАВОВ. ТОЧНОСТЬ 80HZ.</p>
+      </div>
+      <div class="qr-fake">QR</div>
+    </div>
+  </div>
+</body>
+</html>

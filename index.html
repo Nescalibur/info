@@ -107,28 +107,137 @@
     <h2>Режимы измерения</h2>
   </div>
 
-  <div class="interface-gallery">
-    <div class="gallery-item">
-      <img src="chart-power.jpg" alt="Сила">
-      <span class="caption">СИЛА · пиковое усилие и импульс</span>
-    </div>
-
-    <div class="gallery-item">
-      <img src="chart-speed.jpg" alt="Скорость">
-      <span class="caption">СКОРОСТЬ · реакция и нарастание усилия</span>
-    </div>
-
-    <div class="gallery-item">
-      <img src="chart-void.jpg" alt="Деактивация">
-      <span class="caption">ДЕАКТИВАЦИЯ · скорость расслабления мышц</span>
-    </div>
-
-    <div class="gallery-item">
-      <img src="chart-asym.jpg" alt="Асимметрия">
-      <span class="caption">АСИММЕТРИЯ · баланс силы правой и левой стороны</span>
-    </div>
-    
+  <!-- ИНТЕРАКТИВНЫЙ HUD-ТЕРМИНАЛ РЕЖИМОВ (В СТИЛЕ TEMPLATE.HTML) -->
+<div class="hud-terminal" style="background:#07090e; border:1px solid #1a2233; border-radius:14px; padding:20px; margin-top:25px;">
+  <!-- Переключатели режимов с фирменными цветами -->
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:8px; margin-bottom:18px;">
+    <button class="hud-tab active" onclick="setHudMode('POWER')" id="hTab-POWER" style="border-color:#ff3b30; color:#ff3b30;">СИЛА</button>
+    <button class="hud-tab" onclick="setHudMode('SPEED')" id="hTab-SPEED">СКОРОСТЬ</button>
+    <button class="hud-tab" onclick="setHudMode('VOID')" id="hTab-VOID">ДЕАКТИВАЦИЯ</button>
+    <button class="hud-tab" onclick="setHudMode('ASYM')" id="hTab-ASYM">АСИММЕТРИЯ</button>
   </div>
+
+  <!-- Экран графической телеметрии -->
+  <div style="display:grid; grid-template-columns:1fr 220px; gap:16px; align-items:center;">
+    <div style="height:190px; position:relative; background:#020305; border:1px solid #161c28; border-radius:8px; padding:10px;">
+      <canvas id="hudCanvas" style="width:100%; height:100%; display:block;"></canvas>
+    </div>
+
+    <!-- Информационная плашка -->
+    <div style="font-family:'JetBrains Mono', monospace; font-size:11px; display:flex; flex-direction:column; gap:8px;">
+      <div style="color:#56657f; font-size:9px; text-transform:uppercase;">Метрологический профиль:</div>
+      <div id="hudVal" style="font-family:'Space Grotesk', sans-serif; font-size:26px; font-weight:700; color:#ff3b30;">126.4 КГ</div>
+      <div id="hudRank" style="font-size:12px; font-weight:600; color:#ffd700;">РАНГ [ПРИМАРХ]</div>
+      <div id="hudDesc" style="color:#8b949e; font-size:10px; line-height:1.4; border-top:1px dashed #21262d; padding-top:8px;">
+        Максимальная изометрическая тяга задней цепи за 5 секунд. Интеграл импульса силы.
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .hud-tab {
+    background:#0d1117; border:1px solid #21262d; color:#8b949e; padding:10px 8px;
+    border-radius:6px; cursor:pointer; font-family:'Space Grotesk', sans-serif;
+    font-size:11px; font-weight:600; letter-spacing:1px; transition:0.2s;
+  }
+  .hud-tab:hover { border-color:#58a6ff; color:#fff; }
+  .hud-tab.active { background:#161b22; box-shadow:0 0 15px rgba(0,0,0,0.5); }
+</style>
+
+<script>
+  const HUD_PRESETS = {
+    POWER: {
+      color: '#ff3b30', val: '126.4 КГ', rank: 'РАНГ [ПРИМАРХ]',
+      desc: 'Предельная изометрическая тяга за 5 секунд. Оценка максимальной произвольной силы (МПС) без динамических рывков.',
+      points: [2, 8, 25, 60, 92, 114, 122, 126.4, 126.0, 125.2, 124.0]
+    },
+    SPEED: {
+      color: '#00f3ff', val: '172 МС', rank: 'РАНГ [МАНГУСТ]',
+      desc: 'Взрывной баллистический срыв за 1.4 с. Сенсомоторная латентность коры (RT) и стартовое ускорение залпа волокон (Yank).',
+      points: [1.5, 1.5, 1.6, 2.8, 18, 52, 94, 118, 124, 125, 125]
+    },
+    VOID: {
+      color: '#bf5af2', val: '108 МС', rank: 'РАНГ [ЭЛИТА]',
+      desc: 'Скорость произвольной деактивации мышц (сброс 90% -> 10%). Контроль обратного захвата Ca2+ насосами SERCA1.',
+      points: [16, 16, 16, 15.5, 14.8, 10.2, 4.8, 2.1, 1.2, 0.4, 0]
+    },
+    ASYM: {
+      color: '#ffd700', val: 'ASI: 6.8%', rank: 'НОРМА БАЛАНСА',
+      desc: 'Билатеральный баланс правой и левой стороны. Выявление компенсаторного перекоса таза и ротационной нагрузки позвоночника.',
+      points: [0, 12, 35, 78, 110, 124, 126.4, 126, 124, 122, 120],
+      pointsLeft: [0, 8, 28, 65, 96, 112, 117.8, 117, 115, 114, 112]
+    }
+  };
+
+  let currentHud = 'POWER';
+
+  function setHudMode(m) {
+    currentHud = m;
+    ['POWER', 'SPEED', 'VOID', 'ASYM'].forEach(k => {
+      const el = document.getElementById('hTab-' + k);
+      el.className = 'hud-tab' + (k === m ? ' active' : '');
+      el.style.borderColor = k === m ? HUD_PRESETS[k].color : '#21262d';
+      el.style.color = k === m ? HUD_PRESETS[k].color : '#8b949e';
+    });
+    
+    const p = HUD_PRESETS[m];
+    document.getElementById('hudVal').innerText = p.val;
+    document.getElementById('hudVal').style.color = p.color;
+    document.getElementById('hudRank').innerText = p.rank;
+    document.getElementById('hudDesc').innerText = p.desc;
+    drawHudCanvas();
+  }
+
+  function drawHudCanvas() {
+    const cvs = document.getElementById('hudCanvas');
+    if (!cvs) return;
+    const ctx = cvs.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    cvs.width = cvs.clientWidth * dpr;
+    cvs.height = cvs.clientHeight * dpr;
+    ctx.scale(dpr, dpr);
+
+    const w = cvs.clientWidth, h = cvs.clientHeight;
+    ctx.clearRect(0, 0, w, h);
+
+    // Сетка
+    ctx.strokeStyle = '#121722';
+    ctx.lineWidth = 1;
+    for(let y = 20; y < h; y += 35) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
+    for(let x = 30; x < w; x += 50) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
+
+    const p = HUD_PRESETS[currentHud];
+    
+    // Функция рисования сглаженной кривой
+    function plotCurve(arr, color) {
+      ctx.beginPath();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2.5;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = color;
+      const maxV = 130;
+      arr.forEach((v, i) => {
+        const x = (i / (arr.length - 1)) * (w - 20) + 10;
+        const y = h - (v / maxV) * (h - 25) - 12;
+        if(i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    }
+
+    if(currentHud === 'ASYM') {
+      plotCurve(p.pointsLeft, '#00f3ff'); // Левая рука (Циан)
+      plotCurve(p.points, '#ffd700');     // Правая рука (Золото)
+    } else {
+      plotCurve(p.points, p.color);
+    }
+  }
+
+  window.addEventListener('resize', drawHudCanvas);
+  setTimeout(drawHudCanvas, 100);
+</script>
   
 </section>
 
@@ -238,11 +347,12 @@
           <button class="tab-btn" data-tab="tab-power">Рост силы</button>
           <button class="tab-btn" data-tab="tab-sports">Спорт и единоборства</button>
           <button class="tab-btn" data-tab="tab-health">Рельеф</button>
+          <button class="tab-btn" data-tab="tab-safety">Снижение травматизма</button>
         </div>
 
         <div class="tab-content active" id="tab-hypertrophy">
           <div class="tab-content-box" style="padding: 20px; background: transparent; border-left: 2px solid var(--accent);">
-            <p><strong>Гипертрофия и бодибилдинг:</strong> Одно из главныз условие роста мышц — рекрутирование высокопороговых двигательных единиц. Если тест «Деактивация» фиксирует истощение нервной системы, ваш мозг физиологически не сможет задействовать нужные мышечные волокна. Тренировка превратится в "мусорный объем", разрушающий мышцы без стимула к росту. Nescalibur покажет, когда вы готовы к гипертрофии, а когда целесообразнее провести легкую пампинг-сессию.</p>
+            <p><strong>Гипертрофия и бодибилдинг:</strong> Одно из главных условий роста мышц — рекрутирование высокопороговых двигательных единиц. Если тест «Деактивация» фиксирует истощение нервной системы, ваш мозг физиологически не сможет задействовать нужные мышечные волокна. Тренировка превратится в "мусорный объем", разрушающий мышцы без стимула к росту. Nescalibur покажет, когда вы готовы к гипертрофии, а когда целесообразнее провести легкую пампинг-сессию.</p>
           </div>
         </div>
 
@@ -263,6 +373,12 @@
 <p><strong>Дефицит калорий и рельеф:</strong> При снижении калорийности рациона в первую очередь истощаются запасы гликогена и страдает нервно-мышечное восстановление. Попытки тренироваться «на силе воли», когда связочный аппарат не восстановился, приводят к срыву адаптации и микротравмам. Короткий тест перед занятием объективно показывает, справляется ли организм с диетой и нагрузкой: если скорость сброса тонуса падает, это прямое указание провести тренировку в поддерживающем режиме, сохранив мышцы и здоровье.</p>
           </div>
         </div>
+
+        <div class="tab-content" id="tab-safety">
+  <div class="tab-content-box" style="padding: 20px; background: transparent; border-left: 2px solid var(--accent);">
+    <p><strong>Защита осевого скелета и связок:</strong> При интенсивных физических нагрузках травмы редко происходят симметрично. Разрыв крестообразных связок колена или компрессия дисков сегментов L4–S1 происходят в момент, когда одна сторона тела принимает нагрузку, к которой не готова. Протокол «Асимметрия» за 45 секунд выявляет силовой перекос между сторонами. Разница свыше 15% означает, что при осевой нагрузке позвоночник испытывает опасный ротационный крутящий момент. Выявление дефицита позволяет скорректировать объем тяг до появления острой боли.</p>
+  </div>
+</div>
 
       </div>
     </div>

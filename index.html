@@ -25,32 +25,16 @@
 <!-- NAVBAR -->
 <nav class="navbar">
   <a href="#" class="nav-brand">
-    <img src="StoneLogo.jpg"  alt="NESCALIBUR" style="height: 48px;">
+    <img src="StoneLogo.jpg" alt="NESCALIBUR" style="height: 48px;">
   </a>
   <div class="nav-links">
     <a href="#what-it-is" class="nav-link">Что это</a>
     <a href="#modes" class="nav-link">Режимы</a>
     <a href="#how-to" class="nav-link">Инструкция</a>
+    <a href="#partnership" class="nav-link">Интеграция</a>
     <a href="#faq" class="nav-link">База знаний</a>
-    <button onclick="openLeadModal()" class="nav-btn-action">СОТРУДНИЧЕСТВО</button>
-    .nav-btn-action {
-  background: #fff;
-  color: #000;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: opacity 0.2s ease, transform 0.1s ease;
-}
-.nav-btn-action:hover { opacity: 0.88; }
-.nav-btn-action:active { transform: scale(0.97); }
-    
+    <button onclick="openLeadModal()" class="nav-link" style="background: rgba(255, 59, 59, 0.1); color: #fff; border: 1px solid var(--accent); padding: 8px 14px; border-radius: 6px; cursor: pointer;">СОТРУДНИЧЕСТВО</button>
   </div>
-
 </nav>
   
 <!-- HERO -->
@@ -118,10 +102,9 @@
 
 <div class="divider"></div>
 
-<!-- MODES -->
 <!-- MODES: АВТО-КАРУСЕЛЬ С БИОМЕХАНИЧЕСКИМ РАЗБОРОМ -->
 <section class="section" id="modes" style="padding: 40px 15px;">
-  <div class="section-header" style="max-width: 440px; margin: 0 auto 20px auto;">
+  <div class="section-header" style="max-width: 420px; margin: 0 auto 20px auto;">
     <span class="section-index" style="color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 13px;">02</span>
     <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 28px; margin: 5px 0 0 0; color: #fff;">Режимы измерения</h2>
   </div>
@@ -135,7 +118,7 @@
       <button class="c-tab" id="tab-ASYM" onclick="manualSelectMode('ASYM')">АСИММЕТРИЯ</button>
     </div>
 
-    <!-- ТА САМАЯ ОБСИДИАНОВАЯ ПЛИТА (ЧИСТЫЙ СЕНСОРНЫЙ ЭКРАН) -->
+    <!-- ОБСИДИАНОВАЯ ПЛИТА -->
     <div class="card-face card-front" id="main-card">
       <div id="void-layer"><canvas id="voidCanvas"></canvas></div>
 
@@ -144,9 +127,10 @@
           <div class="rank-text" id="pRank">ПРИМАРХ</div>
         </div>
         
-        <div class="hero" id="heroBox">
-          <div class="hero-val" id="pHeroVal">126.4</div>
-          <div class="hero-unit" id="pHeroUnit">КИЛОГРАММ // ПИКОВАЯ ТЯГА</div>
+        <!-- ИСПРАВЛЕН КОНФЛИКТ С STYLES.CSS: ВМЕСТО .hero ТЕПЕРЬ .card-hero-block -->
+        <div class="card-hero-block" id="heroBox">
+          <div class="card-hero-val" id="pHeroVal">126.4</div>
+          <div class="card-hero-unit" id="pHeroUnit">КИЛОГРАММ // ПИКОВАЯ ТЯГА</div>
         </div>
 
         <div id="legacy-layer">
@@ -211,17 +195,13 @@
     box-shadow: 0 0 15px rgba(0,0,0,0.8);
   }
 
-  /* ЖЕЛЕЗОБЕТОННЫЙ СБРОС ФОНА ИЗОБРАЖЕНИЯ */
-  #modes #main-card,
-  #modes .card-face,
-  #modes .card-front {
+  #modes #main-card {
     width: 100% !important;
     box-sizing: border-box !important;
-    min-height: 590px !important;
+    min-height: 560px !important;
     border-radius: 20px !important;
     padding: 22px !important;
     background: radial-gradient(130% 130% at 50% 0%, #151821 0%, #0b0d12 60%, #050608 100%) !important;
-    background-image: none !important; /* УБИВАЕТ ЛЮБЫЕ КАРТИНКИ */
     box-shadow: inset 0 1px 1px rgba(255,255,255,0.18), inset 0 -1px 2px rgba(0,0,0,0.9), 0 25px 60px rgba(0,0,0,0.95) !important;
     border: 1px solid rgba(255,255,255,0.12);
     position: relative !important;
@@ -229,7 +209,7 @@
     transition: border-color 0.4s ease, box-shadow 0.4s ease;
   }
 
-  .rank-box { text-align: center; margin-bottom: 8px; position: relative; z-index: 5; }
+  .rank-box { text-align: center; margin-bottom: 6px; position: relative; z-index: 5; }
   .rank-text {
     font-family: 'Orbitron', sans-serif;
     font-size: 20px;
@@ -239,8 +219,17 @@
     line-height: 1.2;
   }
 
-  .hero { text-align: center; margin: 4px 0 0 0; position: relative; z-index: 5; }
-  .hero-val {
+  /* ИЗОЛИРОВАННЫЙ КЛАСС ВМЕСТО .hero */
+  .card-hero-block {
+    text-align: center;
+    margin: 4px 0 0 0;
+    padding: 0;
+    position: relative;
+    z-index: 5;
+    background: none !important;
+    min-height: auto !important;
+  }
+  .card-hero-val {
     font-family: 'Orbitron', monospace;
     font-size: 56px;
     font-weight: 700;
@@ -248,7 +237,7 @@
     color: #fff;
     letter-spacing: 2px;
   }
-  .hero-unit {
+  .card-hero-unit {
     font-size: 10px;
     color: #888;
     font-weight: bold;
@@ -261,7 +250,7 @@
   #legacy-layer { display: block; position: relative; z-index: 5; }
   .chart-container { height: 185px; width: 100%; position: relative; margin-top: 10px; }
 
-  #void-layer { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+  #void-layer { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
   canvas#voidCanvas { width: 100%; height: 100%; }
 
   .stats-grid {
@@ -296,7 +285,6 @@
   }
   .s-val { font-size: 14px; font-weight: bold; font-family: 'Orbitron', monospace; }
 
-  /* БЛОК БИОМЕХАНИЧЕСКОГО ОПИСАНИЯ */
   .protocol-desc-box {
     margin-top: 12px;
     padding-top: 10px;
@@ -305,11 +293,13 @@
     flex-direction: column;
     gap: 6px;
     font-family: 'Inter', sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     line-height: 1.45;
+    position: relative;
+    z-index: 20;
   }
   .p-row { display: flex; flex-direction: column; }
-  .p-title { font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 800; color: #556277; letter-spacing: 1px; }
+  .p-title { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 800; color: #556277; letter-spacing: 1px; }
   .p-desc { color: #b0bac9; }
 </style>
 
@@ -328,7 +318,6 @@
     stopAutoCarousel();
     currentModeIdx = MODES_LIST.indexOf(m);
     applyModeData(m);
-    // Перезапуск через 12 секунд после ручного клика
     carouselTimer = setTimeout(startAutoCarousel, 12000);
   }
 
@@ -337,14 +326,13 @@
     carouselTimer = setInterval(() => {
       currentModeIdx = (currentModeIdx + 1) % MODES_LIST.length;
       applyModeData(MODES_LIST[currentModeIdx]);
-    }, 6500); // 6.5 секунд на слайд
+    }, 6500);
   }
 
   function stopAutoCarousel() {
     if (carouselTimer) { clearInterval(carouselTimer); clearTimeout(carouselTimer); carouselTimer = null; }
   }
 
-  // Остановка при наведении курсора
   document.getElementById('carouselWrapper').addEventListener('mouseenter', stopAutoCarousel);
   document.getElementById('carouselWrapper').addEventListener('mouseleave', () => {
     if (!carouselTimer) startAutoCarousel();
@@ -387,7 +375,7 @@
       `;
 
       bioText.innerHTML = "Максимальное произвольное сокращение (МПС). Истинный силовой потенциал задней мышечной цепи без читинга и инерции снаряда.";
-      protoText.innerHTML = "5 секунд предельной тяги со срывом от порога 1.0 кг. Автоматический подсчет механической работы.";
+      protoText.innerHTML = "5 секунд предельной тяги со срывом от порога 1.0 кг → автоматический подсчет механической работы.";
 
       applyCardTheme(card, rEl, valEl, themeColor);
       renderPowerChart(themeColor);
@@ -410,7 +398,7 @@
       `;
 
       bioText.innerHTML = "Сенсомоторная скорость и баллистика. Оценивает проводимость пирамидного тракта и взрывной залп высокопороговых волокон IIx.";
-      protoText.innerHTML = "Удержание преднатяга 1.0–2.5 кг (700 мс) $\to$ ожидание 2.0–4.5 с $\to$ взрывной рывок строго на световую вспышку.";
+      protoText.innerHTML = "Удержание преднатяга 1.0–2.5 кг (700 мс) → ожидание 2.0–4.5 с → взрывной рывок строго на световую вспышку.";
 
       applyCardTheme(card, rEl, valEl, themeColor);
       initSpeedKineticCollimator(172, 184, 0.64, themeColor);
@@ -423,7 +411,7 @@
       rEl.innerText = 'ЭЛИТА';
       valEl.innerText = '108';
       unitEl.innerHTML = 'МИЛЛИСЕКУНД // СКОРОСТЬ СБРОСА ТОНУСА';
-      gridEl.style.marginTop = '180px';
+      gridEl.style.marginTop = '195px';
 
       gridEl.innerHTML = `
         <div class="stat-cell"><div class="s-lbl">КОЭФФИЦИЕНТ nRATE</div><div class="s-val">7.4 s⁻¹</div></div>
@@ -433,7 +421,7 @@
       `;
 
       bioText.innerHTML = "Скорость мышечной деактивации и торможения коры. Маркер перетренированности, локального гипертонуса и риска надрыва связок.";
-      protoText.innerHTML = "Изометрическое удержание коридора 10–20 кг $\to$ сигнал вспышки $\to$ мгновенное расслабление мышц.";
+      protoText.innerHTML = "Изометрическое удержание коридора 10–20 кг → сигнал вспышки → мгновенное расслабление мышц.";
 
       applyCardTheme(card, rEl, valEl, themeColor);
       initVoidCanvasPromo(108, themeColor);
@@ -456,7 +444,7 @@
       `;
 
       bioText.innerHTML = "Сравнение силовых кривых левой и правой стороны. Выявляет скрытые ротационные перекосы позвоночника до появления боли.";
-      protoText.innerHTML = "Замер правой руки (3.5 с) $\to$ пауза на ресинтез креатинфосфата (60 с) $\to$ замер левой руки (3.5 с).";
+      protoText.innerHTML = "Замер правой руки (3.5 с) → пауза на ресинтез креатинфосфата (60 с) → замер левой руки (3.5 с).";
 
       applyCardTheme(card, rEl, valEl, themeColor);
       renderAsymChart();
@@ -471,7 +459,6 @@
     valEl.style.color = color;
   }
 
-  // РЕНДЕР ГРАФИКА POWER
   function renderPowerChart(color) {
     const canvas = document.getElementById('pChart');
     const ctx = canvas.getContext('2d');
@@ -509,7 +496,6 @@
     });
   }
 
-  // РЕНДЕР КОЛЛИМАТОРА SPEED
   function initSpeedKineticCollimator(rtMs, rfdVal, j100Val, color) {
     const canvas = document.getElementById('pChart');
     if (!canvas) return;
@@ -594,7 +580,6 @@
     render();
   }
 
-  // РЕНДЕР ШКАЛЫ VOID
   function initVoidCanvasPromo(dropTime, color) {
     const cvs = document.getElementById('voidCanvas');
     if (!cvs) return;
@@ -609,7 +594,7 @@
 
     const margin = 24;
     const w = rect.width - (margin * 2);
-    const scaleY = 260;
+    const scaleY = 205;
     const barH = 22;
 
     let targetX = margin + ((250 - dropTime) / 200) * w;
@@ -673,7 +658,6 @@
     loop();
   }
 
-  // РЕНДЕР ДВУХ КРИВЫХ ASYM
   function renderAsymChart() {
     const canvas = document.getElementById('pChart');
     const ctx = canvas.getContext('2d');
@@ -722,13 +706,11 @@
     });
   }
 
-  // Старт авто-карусели при инициализации
   setTimeout(() => {
     applyModeData('POWER');
     startAutoCarousel();
   }, 100);
 </script>
-
   
 </section>
 

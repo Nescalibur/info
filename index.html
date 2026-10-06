@@ -32,7 +32,23 @@
     <a href="#modes" class="nav-link">Режимы</a>
     <a href="#how-to" class="nav-link">Инструкция</a>
     <a href="#faq" class="nav-link">База знаний</a>
-    <button onclick="openLeadModal()" class="nav-link" style="background: rgba(0,243,255,0.08); color: var(--accent); border: 1px solid var(--accent); padding: 7px 14px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 700; letter-spacing: 1px;">СОТРУДНИЧЕСТВО</button>
+    <button onclick="openLeadModal()" class="nav-btn-action">СОТРУДНИЧЕСТВО</button>
+    .nav-btn-action {
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+}
+.nav-btn-action:hover { opacity: 0.88; }
+.nav-btn-action:active { transform: scale(0.97); }
+    
   </div>
 
 </nav>
@@ -103,57 +119,63 @@
 <div class="divider"></div>
 
 <!-- MODES -->
+<!-- MODES: АВТО-КАРУСЕЛЬ С БИОМЕХАНИЧЕСКИМ РАЗБОРОМ -->
 <section class="section" id="modes" style="padding: 40px 15px;">
   <div class="section-header" style="max-width: 440px; margin: 0 auto 20px auto;">
     <span class="section-index" style="color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 13px;">02</span>
     <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 28px; margin: 5px 0 0 0; color: #fff;">Режимы измерения</h2>
   </div>
 
-  <!-- ЦЕНТРАЛЬНЫЙ КОНТЕЙНЕР КАРТОЧКИ (СТРОГО 420px КАК В ШАБЛОНЕ) -->
-  <div class="capture-wrapper">
-    
-    <!-- ТАКТИЧЕСКИЙ ДОК ПЕРЕКЛЮЧЕНИЯ РЕЖИМОВ -->
+  <div class="carousel-container" id="carouselWrapper">
+    <!-- ДОК РУЧНОГО ВЫБОРА РЕЖИМА -->
     <div class="card-tabs-bar">
-      <button class="c-tab active" id="tab-POWER" onclick="selectCardMode('POWER')">СИЛА</button>
-      <button class="c-tab" id="tab-SPEED" onclick="selectCardMode('SPEED')">СКОРОСТЬ</button>
-      <button class="c-tab" id="tab-VOID" onclick="selectCardMode('VOID')">ДЕАКТИВАЦИЯ</button>
-      <button class="c-tab" id="tab-ASYM" onclick="selectCardMode('ASYM')">АСИММЕТРИЯ</button>
+      <button class="c-tab active" id="tab-POWER" onclick="manualSelectMode('POWER')">СИЛА</button>
+      <button class="c-tab" id="tab-SPEED" onclick="manualSelectMode('SPEED')">СКОРОСТЬ</button>
+      <button class="c-tab" id="tab-VOID" onclick="manualSelectMode('VOID')">ДЕАКТИВАЦИЯ</button>
+      <button class="c-tab" id="tab-ASYM" onclick="manualSelectMode('ASYM')">АСИММЕТРИЯ</button>
     </div>
 
-    <!-- ТА САМАЯ КАРТОЧКА (ОБСИДИАНОВАЯ ПЛИТА 1:1) -->
+    <!-- ТА САМАЯ ОБСИДИАНОВАЯ ПЛИТА (ЧИСТЫЙ СЕНСОРНЫЙ ЭКРАН) -->
     <div class="card-face card-front" id="main-card">
       <div id="void-layer"><canvas id="voidCanvas"></canvas></div>
 
       <div id="content-container">
-        <!-- РАНГ -->
         <div class="rank-box">
           <div class="rank-text" id="pRank">ПРИМАРХ</div>
         </div>
         
-        <!-- ЦЕНТРАЛЬНАЯ ЦИФРА И ЕДИНИЦА -->
         <div class="hero" id="heroBox">
           <div class="hero-val" id="pHeroVal">126.4</div>
-          <div class="hero-unit" id="pHeroUnit">КИЛОГРАММ</div>
+          <div class="hero-unit" id="pHeroUnit">КИЛОГРАММ // ПИКОВАЯ ТЯГА</div>
         </div>
 
-        <!-- СРЕДНИЙ СЛОЙ ГРАФИКА / КОЛЛИМАТОРА -->
         <div id="legacy-layer">
           <div class="chart-container">
             <canvas id="pChart"></canvas>
           </div>
         </div>
 
-        <!-- СЕТКА 4 МЕТРИК -->
+        <!-- 4 КЛЮЧЕВЫЕ МЕТРИКИ -->
         <div class="stats-grid" id="pStatsGrid"></div>
+
+        <!-- БИОМЕХАНИЧЕСКИЙ РАЗБОР (ЧТО И КАК ИЗМЕРЯЕМ) -->
+        <div class="protocol-desc-box" id="pProtocolBox">
+          <div class="p-row">
+            <span class="p-title">ФИЗИОЛОГИЯ:</span>
+            <span class="p-desc" id="pBioText">Оценка абсолютной произвольной силы (МПС) без читинга и инерции.</span>
+          </div>
+          <div class="p-row">
+            <span class="p-title">ПРОТОКОЛ:</span>
+            <span class="p-desc" id="pProtocolText">5 секунд максимального изометрического усилия со срывом от 1 кг.</span>
+          </div>
+        </div>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- СТИЛИ ИЗ TEMPLATE.HTML (ПИКСЕЛЬ-В-ПИКСЕЛЬ) -->
 <style>
-  .capture-wrapper {
+  .carousel-container {
     width: 100%;
     max-width: 420px;
     margin: 0 auto;
@@ -165,7 +187,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 6px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
   .c-tab {
@@ -189,136 +211,146 @@
     box-shadow: 0 0 15px rgba(0,0,0,0.8);
   }
 
-  /* ОБСИДИАНОВАЯ ПЛИТА */
-  .card-face.card-front {
-    width: 100%;
-    box-sizing: border-box;
-    min-height: 560px;
-    border-radius: 20px;
-    padding: 24px;
-    background: radial-gradient(130% 130% at 50% 0%, #151821 0%, #0b0d12 60%, #050608 100%);
-    box-shadow: inset 0 1px 1px rgba(255,255,255,0.18), inset 0 -1px 2px rgba(0,0,0,0.9), 0 25px 60px rgba(0,0,0,0.95);
+  /* ЖЕЛЕЗОБЕТОННЫЙ СБРОС ФОНА ИЗОБРАЖЕНИЯ */
+  #modes #main-card,
+  #modes .card-face,
+  #modes .card-front {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    min-height: 590px !important;
+    border-radius: 20px !important;
+    padding: 22px !important;
+    background: radial-gradient(130% 130% at 50% 0%, #151821 0%, #0b0d12 60%, #050608 100%) !important;
+    background-image: none !important; /* УБИВАЕТ ЛЮБЫЕ КАРТИНКИ */
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.18), inset 0 -1px 2px rgba(0,0,0,0.9), 0 25px 60px rgba(0,0,0,0.95) !important;
     border: 1px solid rgba(255,255,255,0.12);
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    position: relative !important;
+    overflow: hidden !important;
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
   }
 
-  .rank-box {
-    text-align: center;
-    margin-bottom: 12px;
-    position: relative;
-    z-index: 5;
-  }
+  .rank-box { text-align: center; margin-bottom: 8px; position: relative; z-index: 5; }
   .rank-text {
     font-family: 'Orbitron', sans-serif;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: bold;
     text-shadow: 0 0 20px currentColor;
     letter-spacing: 2px;
-    line-height: 1.25;
+    line-height: 1.2;
   }
 
-  .hero {
-    text-align: center;
-    margin: 8px 0 0 0;
-    position: relative;
-    z-index: 5;
-  }
+  .hero { text-align: center; margin: 4px 0 0 0; position: relative; z-index: 5; }
   .hero-val {
     font-family: 'Orbitron', monospace;
-    font-size: 60px;
+    font-size: 56px;
     font-weight: 700;
     line-height: 0.95;
     color: #fff;
     letter-spacing: 2px;
   }
   .hero-unit {
-    font-size: 11px;
+    font-size: 10px;
     color: #888;
     font-weight: bold;
     letter-spacing: 2px;
     margin-top: 6px;
-    margin-bottom: 2px;
     text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
   }
 
-  #legacy-layer {
-    display: block;
-    position: relative;
-    z-index: 5;
-  }
-  .chart-container {
-    height: 200px;
-    width: 100%;
-    position: relative;
-    margin-top: 15px;
-  }
+  #legacy-layer { display: block; position: relative; z-index: 5; }
+  .chart-container { height: 185px; width: 100%; position: relative; margin-top: 10px; }
 
-  #void-layer {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-  }
-  canvas#voidCanvas {
-    width: 100%;
-    height: 100%;
-  }
+  #void-layer { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+  canvas#voidCanvas { width: 100%; height: 100%; }
 
   .stats-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #333;
+    gap: 8px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #222;
     position: relative;
     z-index: 20;
   }
   .stat-cell {
-    background: #1a1a1a;
-    padding: 12px 10px;
+    background: #0d1017;
+    padding: 10px 8px;
     border-radius: 8px;
     text-align: center;
-    border: 1px solid #222;
+    border: 1px solid #1c2333;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
   .s-lbl {
-    font-size: 9px;
-    color: #777;
-    margin-bottom: 4px;
+    font-size: 8px;
+    color: #778;
+    margin-bottom: 3px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
   }
-  .s-val {
-    font-size: 15px;
-    font-weight: bold;
-    font-family: 'Orbitron', monospace;
+  .s-val { font-size: 14px; font-weight: bold; font-family: 'Orbitron', monospace; }
+
+  /* БЛОК БИОМЕХАНИЧЕСКОГО ОПИСАНИЯ */
+  .protocol-desc-box {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(255,255,255,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    line-height: 1.45;
   }
+  .p-row { display: flex; flex-direction: column; }
+  .p-title { font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 800; color: #556277; letter-spacing: 1px; }
+  .p-desc { color: #b0bac9; }
 </style>
 
-<!-- ДВИЖОК ОТОБРАЖЕНИЯ (ТОЧНЫЙ ПОРТ ИЗ TEMPLATE.HTML) -->
 <script>
   let activeCardChart = null;
   let activeAnimReq = null;
-  let currentCardMode = 'POWER';
+  let carouselTimer = null;
+  const MODES_LIST = ['POWER', 'SPEED', 'VOID', 'ASYM'];
+  let currentModeIdx = 0;
 
   const V_GREY = '#848484', V_GREEN = '#32d74b', V_CYAN = '#00f3ff', V_YELLOW = '#ffd700', V_RED = '#ff3b30';
   const COL_LEFT_HAND  = '#00f3ff';
   const COL_RIGHT_HAND = '#ff9f0a';
 
-  function selectCardMode(m) {
-    currentCardMode = m;
-    
-    // Сброс старых анимаций и графиков
+  function manualSelectMode(m) {
+    stopAutoCarousel();
+    currentModeIdx = MODES_LIST.indexOf(m);
+    applyModeData(m);
+    // Перезапуск через 12 секунд после ручного клика
+    carouselTimer = setTimeout(startAutoCarousel, 12000);
+  }
+
+  function startAutoCarousel() {
+    stopAutoCarousel();
+    carouselTimer = setInterval(() => {
+      currentModeIdx = (currentModeIdx + 1) % MODES_LIST.length;
+      applyModeData(MODES_LIST[currentModeIdx]);
+    }, 6500); // 6.5 секунд на слайд
+  }
+
+  function stopAutoCarousel() {
+    if (carouselTimer) { clearInterval(carouselTimer); clearTimeout(carouselTimer); carouselTimer = null; }
+  }
+
+  // Остановка при наведении курсора
+  document.getElementById('carouselWrapper').addEventListener('mouseenter', stopAutoCarousel);
+  document.getElementById('carouselWrapper').addEventListener('mouseleave', () => {
+    if (!carouselTimer) startAutoCarousel();
+  });
+
+  function applyModeData(m) {
     if (activeAnimReq) { cancelAnimationFrame(activeAnimReq); activeAnimReq = null; }
     if (activeCardChart) { activeCardChart.destroy(); activeCardChart = null; }
 
@@ -330,6 +362,8 @@
     const valEl = document.getElementById('pHeroVal');
     const unitEl = document.getElementById('pHeroUnit');
     const gridEl = document.getElementById('pStatsGrid');
+    const bioText = document.getElementById('pBioText');
+    const protoText = document.getElementById('pProtocolText');
     const legacyLayer = document.getElementById('legacy-layer');
     const voidLayer = document.getElementById('void-layer');
 
@@ -339,20 +373,21 @@
       themeColor = '#ff3b30';
       voidLayer.style.display = 'none';
       legacyLayer.style.display = 'block';
-      gridEl.style.marginTop = '20px';
+      gridEl.style.marginTop = '14px';
 
       rEl.innerText = 'ПРИМАРХ';
       valEl.innerText = '126.4';
-      valEl.style.opacity = '1';
-      rEl.style.opacity = '1';
-      unitEl.innerHTML = 'КИЛОГРАММ';
+      unitEl.innerHTML = 'КИЛОГРАММ // ПИКОВАЯ ТЯГА';
 
       gridEl.innerHTML = `
-        <div class="stat-cell"><div class="s-lbl">ИМПУЛЬС</div><div class="s-val">438 кг·с</div></div>
-        <div class="stat-cell"><div class="s-lbl">iRFD</div><div class="s-val">184 кг/с</div></div>
-        <div class="stat-cell"><div class="s-lbl">ВРЕМЯ ПИКА</div><div class="s-val">2.85 с</div></div>
-        <div class="stat-cell"><div class="s-lbl">ОТН. СИЛА</div><div class="s-val">1.58x ВТ</div></div>
+        <div class="stat-cell"><div class="s-lbl">ИМПУЛЬС (ТОННАЖ)</div><div class="s-val">438 кг·с</div></div>
+        <div class="stat-cell"><div class="s-lbl">ВЗРЫВ iRFD</div><div class="s-val">184 кг/с</div></div>
+        <div class="stat-cell"><div class="s-lbl">ВРЕМЯ ПИКА (TTP)</div><div class="s-val">2.85 с</div></div>
+        <div class="stat-cell"><div class="s-lbl">ОТН. СИЛА (RFI)</div><div class="s-val">1.58x ВТ</div></div>
       `;
+
+      bioText.innerHTML = "Максимальное произвольное сокращение (МПС). Истинный силовой потенциал задней мышечной цепи без читинга и инерции снаряда.";
+      protoText.innerHTML = "5 секунд предельной тяги со срывом от порога 1.0 кг. Автоматический подсчет механической работы.";
 
       applyCardTheme(card, rEl, valEl, themeColor);
       renderPowerChart(themeColor);
@@ -361,54 +396,44 @@
       themeColor = '#00f3ff';
       voidLayer.style.display = 'none';
       legacyLayer.style.display = 'block';
-      gridEl.style.marginTop = '15px';
+      gridEl.style.marginTop = '14px';
 
       rEl.innerText = 'МАНГУСТ';
       valEl.innerText = '172';
-      valEl.style.opacity = '1';
-      rEl.style.opacity = '1';
-      unitEl.innerHTML = 'МИЛЛИСЕКУНД';
+      unitEl.innerHTML = 'МИЛЛИСЕКУНД // ВРЕМЯ РЕАКЦИИ';
 
       gridEl.innerHTML = `
-        <div class="stat-cell" style="border: 1px solid #282828;">
-          <div class="s-lbl">СУХОЖИЛЬНЫЙ ЛАГ</div>
-          <div class="s-val" style="color:#00f3ff;">22 <span style="font-size:10px; color:#888;">мс</span></div>
-        </div>
-        <div class="stat-cell" style="border: 1px solid #282828;">
-          <div class="s-lbl">ПИКОВАЯ ТЯГА</div>
-          <div class="s-val">126.4 <span style="font-size:10px; color:#888;">кг</span></div>
-        </div>
-        <div class="stat-cell" style="border: 1px solid #282828;">
-          <div class="s-lbl">ВЗРЫВНОЙ ГРАДИЕНТ</div>
-          <div class="s-val"><span style="color:#ff9f0a;">184</span> <span style="font-size:10px; color:#888;">кг/с</span></div>
-        </div>
-        <div class="stat-cell" style="border: 1px solid #282828;">
-          <div class="s-lbl">СТАРТОВЫЙ ИМПУЛЬС</div>
-          <div class="s-val"><span style="color:#00f3ff;">0.64</span> <span style="font-size:10px; color:#888;">кг·с</span></div>
-        </div>
+        <div class="stat-cell" style="border-color:#1c2638;"><div class="s-lbl">СУХОЖИЛЬНЫЙ ЛАГ</div><div class="s-val" style="color:#00f3ff;">22 мс</div></div>
+        <div class="stat-cell" style="border-color:#1c2638;"><div class="s-lbl">ПИКОВАЯ ТЯГА</div><div class="s-val">126.4 кг</div></div>
+        <div class="stat-cell" style="border-color:#1c2638;"><div class="s-lbl">ВЗРЫВНОЙ ГРАДИЕНТ</div><div class="s-val" style="color:#ff9f0a;">184 кг/с</div></div>
+        <div class="stat-cell" style="border-color:#1c2638;"><div class="s-lbl">СТАРТОВЫЙ ИМПУЛЬС</div><div class="s-val" style="color:#00f3ff;">0.64 кг·с</div></div>
       `;
+
+      bioText.innerHTML = "Сенсомоторная скорость и баллистика. Оценивает проводимость пирамидного тракта и взрывной залп высокопороговых волокон IIx.";
+      protoText.innerHTML = "Удержание преднатяга 1.0–2.5 кг (700 мс) $\to$ ожидание 2.0–4.5 с $\to$ взрывной рывок строго на световую вспышку.";
 
       applyCardTheme(card, rEl, valEl, themeColor);
       initSpeedKineticCollimator(172, 184, 0.64, themeColor);
     }
     else if (m === 'VOID') {
-      themeColor = '#ffd700'; // Элита (золото)
+      themeColor = '#bf5af2';
       legacyLayer.style.display = 'none';
       voidLayer.style.display = 'block';
       
       rEl.innerText = 'ЭЛИТА';
       valEl.innerText = '108';
-      valEl.style.opacity = '1';
-      rEl.style.opacity = '1';
-      unitEl.innerHTML = 'МИЛЛИСЕКУНД<br><span style="font-size:10px; opacity:0.6; letter-spacing:1px; line-height: 2;">СКОРОСТЬ ДЕАКТИВАЦИИ МЫШЦ</span>';
+      unitEl.innerHTML = 'МИЛЛИСЕКУНД // СКОРОСТЬ СБРОСА ТОНУСА';
       gridEl.style.marginTop = '180px';
 
       gridEl.innerHTML = `
-        <div class="stat-cell"><div class="s-lbl">КОЭФФИЦИЕНТ</div><div class="s-val">7.4 s⁻¹</div></div>
+        <div class="stat-cell"><div class="s-lbl">КОЭФФИЦИЕНТ nRATE</div><div class="s-val">7.4 s⁻¹</div></div>
         <div class="stat-cell"><div class="s-lbl">ОТКЛИК ЦНС</div><div class="s-val">224 мс</div></div>
         <div class="stat-cell"><div class="s-lbl">БАЗА УДЕРЖАНИЯ</div><div class="s-val">16.4 кг</div></div>
         <div class="stat-cell"><div class="s-lbl">ОСТАТОК ЦЕПИ</div><div class="s-val">0.2 кг</div></div>
       `;
+
+      bioText.innerHTML = "Скорость мышечной деактивации и торможения коры. Маркер перетренированности, локального гипертонуса и риска надрыва связок.";
+      protoText.innerHTML = "Изометрическое удержание коридора 10–20 кг $\to$ сигнал вспышки $\to$ мгновенное расслабление мышц.";
 
       applyCardTheme(card, rEl, valEl, themeColor);
       initVoidCanvasPromo(108, themeColor);
@@ -417,32 +442,21 @@
       themeColor = '#ffd700';
       voidLayer.style.display = 'none';
       legacyLayer.style.display = 'block';
-      gridEl.style.marginTop = '20px';
+      gridEl.style.marginTop = '14px';
 
-      rEl.innerHTML = 'НОРМА<br>БАЛАНС 6.8%';
+      rEl.innerHTML = 'БАЛАНС 6.8%';
       valEl.innerText = '6.8%';
-      valEl.style.opacity = '1';
-      rEl.style.opacity = '1';
-      unitEl.innerHTML = '<span style="color:#ffd700; font-size:11px; font-weight:700; letter-spacing:2px;">ДИСБАЛАНС СИЛЫ (ASI)</span>';
+      unitEl.innerHTML = 'БИЛАТЕРАЛЬНЫЙ ДИСБАЛАНС (ASI)';
 
       gridEl.innerHTML = `
-        <div class="stat-cell" style="border: 1px solid ${COL_LEFT_HAND}; background: rgba(0,243,255,0.05); box-shadow: 0 0 15px rgba(0,243,255,0.12);">
-          <div class="s-lbl" style="color:${COL_LEFT_HAND}; font-size:11px; font-weight:800;">ЛЕВАЯ</div>
-          <div class="s-val" style="color:${COL_LEFT_HAND}; font-size:16px;">117.8 <span style="font-size:10px;">КГ</span></div>
-        </div>
-        <div class="stat-cell" style="border: 1px solid ${COL_RIGHT_HAND}; background: rgba(255,159,10,0.05); box-shadow: 0 0 15px rgba(255,159,10,0.12);">
-          <div class="s-lbl" style="color:${COL_RIGHT_HAND}; font-size:11px; font-weight:800;">ПРАВАЯ</div>
-          <div class="s-val" style="color:${COL_RIGHT_HAND}; font-size:16px;">126.4 <span style="font-size:10px;">КГ</span></div>
-        </div>
-        <div class="stat-cell" style="border: 1px solid #282828;">
-          <div class="s-lbl">ВЗРЫВНОЙ RFD</div>
-          <div class="s-val" style="font-size:14px;"><span style="color:${COL_LEFT_HAND};">142</span> / <span style="color:${COL_RIGHT_HAND};">168</span> <span style="font-size:10px; color:#888;">кг/с</span></div>
-        </div>
-        <div class="stat-cell" style="border: 1px solid #282828;">
-          <div class="s-lbl">МОЩНОСТНОЙ RFD</div>
-          <div class="s-val" style="font-size:14px;"><span style="color:${COL_LEFT_HAND};">110</span> / <span style="color:${COL_RIGHT_HAND};">125</span> <span style="font-size:10px; color:#888;">кг/с</span></div>
-        </div>
+        <div class="stat-cell" style="border-color:${COL_LEFT_HAND}; background:rgba(0,243,255,0.04);"><div class="s-lbl" style="color:${COL_LEFT_HAND};">ЛЕВАЯ РУКА</div><div class="s-val" style="color:${COL_LEFT_HAND};">117.8 кг</div></div>
+        <div class="stat-cell" style="border-color:${COL_RIGHT_HAND}; background:rgba(255,159,10,0.04);"><div class="s-lbl" style="color:${COL_RIGHT_HAND};">ПРАВАЯ РУКА</div><div class="s-val" style="color:${COL_RIGHT_HAND};">126.4 кг</div></div>
+        <div class="stat-cell"><div class="s-lbl">РАЗРЫВ iRFD</div><div class="s-val">8.4%</div></div>
+        <div class="stat-cell"><div class="s-lbl">СДВИГ ПИКА</div><div class="s-val">140 мс</div></div>
       `;
+
+      bioText.innerHTML = "Сравнение силовых кривых левой и правой стороны. Выявляет скрытые ротационные перекосы позвоночника до появления боли.";
+      protoText.innerHTML = "Замер правой руки (3.5 с) $\to$ пауза на ресинтез креатинфосфата (60 с) $\to$ замер левой руки (3.5 с).";
 
       applyCardTheme(card, rEl, valEl, themeColor);
       renderAsymChart();
@@ -451,17 +465,17 @@
 
   function applyCardTheme(card, rEl, valEl, color) {
     document.documentElement.style.setProperty('--tab-accent', color);
-    card.style.boxShadow = `0 10px 40px ${color}40, inset 0 1px 1px rgba(255,255,255,0.18)`;
+    card.style.boxShadow = `0 10px 40px ${color}35, inset 0 1px 1px rgba(255,255,255,0.18)`;
     card.style.borderColor = color;
     rEl.style.color = color;
     valEl.style.color = color;
   }
 
-  // 1. ГРАФИК РЕЖИМА POWER (CHART.JS C ГЛУБОКИМ НЕОНОМ)
+  // РЕНДЕР ГРАФИКА POWER
   function renderPowerChart(color) {
     const canvas = document.getElementById('pChart');
     const ctx = canvas.getContext('2d');
-    const grad = ctx.createLinearGradient(0, 0, 0, 200);
+    const grad = ctx.createLinearGradient(0, 0, 0, 185);
     grad.addColorStop(0, color);
     grad.addColorStop(1, 'rgba(0,0,0,0)');
 
@@ -479,23 +493,23 @@
           borderWidth: 3,
           pointRadius: 0,
           fill: true,
-          tension: 0.4
+          tension: 0.38
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        animation: { duration: 1200, easing: 'easeOutQuart' },
+        animation: { duration: 1000, easing: 'easeOutQuart' },
         plugins: { legend: { display: false } },
         scales: {
-          x: { grid: { display: false }, ticks: { maxTicksLimit: 5, color: '#666', font: { family: 'Roboto Mono' } } },
-          y: { beginAtZero: true, grid: { color: '#222' }, ticks: { color: '#666', font: { family: 'Roboto Mono' } } }
+          x: { grid: { display: false }, ticks: { maxTicksLimit: 5, color: '#556', font: { family: 'Roboto Mono' } } },
+          y: { beginAtZero: true, grid: { color: '#161922' }, ticks: { color: '#667', font: { family: 'Roboto Mono' } } }
         }
       }
     });
   }
 
-  // 2. КИНЕТИЧЕСКИЙ КОЛЛИМАТОР РЕЖИМА SPEED (ТОЧНЫЙ ПРОЦЕДУРНЫЙ 2D CANVAS)
+  // РЕНДЕР КОЛЛИМАТОРА SPEED
   function initSpeedKineticCollimator(rtMs, rfdVal, j100Val, color) {
     const canvas = document.getElementById('pChart');
     if (!canvas) return;
@@ -503,7 +517,7 @@
     const container = canvas.parentElement;
 
     const cW = container.clientWidth || 370;
-    const cH = 200;
+    const cH = 185;
     const dpr = window.devicePixelRatio || 1;
     canvas.width = cW * dpr;
     canvas.height = cH * dpr;
@@ -512,49 +526,45 @@
     ctx.scale(dpr, dpr);
 
     let frame = 0;
-    const totalFrames = 60;
+    const totalFrames = 50;
 
     function render() {
       ctx.clearRect(0, 0, cW, cH);
       const progress = Math.min(1.0, frame / totalFrames);
       const ease = 1 - Math.pow(1 - progress, 3);
 
-      const cx = cW * 0.5, cy = cH * 0.53;
+      const cx = cW * 0.5, cy = cH * 0.52;
       const maxR = Math.min(cW, cH) * 0.40;
 
-      // Трек спидометра
       ctx.save();
       ctx.beginPath();
       ctx.arc(cx, cy, maxR, Math.PI * 0.75, Math.PI * 2.25);
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.07)';
-      ctx.lineWidth = 10;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+      ctx.lineWidth = 9;
       ctx.stroke();
 
       const clampedRt = Math.min(Math.max(rtMs, 140), 400);
       const fillPct = (400 - clampedRt) / 260.0;
       const sweepAngle = Math.PI * 1.5 * fillPct;
-      const idleHum = (progress >= 1.0) ? Math.sin(frame * 0.08) * 0.02 : 0;
-      const curAngle = Math.PI * 0.75 + (sweepAngle + idleHum) * ease;
+      const curAngle = Math.PI * 0.75 + sweepAngle * ease;
 
       ctx.beginPath();
       ctx.arc(cx, cy, maxR, Math.PI * 0.75, curAngle);
       ctx.strokeStyle = color;
-      ctx.lineWidth = 10;
-      ctx.shadowBlur = 14;
+      ctx.lineWidth = 9;
+      ctx.shadowBlur = 12;
       ctx.shadowColor = color;
       ctx.stroke();
       ctx.restore();
 
-      // Плазменное ядро
       const rfdScale = Math.log10(1 + Math.min(Math.max(rfdVal, 30), 400) / 40.0) / Math.log10(11);
-      let activeR = Math.max(14 + rfdScale * (maxR * 0.45) * ease, 8);
-      activeR += Math.sin(frame * 0.08) * 1.5;
+      let activeR = Math.max(12 + rfdScale * (maxR * 0.42) * ease, 8);
+      activeR += Math.sin(frame * 0.08) * 1.2;
 
       const grad = ctx.createRadialGradient(cx, cy, 1, cx, cy, activeR);
       grad.addColorStop(0, '#ffffff');
-      grad.addColorStop(0.25, '#00f3ff');
-      grad.addColorStop(0.6, '#ff9f0a');
-      grad.addColorStop(0.9, color + '60');
+      grad.addColorStop(0.3, '#00f3ff');
+      grad.addColorStop(0.65, '#ff9f0a');
       grad.addColorStop(1, 'transparent');
 
       ctx.save();
@@ -563,31 +573,18 @@
       ctx.fillStyle = grad;
       ctx.fill();
 
-      // Осколочные кинетические иглы
-      const pCount = 38;
-      for (let p = 0; p < pCount; p++) {
-        const pSpeed = 0.02 + (p % 7) * 0.005;
-        const pAngle = (p / pCount) * Math.PI * 2 + (frame * pSpeed);
-        const orbitWave = 0.4 + 0.6 * Math.sin(frame * 0.07 + p * 1.8);
-        const pDist = (activeR * 1.05) * orbitWave;
+      for (let p = 0; p < 32; p++) {
+        const pSpeed = 0.02 + (p % 6) * 0.005;
+        const pAngle = (p / 32) * Math.PI * 2 + (frame * pSpeed);
+        const pDist = (activeR * 1.08) * (0.5 + 0.5 * Math.sin(frame * 0.07 + p * 1.7));
 
         const px = cx + Math.cos(pAngle) * pDist;
         const py = cy + Math.sin(pAngle) * pDist;
 
-        ctx.save();
-        ctx.translate(px, py);
-        ctx.rotate(pAngle + Math.PI * 0.5);
         ctx.beginPath();
-        ctx.moveTo(0, -4);
-        ctx.lineTo(1.2, 0);
-        ctx.lineTo(0, 2);
-        ctx.lineTo(-1.2, 0);
-        ctx.closePath();
+        ctx.arc(px, py, 1.2, 0, Math.PI * 2);
         ctx.fillStyle = (p % 2 === 0) ? '#00f3ff' : '#ff9f0a';
-        ctx.shadowBlur = 6;
-        ctx.shadowColor = ctx.fillStyle;
         ctx.fill();
-        ctx.restore();
       }
       ctx.restore();
 
@@ -597,7 +594,7 @@
     render();
   }
 
-  // 3. АНИМАЦИЯ ШКАЛЫ VOID (ТОЧНЫЙ ПОРТ ИЗ TEMPLATE.HTML)
+  // РЕНДЕР ШКАЛЫ VOID
   function initVoidCanvasPromo(dropTime, color) {
     const cvs = document.getElementById('voidCanvas');
     if (!cvs) return;
@@ -612,8 +609,8 @@
 
     const margin = 24;
     const w = rect.width - (margin * 2);
-    const scaleY = 270;
-    const barH = 25;
+    const scaleY = 260;
+    const barH = 22;
 
     let targetX = margin + ((250 - dropTime) / 200) * w;
     if (targetX < margin) targetX = margin;
@@ -627,12 +624,12 @@
       { w: 30/200, c: V_RED, t: 50 }
     ];
 
-    let frame = 0, strikeFrame = 35, isStruck = false;
+    let frame = 0, strikeFrame = 30, isStruck = false;
 
     function loop() {
       ctx.clearRect(0, 0, cvs.width, cvs.height);
       let cx = margin;
-      ctx.font = '10px Roboto Mono, monospace';
+      ctx.font = '9px Roboto Mono, monospace';
       ctx.textAlign = 'center';
 
       segs.forEach(s => {
@@ -644,28 +641,28 @@
           ctx.fillRect(cx, scaleY, sw, barH);
         } else {
           if (targetX > cx && targetX < cx + sw) {
-            ctx.fillRect(cx, scaleY, (targetX - 6) - cx, barH);
-            ctx.fillRect(targetX + 6, scaleY, (cx + sw) - (targetX + 6), barH);
+            ctx.fillRect(cx, scaleY, (targetX - 5) - cx, barH);
+            ctx.fillRect(targetX + 5, scaleY, (cx + sw) - (targetX + 5), barH);
             ctx.fillStyle = '#ffaa00';
             ctx.globalAlpha = 1;
-            ctx.fillRect(targetX - 7, scaleY, 2, barH);
-            ctx.fillRect(targetX + 5, scaleY, 2, barH);
+            ctx.fillRect(targetX - 6, scaleY, 2, barH);
+            ctx.fillRect(targetX + 4, scaleY, 2, barH);
           } else {
             ctx.fillRect(cx, scaleY, sw, barH);
           }
         }
         if (s.t !== 50) {
-          ctx.fillStyle = '#666';
+          ctx.fillStyle = '#667';
           ctx.globalAlpha = 1;
-          ctx.fillRect(cx + sw, scaleY + barH, 1, 5);
-          ctx.fillText(s.t, cx + sw, scaleY + barH + 15);
+          ctx.fillRect(cx + sw, scaleY + barH, 1, 4);
+          ctx.fillText(s.t, cx + sw, scaleY + barH + 13);
         }
         cx += sw;
       });
 
       if (!isStruck) {
         ctx.fillStyle = '#fff';
-        const hProgress = 20 * Math.min(frame / strikeFrame, 1.0);
+        const hProgress = 18 * Math.min(frame / strikeFrame, 1.0);
         ctx.fillRect(targetX - 2, scaleY - hProgress, 4, hProgress);
       }
 
@@ -676,7 +673,7 @@
     loop();
   }
 
-  // 4. ГРАФИК РЕЖИМА АСИММЕТРИИ (ДВЕ КРИВЫЕ В CHART.JS)
+  // РЕНДЕР ДВУХ КРИВЫХ ASYM
   function renderAsymChart() {
     const canvas = document.getElementById('pChart');
     const ctx = canvas.getContext('2d');
@@ -694,8 +691,8 @@
             label: 'Левая',
             data: ptsL,
             borderColor: COL_LEFT_HAND,
-            backgroundColor: 'rgba(0, 243, 255, 0.08)',
-            borderWidth: 3,
+            backgroundColor: 'rgba(0, 243, 255, 0.06)',
+            borderWidth: 2.5,
             pointRadius: 0,
             fill: true,
             tension: 0.35
@@ -704,8 +701,8 @@
             label: 'Правая',
             data: ptsR,
             borderColor: COL_RIGHT_HAND,
-            backgroundColor: 'rgba(255, 159, 10, 0.08)',
-            borderWidth: 3,
+            backgroundColor: 'rgba(255, 159, 10, 0.06)',
+            borderWidth: 2.5,
             pointRadius: 0,
             fill: true,
             tension: 0.35
@@ -715,18 +712,21 @@
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        animation: { duration: 1400, easing: 'easeOutQuart' },
+        animation: { duration: 1100, easing: 'easeOutQuart' },
         plugins: { legend: { display: false } },
         scales: {
-          x: { grid: { color: '#161616' }, ticks: { maxTicksLimit: 6, color: '#555', font: { family: 'Roboto Mono' } } },
-          y: { beginAtZero: true, grid: { color: '#161616' }, ticks: { color: '#666', font: { family: 'Roboto Mono' } } }
+          x: { grid: { color: '#161616' }, ticks: { maxTicksLimit: 6, color: '#556', font: { family: 'Roboto Mono' } } },
+          y: { beginAtZero: true, grid: { color: '#161922' }, ticks: { color: '#667', font: { family: 'Roboto Mono' } } }
         }
       }
     });
   }
 
-  // Автостарт режима POWER при загрузке
-  setTimeout(() => selectCardMode('POWER'), 80);
+  // Старт авто-карусели при инициализации
+  setTimeout(() => {
+    applyModeData('POWER');
+    startAutoCarousel();
+  }, 100);
 </script>
 
   
@@ -773,51 +773,51 @@
 </section>
 <div class="divider accent"></div>
 
-<!-- PARTNERSHIP & INTEGRATION -->
+<!-- SECTION 04: ФОРМАТЫ ИНТЕГРАЦИИ -->
 <section class="section" id="partnership" style="max-width: 960px; margin: 0 auto; padding: 40px 15px;">
   <div class="section-header" style="margin-bottom: 25px;">
-    <span class="section-index">05</span>
+    <span class="section-index" style="color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 13px;">04</span>
     <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 28px; margin: 5px 0 0 0; color: #fff;">Форматы интеграции</h2>
   </div>
 
   <div class="partnership-grid">
     <!-- ПАКЕТ 1: ТУРНИРЫ -->
     <div class="partner-card">
-      <div class="p-badge" style="color: #00f3ff; border-color: rgba(0, 243, 255, 0.3);">ТУРНИРНЫЙ ВЫЕЗД</div>
-      <h3>Ивенты и Соревнования</h3>
-      <p>Организация мобильной зоны инструментального тестирования на вашем турнире по единоборствам, кроссфиту или пауэрлифтингу.</p>
-      <ul class="p-features">
-        <li>100% бесплатное тестирование для всех участников</li>
-        <li>Экспресс-замер готовности ЦНС и пика (15 секунд)</li>
-        <li>Опция: прожиг лазерного жетона с QR-профилем (500 ₽)</li>
-      </ul>
-      <button onclick="openLeadModalWithGoal('Турнир')" class="btn-partner">ПРИГЛАСИТЬ НА ТУРНИР</button>
+      <span class="partner-tag">ИВЕНТЫ // ТУРНИРЫ</span>
+      <h3>Выездная зона на турнир</h3>
+      <p>Организация мобильной лаборатории нейромышечной готовности на соревнованиях по кроссфиту, единоборствам или пауэрлифтингу.</p>
+      <div class="partner-spec">
+        <div>• 100% бесплатный замер для всех атлетов</div>
+        <div>• Экспресс-тест готовности ЦНС за 15 секунд</div>
+        <div>• Опция: наградной жетон с лазерным прожигом (500 ₽)</div>
+      </div>
+      <button onclick="openLeadModalWithGoal('Турнир')" class="partner-btn">ПРИГЛАСИТЬ НА ТУРНИР</button>
     </div>
 
-    <!-- ПАКЕТ 2: КЛУБНЫЙ ПИЛОТ -->
-    <div class="partner-card featured">
-      <div class="p-badge" style="color: #ffd700; border-color: rgba(255, 215, 0, 0.3);">КЛУБНЫЙ ПИЛОТ // 7 ДНЕЙ</div>
-      <h3>Клубам и Кроссфит-боксам</h3>
-      <p>Бесплатная недельная интеграция станции в ваш зал с обучением тренеров аргументированной продаже персональных тренировок.</p>
-      <ul class="p-features">
-        <li>Установка станции и вводный инструктаж тренеров</li>
-        <li>Выявление асимметрии (ASI) у клиентов на вводных уроках</li>
-        <li>Оценка динамики продаж тренировочных сплитов</li>
-      </ul>
-      <button onclick="openLeadModalWithGoal('Клубный пилот')" class="btn-partner btn-featured">ЗАПРОСИТЬ ТЕСТ-ДРАЙВ</button>
+    <!-- ПАКЕТ 2: КЛУБНЫЙ ПИЛОТ (АКЦЕНТ) -->
+    <div class="partner-card primary">
+      <span class="partner-tag primary-tag">КЛУБНЫЙ ПИЛОТ // 7 ДНЕЙ</span>
+      <h3>Тест-драйв в клуб</h3>
+      <p>Бесплатная недельная интеграция станции в ваш зал с обучением тренеров продаже персональных тренировок через объективные дефициты.</p>
+      <div class="partner-spec">
+        <div>• Установка комплекса и воркшоп для тренерского состава</div>
+        <div>• Выявление асимметрии (ASI) на вводных инструктажах</div>
+        <div>• Оценка роста конверсии в продажи блоков ПТ</div>
+      </div>
+      <button onclick="openLeadModalWithGoal('Клубный пилот')" class="partner-btn primary-btn">ЗАПРОСИТЬ ПИЛОТ</button>
     </div>
 
     <!-- ПАКЕТ 3: ПОСТАВКА В СОБСТВЕННОСТЬ -->
     <div class="partner-card">
-      <div class="p-badge" style="color: #bf5af2; border-color: rgba(191, 90, 242, 0.3);">ПОСТАВКА // HAAS</div>
+      <span class="partner-tag">ОСНАЩЕНИЕ // HAAS</span>
       <h3>Станция в собственность</h3>
-      <p>Оснащение спортивной базы, бойцовского клуба или сети фитнес-центров фирменными комплексами с облачным сервисом аналитики.</p>
-      <ul class="p-features">
-        <li>Станция в сборе (силовой контур 500 кг, платформа)</li>
-        <li>Неограниченный доступ к тренерскому хабу (Pro-дашборд)</li>
-        <li>Техническое сопровождение и калибровка комплекса</li>
-      </ul>
-      <button onclick="openLeadModalWithGoal('Покупка станции')" class="btn-partner">УСЛОВИЯ ПОСТАВКИ</button>
+      <p>Поставка стационарных комплексов для клубов, бойцовских академий и спортивных баз с пожизненным доступом к аналитическому ядру.</p>
+      <div class="partner-spec">
+        <div>• Силовой контур 500 кг, платформа «Квинтет»</div>
+        <div>• Pro-дашборд тренера и облачная база клиентов</div>
+        <div>• Калибровочное и техническое сопровождение</div>
+      </div>
+      <button onclick="openLeadModalWithGoal('Покупка станции')" class="partner-btn">УСЛОВИЯ ПОСТАВКИ</button>
     </div>
   </div>
 </section>
@@ -826,95 +826,77 @@
   .partnership-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    gap: 14px;
   }
   @media(max-width: 820px) { .partnership-grid { grid-template-columns: 1fr; } }
 
   .partner-card {
-    background: #0b0e14;
+    background: #080a0f;
     border: 1px solid #1a2233;
-    border-radius: 16px;
-    padding: 24px 20px;
+    border-radius: 12px;
+    padding: 22px 18px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: 0.2s ease;
   }
-  .partner-card:hover { border-color: #2b3a55; }
-  .partner-card.featured {
-    background: radial-gradient(120% 120% at 50% 0%, #171d2b 0%, #0b0e14 100%);
-    border-color: rgba(255, 215, 0, 0.4);
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.08);
+  .partner-card.primary {
+    border-color: rgba(255, 215, 0, 0.45);
+    background: radial-gradient(130% 130% at 50% 0%, #141a26 0%, #080a0f 100%);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.05);
   }
-  .p-badge {
-    display: inline-block;
-    align-self: flex-start;
+  .partner-tag {
     font-family: 'JetBrains Mono', monospace;
     font-size: 9px;
     font-weight: 700;
+    color: #6c7993;
     letter-spacing: 1px;
-    padding: 4px 8px;
-    border-radius: 4px;
-    border: 1px solid;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
+    display: block;
   }
+  .primary-tag { color: #ffd700; }
   .partner-card h3 {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 18px;
+    font-size: 17px;
     color: #fff;
     margin: 0 0 10px 0;
   }
   .partner-card p {
-    font-size: 12px;
-    color: #7b879d;
+    font-size: 11px;
+    color: #8896ab;
     line-height: 1.5;
     margin: 0 0 16px 0;
   }
-  .p-features {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 24px 0;
-  }
-  .p-features li {
-    font-size: 11px;
-    color: #c5cedd;
-    position: relative;
-    padding-left: 14px;
-    margin-bottom: 8px;
+  .partner-spec {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-size: 10px;
+    color: #cbd5e1;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 22px;
     line-height: 1.4;
   }
-  .p-features li::before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: var(--accent);
-  }
-  .btn-partner {
+  .partner-btn {
     width: 100%;
     background: transparent;
-    border: 1px solid #28354d;
+    border: 1px solid #243047;
     color: #fff;
     padding: 12px;
-    border-radius: 8px;
+    border-radius: 6px;
     font-family: 'Orbitron', monospace;
-    font-size: 11px;
-    font-weight: 700;
+    font-size: 10px;
+    font-weight: 800;
     letter-spacing: 1px;
     cursor: pointer;
-    transition: 0.2s;
+    transition: 0.2s ease;
   }
-  .btn-partner:hover {
-    border-color: #fff;
-    background: rgba(255,255,255,0.05);
-  }
-  .btn-featured {
+  .partner-btn:hover { border-color: #fff; background: rgba(255,255,255,0.04); }
+  .primary-btn {
     background: #ffd700 !important;
     color: #000 !important;
     border: none !important;
   }
-  .btn-featured:hover {
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-  }
+  .primary-btn:hover { box-shadow: 0 0 15px rgba(255, 215, 0, 0.35); }
 </style>
   
 <!-- FAQ & GOALS SECTION (ЯКОРЬ ДЛЯ МЕНЮ ЗДЕСЬ) -->

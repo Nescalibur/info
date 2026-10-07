@@ -102,27 +102,26 @@
 
 <div class="divider"></div>
 
-<!-- SECTION 02: ТАКТИЧЕСКИЙ НЕЙРОМЫШЕЧНЫЙ ТЕРМИНАЛ (960px ДВУХКОЛОНОЧНЫЙ КОКПИТ) -->
-<section class="section" id="modes" style="max-width: 980px; margin: 0 auto; padding: 50px 20px;">
-  <div class="section-header" style="margin-bottom: 25px;">
+<!-- SECTION 02: ТАКТИЧЕСКИЙ НЕЙРОМЫШЕЧНЫЙ ТЕРМИНАЛ -->
+<section class="section" id="modes" style="max-width: 980px; margin: 0 auto; padding: 40px 20px;">
+  <div class="section-header" style="margin-bottom: 22px;">
     <span class="section-index" style="color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 13px;">02</span>
     <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 32px; margin: 0; color: #fff;">Режимы измерения</h2>
   </div>
 
   <div class="terminal-cockpit" id="cockpitContainer">
     
-    <!-- ЛЕВАЯ КОЛОНКА: 3D КИБЕР-МОНОЛИТ (КАРТОЧКА) -->
+    <!-- ЛЕВАЯ КОЛОНКА: ОБСИДИАНОВАЯ ПЛИТА (КАРТОЧКА) -->
     <div class="terminal-card-wrap">
       <div class="monolith-perspective">
         <div class="card-face card-front" id="main-card">
-          <!-- Световой блик при повороте -->
           <div class="specular-glare" id="cardGlare"></div>
           
           <div id="void-layer"><canvas id="voidCanvas"></canvas></div>
 
           <div id="content-container">
             <div class="rank-box">
-              <div class="rank-text" id="pRank">ТИТАН</div>
+              <div class="rank-text" id="pRank">РАНГ // ТИТАН</div>
             </div>
             
             <div class="card-hero-block" id="heroBox">
@@ -145,8 +144,6 @@
 
     <!-- ПРАВАЯ КОЛОНКА: СЕЛЕКТОР И НАУЧНЫЙ ДЕШИФРАТОР -->
     <div class="terminal-hud-panel">
-      
-      <!-- ТАКТИЛЬНЫЙ СТЕК РЕЖИМОВ -->
       <div class="mode-stack">
         <button class="m-stack-btn active" id="btn-POWER" onclick="manualSelectMode('POWER')">
           <div class="m-btn-top">
@@ -185,7 +182,7 @@
       <div class="telemetry-decoder" id="hudBox">
         <div class="d-header">
           <span class="d-indicator"></span>
-          <span class="d-tag" id="hudTag">НЕЙРОМЫШЕЧНЫЙ ПОТОЛОК</span>
+          <span class="d-tag" id="hudTag">НЕЙРОМЫШЕЧНЫЙ ПОТОЛОК // МПС</span>
         </div>
         <p class="d-body" id="hudDesc">
           Оценка максимального произвольного сокращения (МПС) без читинга и инерции. Фиксирует предел волевой мобилизации высокопороговых двигательных единиц.
@@ -195,13 +192,11 @@
           <span class="d-status">АКТИВЕН</span>
         </div>
       </div>
-
     </div>
 
   </div>
 </section>
 
-<!-- СТИЛИ КОКПИТА И 3D-КИНЕМАТИКИ -->
 <style>
   .terminal-cockpit {
     display: grid;
@@ -209,24 +204,29 @@
     gap: 30px;
     align-items: center;
   }
+
+  /* МОБИЛЬНЫЙ ПОРЯДОК: СЕЛЕКТОР НАД КАРТОЧКОЙ */
   @media(max-width: 860px) {
-    .terminal-cockpit { grid-template-columns: 1fr; gap: 24px; }
+    .terminal-cockpit { grid-template-columns: 1fr; gap: 20px; }
+    .terminal-hud-panel { order: -1; }
+    .terminal-card-wrap { order: 1; }
   }
 
-  /* 3D-ПЕРСПЕКТИВА ТАКТИЛЬНОЙ ПЛИТЫ */
   .monolith-perspective {
-    perspective: 1400px;
+    perspective: 1200px;
     width: 100%;
     max-width: 420px;
     margin: 0 auto;
   }
 
+  /* ЛИКВИДАЦИЯ ПУСТОТЫ ВНИЗУ КАРТОЧКИ */
   #modes #main-card {
     width: 100% !important;
     box-sizing: border-box !important;
-    min-height: 540px !important;
+    min-height: auto !important; /* УБРАНА ПУСТОТА */
+    height: auto !important;
     border-radius: 20px !important;
-    padding: 24px !important;
+    padding: 22px 20px 20px 20px !important;
     background: radial-gradient(130% 130% at 50% 0%, #151821 0%, #0b0d12 60%, #050608 100%) !important;
     background-image: none !important;
     box-shadow: inset 0 1px 1px rgba(255,255,255,0.18), inset 0 -1px 2px rgba(0,0,0,0.9), 0 25px 60px rgba(0,0,0,0.95) !important;
@@ -234,30 +234,31 @@
     position: relative !important;
     overflow: hidden !important;
     transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease, opacity 0.3s ease;
   }
 
-  /* Класс физического рывка при смене режима */
+  /* ПЛАВНАЯ КИНЕМАТИКА ОТЖИМА БЕЗ РВАНЫХ КАДРОВ */
   #main-card.kinetic-shift {
-    transform: translateZ(45px) rotateX(4deg) rotateY(-3deg) scale(0.97) !important;
+    transform: translateY(-6px) scale(0.98);
+    opacity: 0.88;
   }
 
   .specular-glare {
     position: absolute;
     inset: -100%;
-    background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.06) 50%, transparent 60%);
+    background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.05) 50%, transparent 60%);
     pointer-events: none;
     transform: translateX(-100%);
-    transition: transform 0.8s ease;
+    transition: transform 0.6s ease;
   }
   #main-card.kinetic-shift .specular-glare {
     transform: translateX(100%);
   }
 
-  .rank-box { text-align: center; margin-bottom: 6px; position: relative; z-index: 5; }
+  .rank-box { text-align: center; margin-bottom: 4px; position: relative; z-index: 5; }
   .rank-text {
     font-family: 'Orbitron', sans-serif;
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 800;
     text-shadow: 0 0 20px currentColor;
     letter-spacing: 2px;
@@ -266,20 +267,19 @@
 
   .card-hero-block {
     text-align: center;
-    margin: 4px 0 0 0;
+    margin: 2px 0 0 0;
     padding: 0;
     position: relative;
     z-index: 5;
     background: none !important;
-    min-height: auto !important;
   }
   .card-hero-val {
     font-family: 'Orbitron', monospace;
     font-size: 58px;
     font-weight: 900;
     line-height: 0.95;
-    color: #fff;
     letter-spacing: 2px;
+    transition: color 0.3s ease;
   }
   .card-hero-unit {
     font-size: 10px;
@@ -294,8 +294,8 @@
   #legacy-layer { display: block; position: relative; z-index: 5; }
   .chart-container { height: 185px; width: 100%; position: relative; margin-top: 10px; }
 
-  #void-layer { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
-  canvas#voidCanvas { width: 100%; height: 100%; }
+  #void-layer { display: none; position: relative; width: 100%; height: 185px; margin-top: 10px; z-index: 5; }
+  canvas#voidCanvas { width: 100%; height: 100%; display: block; }
 
   .stats-grid {
     display: grid;
@@ -309,7 +309,7 @@
   }
   .stat-cell {
     background: #0d1017;
-    padding: 11px 8px;
+    padding: 10px 8px;
     border-radius: 8px;
     text-align: center;
     border: 1px solid #1c2333;
@@ -327,15 +327,15 @@
     font-family: 'JetBrains Mono', monospace;
     font-weight: 700;
   }
-  .s-val { font-size: 14px; font-weight: bold; font-family: 'Orbitron', monospace; }
+  /* ВСЕ ЦИФРЫ В ПЛАШКАХ БЕЛЫЕ */
+  .s-val { font-size: 14px; font-weight: bold; font-family: 'Orbitron', monospace; color: #fff; }
 
-  /* ПРАВАЯ ПАНЕЛЬ ТЕРМИНАЛА */
+  /* ПРАВАЯ ПАНЕЛЬ */
   .terminal-hud-panel {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
   }
-
   .mode-stack {
     display: flex;
     flex-direction: column;
@@ -345,7 +345,7 @@
     background: #080b10;
     border: 1px solid #182030;
     border-radius: 10px;
-    padding: 14px 16px;
+    padding: 13px 16px;
     text-align: left;
     cursor: pointer;
     transition: all 0.25s ease;
@@ -357,13 +357,13 @@
   .m-stack-btn.active {
     background: #111722;
     border-color: var(--tab-accent, #bf5af2);
-    box-shadow: 0 0 20px rgba(0,0,0,0.6), inset 0 0 15px rgba(255,255,255,0.02);
+    box-shadow: 0 0 20px rgba(0,0,0,0.6);
   }
   .m-btn-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
   }
   .m-btn-title {
     font-family: 'Orbitron', sans-serif;
@@ -388,20 +388,19 @@
     color: #7e8b9f;
   }
 
-  /* ТЕЛЕМЕТРИЧЕСКИЙ ДЕШИФРАТОР */
   .telemetry-decoder {
     background: radial-gradient(120% 120% at 0% 0%, #121620 0%, #07090d 100%);
     border: 1px solid #1b2436;
     border-left: 3px solid var(--tab-accent, #bf5af2);
     border-radius: 12px;
-    padding: 18px;
+    padding: 16px 18px;
     transition: border-color 0.4s ease;
   }
   .d-header {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   .d-indicator {
     width: 6px;
@@ -409,7 +408,6 @@
     border-radius: 50%;
     background: var(--tab-accent, #bf5af2);
     box-shadow: 0 0 8px currentColor;
-    display: inline-block;
   }
   .d-tag {
     font-family: 'JetBrains Mono', monospace;
@@ -422,8 +420,8 @@
     font-family: 'Inter', sans-serif;
     font-size: 12px;
     color: #cbd5e1;
-    line-height: 1.55;
-    margin: 0 0 12px 0;
+    line-height: 1.5;
+    margin: 0 0 10px 0;
   }
   .d-footer {
     display: flex;
@@ -436,12 +434,12 @@
   }
 </style>
 
-<!-- ЛОГИКА ТЕРМИНАЛА, ТИКЕРА И ФРАКТАЛЬНОГО РАЗРЯДА -->
 <script>
   let activeCardChart = null;
   let activeAnimReq = null;
   let carouselTimer = null;
   let tickerAnimTimer = null;
+  let userInteracted = false; // БЛОКИРОВКА АВТОПРОКРУТКИ ПРИ КЛИКЕ
 
   const MODES_LIST = ['POWER', 'SPEED', 'VOID', 'ASYM'];
   let currentModeIdx = 0;
@@ -452,43 +450,44 @@
   const COL_LEFT_HAND  = '#00f3ff';
   const COL_RIGHT_HAND = '#ff9f0a';
 
+  // ПРИ ПЕРВОМ КЛИКЕ АВТОПРОКРУТКА ОТКЛЮЧАЕТСЯ НАВСЕГДА
   function manualSelectMode(m) {
-    stopAutoCarousel();
+    if (!userInteracted) {
+      userInteracted = true;
+      stopAutoCarousel();
+    }
     currentModeIdx = MODES_LIST.indexOf(m);
     triggerKineticShift(() => applyModeData(m));
-    carouselTimer = setTimeout(startAutoCarousel, 14000);
   }
 
   function startAutoCarousel() {
-    stopAutoCarousel();
+    if (userInteracted) return;
     carouselTimer = setInterval(() => {
       currentModeIdx = (currentModeIdx + 1) % MODES_LIST.length;
       triggerKineticShift(() => applyModeData(MODES_LIST[currentModeIdx]));
-    }, 7000);
+    }, 6500);
   }
 
   function stopAutoCarousel() {
-    if (carouselTimer) { clearInterval(carouselTimer); clearTimeout(carouselTimer); carouselTimer = null; }
+    if (carouselTimer) { clearInterval(carouselTimer); carouselTimer = null; }
   }
 
-  // Физический микро-дрифт при смене карточки
   function triggerKineticShift(callback) {
     const card = document.getElementById('main-card');
     card.classList.add('kinetic-shift');
     setTimeout(() => {
       callback();
-      setTimeout(() => card.classList.remove('kinetic-shift'), 200);
-    }, 180);
+      setTimeout(() => card.classList.remove('kinetic-shift'), 180);
+    }, 150);
   }
 
-  // Кинетический одометр цифр
   function animateValue(id, targetNum, isFloat, suffix = '') {
     const el = document.getElementById(id);
     if (!el) return;
     if (tickerAnimTimer) clearInterval(tickerAnimTimer);
 
     let start = 0;
-    const duration = 450;
+    const duration = 400;
     const startTime = performance.now();
 
     tickerAnimTimer = setInterval(() => {
@@ -507,12 +506,12 @@
     if (activeAnimReq) { cancelAnimationFrame(activeAnimReq); activeAnimReq = null; }
     if (activeCardChart) { activeCardChart.destroy(); activeCardChart = null; }
 
-    // Переключение кнопок правой панели
     document.querySelectorAll('.m-stack-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('btn-' + m).classList.add('active');
 
     const card = document.getElementById('main-card');
     const rEl = document.getElementById('pRank');
+    const valEl = document.getElementById('pHeroVal');
     const unitEl = document.getElementById('pHeroUnit');
     const gridEl = document.getElementById('pStatsGrid');
     const hudTag = document.getElementById('hudTag');
@@ -523,15 +522,13 @@
 
     let themeColor = V_PURPLE;
 
-    // ==========================================
-    // 1. СИЛА: 126.4 кг / ТИТАН / ПУРПУР
-    // ==========================================
+    // 1. СИЛА: РАНГ // ТИТАН (ПУРПУР)
     if (m === 'POWER') {
       themeColor = V_PURPLE;
       voidLayer.style.display = 'none';
       legacyLayer.style.display = 'block';
 
-      rEl.innerText = 'ТИТАН';
+      rEl.innerText = 'РАНГ // ТИТАН';
       animateValue('pHeroVal', 126.4, true);
       unitEl.innerHTML = 'КИЛОГРАММ // ПИКОВАЯ ТЯГА';
 
@@ -546,18 +543,16 @@
         <div class="stat-cell"><div class="s-lbl">ОТН. СИЛА (RFI)</div><div class="s-val">1.58x ВТ</div></div>
       `;
 
-      applyCardTheme(card, rEl, themeColor);
+      applyCardTheme(card, rEl, valEl, themeColor);
       renderPowerChart(themeColor);
     }
-    // ==========================================
-    // 2. СКОРОСТЬ: 172 мс / КОБРА / КРАСНЫЙ
-    // ==========================================
+    // 2. СКОРОСТЬ: РАНГ // КОБРА (172 мс / КРАСНЫЙ)
     else if (m === 'SPEED') {
-      themeColor = V_RED; // 172 мс = КОБРА / КРАСНЫЙ
+      themeColor = V_RED;
       voidLayer.style.display = 'none';
       legacyLayer.style.display = 'block';
 
-      rEl.innerText = 'КОБРА';
+      rEl.innerText = 'РАНГ // КОБРА';
       animateValue('pHeroVal', 172, false);
       unitEl.innerHTML = 'МИЛЛИСЕКУНД // ВРЕМЯ РЕАКЦИИ';
 
@@ -566,24 +561,22 @@
       hudTarget.innerText = 'ЦЕЛЕВОЙ ФАКТОР: ВЗРЫВНОЙ ИМПУЛЬС (iRFD)';
 
       gridEl.innerHTML = `
-        <div class="stat-cell" style="border-color:#2a1c22;"><div class="s-lbl">СУХОЖИЛЬНЫЙ ЛАГ</div><div class="s-val" style="color:#00f3ff;">22 мс</div></div>
+        <div class="stat-cell" style="border-color:#2a1c22;"><div class="s-lbl">СУХОЖИЛЬНЫЙ ЛАГ</div><div class="s-val">22 мс</div></div>
         <div class="stat-cell" style="border-color:#2a1c22;"><div class="s-lbl">ПИКОВАЯ ТЯГА</div><div class="s-val">126.4 кг</div></div>
-        <div class="stat-cell" style="border-color:#2a1c22;"><div class="s-lbl">ВЗРЫВНОЙ ГРАДИЕНТ</div><div class="s-val" style="color:#ff9f0a;">184 кг/с</div></div>
-        <div class="stat-cell" style="border-color:#2a1c22;"><div class="s-lbl">СТАРТОВЫЙ ИМПУЛЬС</div><div class="s-val" style="color:${V_RED};">0.64 кг·с</div></div>
+        <div class="stat-cell" style="border-color:#2a1c22;"><div class="s-lbl">ВЗРЫВНОЙ ГРАДИЕНТ</div><div class="s-val">184 кг/с</div></div>
+        <div class="stat-cell" style="border-color:#2a1c22;"><div class="s-lbl">СТАРТОВЫЙ ИМПУЛЬС</div><div class="s-val">0.64 кг·с</div></div>
       `;
 
-      applyCardTheme(card, rEl, themeColor);
+      applyCardTheme(card, rEl, valEl, themeColor);
       initSpeedKineticCollimator(172, 184, 0.64, themeColor);
     }
-    // ==========================================
-    // 3. ДЕАКТИВАЦИЯ: 108 мс / ЭЛИТА / ЗОЛОТО (СТРОГО 2 МЕТРИКИ)
-    // ==========================================
+    // 3. ДЕАКТИВАЦИЯ: РАНГ // ЭЛИТА (108 мс / ЗОЛОТО / СТРОГО 2 БЕЛЫЕ ПЛАШКИ)
     else if (m === 'VOID') {
       themeColor = V_GOLD;
       legacyLayer.style.display = 'none';
       voidLayer.style.display = 'block';
       
-      rEl.innerText = 'ЭЛИТА';
+      rEl.innerText = 'РАНГ // ЭЛИТА';
       animateValue('pHeroVal', 108, false);
       unitEl.innerHTML = 'МИЛЛИСЕКУНД // СКОРОСТЬ СБРОСА ТОНУСА';
 
@@ -591,24 +584,21 @@
       hudDesc.innerText = 'Скорость выключения мышц-антагонистов. Экспресс-маркер утомления пирамидного тракта, гипертонуса и риска травмы.';
       hudTarget.innerText = 'ЦЕЛЕВОЙ ФАКТОР: ТЕМП ДЕАКТИВАЦИИ (nRATE)';
 
-      // СТРОГО 2 КЛЮЧЕВЫЕ МЕТРИКИ:
       gridEl.innerHTML = `
-        <div class="stat-cell" style="border-color:#332914;"><div class="s-lbl">КОЭФФИЦИЕНТ ДЕАКТИВАЦИИ</div><div class="s-val" style="color:#ffd700;">7.4 s⁻¹</div></div>
+        <div class="stat-cell" style="border-color:#332914;"><div class="s-lbl">КОЭФФИЦИЕНТ ДЕАКТИВАЦИИ</div><div class="s-val">7.4 s⁻¹</div></div>
         <div class="stat-cell" style="border-color:#332914;"><div class="s-lbl">ОТКЛИК ТОРМОЖЕНИЯ ЦНС</div><div class="s-val">224 мс</div></div>
       `;
 
-      applyCardTheme(card, rEl, themeColor);
+      applyCardTheme(card, rEl, valEl, themeColor);
       initVoidFractalEngine(108, themeColor);
     }
-    // ==========================================
-    // 4. АСИММЕТРИЯ: 6.8% / БАЛАНС / ЗОЛОТО
-    // ==========================================
+    // 4. АСИММЕТРИЯ: СТАТУС // БАЛАНС (ЗОЛОТО / ТОЛЬКО РУКИ ЦВЕТНЫЕ)
     else if (m === 'ASYM') {
       themeColor = V_GOLD;
       voidLayer.style.display = 'none';
       legacyLayer.style.display = 'block';
 
-      rEl.innerHTML = 'БАЛАНС';
+      rEl.innerHTML = 'СТАТУС // БАЛАНС';
       animateValue('pHeroVal', 6.8, true, '%');
       unitEl.innerHTML = 'БИЛАТЕРАЛЬНЫЙ ДИСБАЛАНС (ASI)';
 
@@ -623,19 +613,21 @@
         <div class="stat-cell" style="border-color:#2a2516;"><div class="s-lbl">СДВИГ ПИКА</div><div class="s-val">140 мс</div></div>
       `;
 
-      applyCardTheme(card, rEl, themeColor);
+      applyCardTheme(card, rEl, valEl, themeColor);
       renderAsymChart();
     }
   }
 
-  function applyCardTheme(card, rEl, color) {
+  // ЦВЕТ ГЛАВНОЙ ЦИФРЫ ТЕПЕРЬ ВСЕГДА СИНХРОНЕН РАНГУ
+  function applyCardTheme(card, rEl, valEl, color) {
     document.documentElement.style.setProperty('--tab-accent', color);
     card.style.boxShadow = `0 10px 40px ${color}35, inset 0 1px 1px rgba(255,255,255,0.18)`;
     card.style.borderColor = color;
     rEl.style.color = color;
+    valEl.style.color = color;
+    valEl.style.textShadow = `0 0 30px ${color}45`;
   }
 
-  // ПУРПУРНЫЙ ГРАФИК POWER
   function renderPowerChart(color) {
     const canvas = document.getElementById('pChart');
     const ctx = canvas.getContext('2d');
@@ -663,7 +655,7 @@
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        animation: { duration: 900, easing: 'easeOutQuart' },
+        animation: { duration: 800, easing: 'easeOutQuart' },
         plugins: { legend: { display: false } },
         scales: {
           x: { grid: { display: false }, ticks: { maxTicksLimit: 5, color: '#556', font: { family: 'Roboto Mono' } } },
@@ -673,7 +665,6 @@
     });
   }
 
-  // БАЛЛИСТИЧЕСКИЙ КОЛЛИМАТОР SPEED (АЛЫЙ)
   function initSpeedKineticCollimator(rtMs, rfdVal, j100Val, color) {
     const canvas = document.getElementById('pChart');
     if (!canvas) return;
@@ -757,23 +748,25 @@
     render();
   }
 
-  // СТОХАСТИЧЕСКАЯ ФРАКТАЛЬНАЯ МОЛНИЯ (СЛУЧАЙНЫЕ ПАУЗЫ 1.5-4 СЕК)
+  // СТОХАСТИЧЕСКАЯ ФРАКТАЛЬНАЯ МОЛНИЯ (8-10 ВЕТВЕЙ С ПАУЗАМИ 2.0-4.0 СЕК)
   function initVoidFractalEngine(dropTime, color) {
     const cvs = document.getElementById('voidCanvas');
     if (!cvs) return;
     const ctx = cvs.getContext('2d');
-    const rect = document.getElementById('main-card').getBoundingClientRect();
+    const container = cvs.parentElement;
+    const cW = container.clientWidth || 370;
+    const cH = 185;
     const dpr = window.devicePixelRatio || 1;
-    cvs.width = rect.width * dpr;
-    cvs.height = rect.height * dpr;
-    cvs.style.width = rect.width + 'px';
-    cvs.style.height = rect.height + 'px';
+    cvs.width = cW * dpr;
+    cvs.height = cH * dpr;
+    cvs.style.width = cW + 'px';
+    cvs.style.height = cH + 'px';
     ctx.scale(dpr, dpr);
 
-    const margin = 24;
-    const w = rect.width - (margin * 2);
-    const scaleY = 250;
-    const barH = 22;
+    const margin = 20;
+    const w = cW - (margin * 2);
+    const scaleY = 145; // ШКАЛА ВЫРОВНЕНА СТРОГО В ЦЕНТРЕ ВИЗУАЛА
+    const barH = 18;
 
     let targetX = margin + ((250 - dropTime) / 200) * w;
     if (targetX < margin) targetX = margin;
@@ -787,25 +780,32 @@
       { w: 30/200, c: '#ff3b30', t: 50 }
     ];
 
-    let lightningBranches = [];
+    let lightningTree = [];
     let dischargeAlpha = 0;
-    let nextStrikeTime = performance.now() + 800; // Первый удар через 800мс
+    let nextStrikeTime = performance.now() + 600;
 
-    function buildBranches(x1, y1, x2, y2, displace) {
-      if (displace < 2) {
-        lightningBranches.push({ x1, y1, x2, y2 });
-        return;
+    // Рекурсивный генератор 8-10 фрактальных ветвей
+    function generateFractalTree(x1, y1, x2, y2, depth) {
+      if (depth <= 0) return;
+      const midX = (x1 + x2) / 2 + (Math.random() - 0.5) * (depth * 9);
+      const midY = (y1 + y2) / 2 + (Math.random() - 0.5) * (depth * 5);
+
+      lightningTree.push({ x1, y1, x2: midX, y2: midY, w: depth * 0.7 });
+      generateFractalTree(midX, midY, x2, y2, depth - 1);
+
+      // Ответвление под углом 30-45 градусов
+      if (Math.random() > 0.4 && depth > 1) {
+        const branchX = midX + (Math.random() - 0.5) * 35;
+        const branchY = midY + Math.random() * 25;
+        lightningTree.push({ x1: midX, y1: midY, x2: branchX, y2: branchY, w: depth * 0.4 });
+        generateFractalTree(midX, midY, branchX, branchY, depth - 2);
       }
-      const midX = (x1 + x2) / 2 + (Math.random() - 0.5) * displace;
-      const midY = (y1 + y2) / 2 + (Math.random() - 0.5) * displace;
-      buildBranches(x1, y1, midX, midY, displace / 2);
-      buildBranches(midX, midY, x2, y2, displace / 2);
     }
 
     function loop() {
-      ctx.clearRect(0, 0, cvs.width, cvs.height);
+      ctx.clearRect(0, 0, cW, cH);
 
-      // Отрисовка 5 цветных зон
+      // 5 цветовых зон шкалы
       let cx = margin;
       ctx.font = '9px Roboto Mono, monospace';
       ctx.textAlign = 'center';
@@ -820,57 +820,52 @@
           ctx.fillStyle = '#667';
           ctx.globalAlpha = 1;
           ctx.fillRect(cx + sw, scaleY + barH, 1, 4);
-          ctx.fillText(s.t, cx + sw, scaleY + barH + 13);
+          ctx.fillText(s.t, cx + sw, scaleY + barH + 12);
         }
         cx += sw;
       });
 
       const now = performance.now();
 
-      // СЛУЧАЙНЫЙ МОМЕНТ ДИЭЛЕКТРИЧЕСКОГО ПРОБОЯ (СТОХАСТИКА)
+      // СТОХАСТИЧЕСКИЙ РАЗРЯД (ПАУЗЫ 2.0-4.0 СЕКУНДЫ)
       if (now >= nextStrikeTime) {
-        lightningBranches = [];
-        buildBranches(targetX, 90, targetX + (Math.random() - 0.5) * 16, scaleY, 26);
+        lightningTree = [];
+        generateFractalTree(targetX + (Math.random() - 0.5) * 8, 8, targetX, scaleY, 5);
         dischargeAlpha = 1.0;
-        // Следующий удар через 1.8 - 4.2 секунды
-        nextStrikeTime = now + 1800 + Math.random() * 2400;
+        nextStrikeTime = now + 2000 + Math.random() * 2500;
       }
 
-      // Отрисовка и экспоненциальное угасание молнии
-      if (dischargeAlpha > 0.05) {
+      // Отрисовка ветвей молнии
+      if (dischargeAlpha > 0.04) {
         ctx.save();
         ctx.globalAlpha = dischargeAlpha;
         ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 2.5;
         ctx.shadowBlur = 16;
         ctx.shadowColor = '#ffd700';
-        ctx.beginPath();
-        lightningBranches.forEach(b => {
-          ctx.moveTo(b.x1, b.y1);
-          ctx.lineTo(b.x2, b.y2);
+
+        lightningTree.forEach(branch => {
+          ctx.lineWidth = Math.max(0.6, branch.w);
+          ctx.beginPath();
+          ctx.moveTo(branch.x1, branch.y1);
+          ctx.lineTo(branch.x2, branch.y2);
+          ctx.stroke();
         });
-        ctx.stroke();
 
-        ctx.strokeStyle = '#ffd700';
-        ctx.lineWidth = 1;
-        ctx.stroke();
         ctx.restore();
-
-        dischargeAlpha *= 0.88; // Быстрый реалистичный спад за 100 мс
+        dischargeAlpha *= 0.86; // Быстрый спад
       }
 
       // Маркер деактивации на шкале
       ctx.fillStyle = '#ffffff';
       ctx.shadowBlur = 10;
       ctx.shadowColor = '#ffd700';
-      ctx.fillRect(targetX - 2, scaleY - 6, 4, barH + 12);
+      ctx.fillRect(targetX - 2, scaleY - 5, 4, barH + 10);
 
       activeAnimReq = requestAnimationFrame(loop);
     }
     loop();
   }
 
-  // ДВЕ КРИВЫЕ ASYM
   function renderAsymChart() {
     const canvas = document.getElementById('pChart');
     const ctx = canvas.getContext('2d');
@@ -909,7 +904,7 @@
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        animation: { duration: 900, easing: 'easeOutQuart' },
+        animation: { duration: 800, easing: 'easeOutQuart' },
         plugins: { legend: { display: false } },
         scales: {
           x: { grid: { color: '#161616' }, ticks: { maxTicksLimit: 6, color: '#556', font: { family: 'Roboto Mono' } } },
@@ -919,32 +914,12 @@
     });
   }
 
-  // Старт терминала
   setTimeout(() => {
     applyModeData('POWER');
     startAutoCarousel();
   }, 100);
 </script>
   
-</section>
-
-<div class="divider accent"></div>
-
-<!-- HOW IT WORKS -->
-<section class="section" id="how-to">
-  <div class="section-header">
-    <span class="section-index">03</span>
-    <h2>Как используется</h2>
-  </div>
-
-  <ul class="data-list">
-    <li><span>Короткий тест</span><span class="value">20–40 секунд</span></li>
-    <li><span>Фиксация реакции и усилия</span><span class="value">автоматически</span></li>
-    <li><span>Результат</span><span class="value">сразу</span></li>
-    <li><span>Решение</span><span class="value">осознанно</span></li>
-  </ul>
-</section>
-
 <div class="divider"></div>
 
 <!-- PRINCIPLES -->

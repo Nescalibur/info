@@ -102,15 +102,15 @@
 
 <div class="divider"></div>
 
-<!-- MODES: АВТО-КАРУСЕЛЬ С БИОМЕХАНИЧЕСКИМ РАЗБОРОМ -->
+<!-- MODES: НЕЙРОМЫШЕЧНЫЙ ТЕРМИНАЛ v2026 -->
 <section class="section" id="modes" style="padding: 40px 15px;">
-  <div class="section-header" style="max-width: 420px; margin: 0 auto 20px auto;">
+  <div class="section-header" style="max-width: 440px; margin: 0 auto 16px auto;">
     <span class="section-index" style="color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 13px;">02</span>
     <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 28px; margin: 5px 0 0 0; color: #fff;">Режимы измерения</h2>
   </div>
 
   <div class="carousel-container" id="carouselWrapper">
-    <!-- ДОК РУЧНОГО ВЫБОРА РЕЖИМА -->
+    <!-- ТАКТИЧЕСКИЙ ДОК ПЕРЕКЛЮЧЕНИЯ РЕЖИМОВ -->
     <div class="card-tabs-bar">
       <button class="c-tab active" id="tab-POWER" onclick="manualSelectMode('POWER')">СИЛА</button>
       <button class="c-tab" id="tab-SPEED" onclick="manualSelectMode('SPEED')">СКОРОСТЬ</button>
@@ -118,16 +118,21 @@
       <button class="c-tab" id="tab-ASYM" onclick="manualSelectMode('ASYM')">АСИММЕТРИЯ</button>
     </div>
 
-    <!-- ОБСИДИАНОВАЯ ПЛИТА -->
+    <!-- ТЕЛЕМЕТРИЧЕСКИЙ HUD-БЛОК ФИЗИОЛОГИИ (ВЫНЕСЕН НАД КАРТОЧКОЙ) -->
+    <div class="telemetry-hud" id="hudBox">
+      <div class="hud-tag" id="hudTag">НЕЙРОМЫШЕЧНЫЙ ПОТОЛОК // МПС</div>
+      <div class="hud-desc" id="hudDesc">Предельная изометрическая мобилизация высокопороговых волокон без инерции снаряда.</div>
+    </div>
+
+    <!-- ОБСИДИАНОВАЯ ПЛИТА (ЧИСТЫЙ СЕНСОРНЫЙ ЭКРАН) -->
     <div class="card-face card-front" id="main-card">
       <div id="void-layer"><canvas id="voidCanvas"></canvas></div>
 
       <div id="content-container">
         <div class="rank-box">
-          <div class="rank-text" id="pRank">ПРИМАРХ</div>
+          <div class="rank-text" id="pRank">ТИТАН</div>
         </div>
         
-        <!-- ИСПРАВЛЕН КОНФЛИКТ С STYLES.CSS: ВМЕСТО .hero ТЕПЕРЬ .card-hero-block -->
         <div class="card-hero-block" id="heroBox">
           <div class="card-hero-val" id="pHeroVal">126.4</div>
           <div class="card-hero-unit" id="pHeroUnit">КИЛОГРАММ // ПИКОВАЯ ТЯГА</div>
@@ -139,20 +144,8 @@
           </div>
         </div>
 
-        <!-- 4 КЛЮЧЕВЫЕ МЕТРИКИ -->
+        <!-- 4 ТОЧНЫЕ СПОРТИВНЫЕ МЕТРИКИ -->
         <div class="stats-grid" id="pStatsGrid"></div>
-
-        <!-- БИОМЕХАНИЧЕСКИЙ РАЗБОР (ЧТО И КАК ИЗМЕРЯЕМ) -->
-        <div class="protocol-desc-box" id="pProtocolBox">
-          <div class="p-row">
-            <span class="p-title">ФИЗИОЛОГИЯ:</span>
-            <span class="p-desc" id="pBioText">Оценка абсолютной произвольной силы (МПС) без читинга и инерции.</span>
-          </div>
-          <div class="p-row">
-            <span class="p-title">ПРОТОКОЛ:</span>
-            <span class="p-desc" id="pProtocolText">5 секунд максимального изометрического усилия со срывом от 1 кг.</span>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -171,7 +164,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 6px;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
 
   .c-tab {
@@ -190,18 +183,46 @@
   }
   .c-tab.active {
     color: #fff;
-    border-color: var(--tab-accent, #ff3b30);
+    border-color: var(--tab-accent, #bf5af2);
     background: #121824;
     box-shadow: 0 0 15px rgba(0,0,0,0.8);
   }
 
+  /* HUD-ПАНЕЛЬ ФИЗИОЛОГИИ НАД КАРТОЧКОЙ */
+  .telemetry-hud {
+    background: #080a0f;
+    border: 1px solid #1c2436;
+    border-left: 3px solid var(--tab-accent, #bf5af2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    transition: border-color 0.4s ease;
+  }
+  .hud-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--tab-accent, #bf5af2);
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+    transition: color 0.4s ease;
+  }
+  .hud-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #cbd5e1;
+    line-height: 1.45;
+  }
+
+  /* ОБСИДИАНОВАЯ ПЛИТА С ГАРАНТИРОВАННЫМ СБРОСОМ ФОНА */
   #modes #main-card {
     width: 100% !important;
     box-sizing: border-box !important;
-    min-height: 560px !important;
+    min-height: 540px !important;
     border-radius: 20px !important;
-    padding: 22px !important;
+    padding: 24px !important;
     background: radial-gradient(130% 130% at 50% 0%, #151821 0%, #0b0d12 60%, #050608 100%) !important;
+    background-image: none !important;
     box-shadow: inset 0 1px 1px rgba(255,255,255,0.18), inset 0 -1px 2px rgba(0,0,0,0.9), 0 25px 60px rgba(0,0,0,0.95) !important;
     border: 1px solid rgba(255,255,255,0.12);
     position: relative !important;
@@ -219,7 +240,6 @@
     line-height: 1.2;
   }
 
-  /* ИЗОЛИРОВАННЫЙ КЛАСС ВМЕСТО .hero */
   .card-hero-block {
     text-align: center;
     margin: 4px 0 0 0;
@@ -250,15 +270,15 @@
   #legacy-layer { display: block; position: relative; z-index: 5; }
   .chart-container { height: 185px; width: 100%; position: relative; margin-top: 10px; }
 
-  #void-layer { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+  #void-layer { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
   canvas#voidCanvas { width: 100%; height: 100%; }
 
   .stats-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
-    margin-top: 14px;
-    padding-top: 12px;
+    margin-top: 16px;
+    padding-top: 14px;
     border-top: 1px solid #222;
     position: relative;
     z-index: 20;
@@ -284,23 +304,6 @@
     font-weight: 600;
   }
   .s-val { font-size: 14px; font-weight: bold; font-family: 'Orbitron', monospace; }
-
-  .protocol-desc-box {
-    margin-top: 12px;
-    padding-top: 10px;
-    border-top: 1px dashed rgba(255,255,255,0.08);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
-    line-height: 1.45;
-    position: relative;
-    z-index: 20;
-  }
-  .p-row { display: flex; flex-direction: column; }
-  .p-title { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 800; color: #556277; letter-spacing: 1px; }
-  .p-desc { color: #b0bac9; }
 </style>
 
 <script>
@@ -310,7 +313,7 @@
   const MODES_LIST = ['POWER', 'SPEED', 'VOID', 'ASYM'];
   let currentModeIdx = 0;
 
-  const V_GREY = '#848484', V_GREEN = '#32d74b', V_CYAN = '#00f3ff', V_YELLOW = '#ffd700', V_RED = '#ff3b30';
+  const V_GREY = '#848484', V_GREEN = '#32d74b', V_CYAN = '#00f3ff', V_YELLOW = '#ffd700', V_PURPLE = '#bf5af2';
   const COL_LEFT_HAND  = '#00f3ff';
   const COL_RIGHT_HAND = '#ff9f0a';
 
@@ -350,32 +353,31 @@
     const valEl = document.getElementById('pHeroVal');
     const unitEl = document.getElementById('pHeroUnit');
     const gridEl = document.getElementById('pStatsGrid');
-    const bioText = document.getElementById('pBioText');
-    const protoText = document.getElementById('pProtocolText');
+    const hudTag = document.getElementById('hudTag');
+    const hudDesc = document.getElementById('hudDesc');
     const legacyLayer = document.getElementById('legacy-layer');
     const voidLayer = document.getElementById('void-layer');
 
-    let themeColor = '#ff3b30';
+    let themeColor = V_PURPLE;
 
     if (m === 'POWER') {
-      themeColor = '#ff3b30';
+      themeColor = V_PURPLE; // 126.4 кг — ПУРПУР ТИТАН
       voidLayer.style.display = 'none';
       legacyLayer.style.display = 'block';
-      gridEl.style.marginTop = '14px';
 
-      rEl.innerText = 'ПРИМАРХ';
+      rEl.innerText = 'ТИТАН';
       valEl.innerText = '126.4';
       unitEl.innerHTML = 'КИЛОГРАММ // ПИКОВАЯ ТЯГА';
 
+      hudTag.innerText = 'НЕЙРОМЫШЕЧНЫЙ ПОТОЛОК // МПС';
+      hudDesc.innerText = 'Предельная изометрическая мобилизация высокопороговых волокон задней цепи без инерции снаряда.';
+
       gridEl.innerHTML = `
-        <div class="stat-cell"><div class="s-lbl">ИМПУЛЬС (ТОННАЖ)</div><div class="s-val">438 кг·с</div></div>
+        <div class="stat-cell"><div class="s-lbl">ТОННАЖ (ИМПУЛЬС)</div><div class="s-val">438 кг·с</div></div>
         <div class="stat-cell"><div class="s-lbl">ВЗРЫВ iRFD</div><div class="s-val">184 кг/с</div></div>
         <div class="stat-cell"><div class="s-lbl">ВРЕМЯ ПИКА (TTP)</div><div class="s-val">2.85 с</div></div>
         <div class="stat-cell"><div class="s-lbl">ОТН. СИЛА (RFI)</div><div class="s-val">1.58x ВТ</div></div>
       `;
-
-      bioText.innerHTML = "Максимальное произвольное сокращение (МПС). Истинный силовой потенциал задней мышечной цепи без читинга и инерции снаряда.";
-      protoText.innerHTML = "5 секунд предельной тяги со срывом от порога 1.0 кг → автоматический подсчет механической работы.";
 
       applyCardTheme(card, rEl, valEl, themeColor);
       renderPowerChart(themeColor);
@@ -384,11 +386,13 @@
       themeColor = '#00f3ff';
       voidLayer.style.display = 'none';
       legacyLayer.style.display = 'block';
-      gridEl.style.marginTop = '14px';
 
       rEl.innerText = 'МАНГУСТ';
       valEl.innerText = '172';
       unitEl.innerHTML = 'МИЛЛИСЕКУНД // ВРЕМЯ РЕАКЦИИ';
+
+      hudTag.innerText = 'СЕНСОМОТОРНАЯ РЕЗКОСТЬ // ПИРАМИДНЫЙ ТРАКТ';
+      hudDesc.innerText = 'Скорость зрительного отклика моторной коры и синхронность первичного взрывного залпа мотонейронов (>150 Гц).';
 
       gridEl.innerHTML = `
         <div class="stat-cell" style="border-color:#1c2638;"><div class="s-lbl">СУХОЖИЛЬНЫЙ ЛАГ</div><div class="s-val" style="color:#00f3ff;">22 мс</div></div>
@@ -397,44 +401,42 @@
         <div class="stat-cell" style="border-color:#1c2638;"><div class="s-lbl">СТАРТОВЫЙ ИМПУЛЬС</div><div class="s-val" style="color:#00f3ff;">0.64 кг·с</div></div>
       `;
 
-      bioText.innerHTML = "Сенсомоторная скорость и баллистика. Оценивает проводимость пирамидного тракта и взрывной залп высокопороговых волокон IIx.";
-      protoText.innerHTML = "Удержание преднатяга 1.0–2.5 кг (700 мс) → ожидание 2.0–4.5 с → взрывной рывок строго на световую вспышку.";
-
       applyCardTheme(card, rEl, valEl, themeColor);
       initSpeedKineticCollimator(172, 184, 0.64, themeColor);
     }
     else if (m === 'VOID') {
-      themeColor = '#bf5af2';
+      themeColor = '#ffd700'; // ЭЛИТА = ЗОЛОТО
       legacyLayer.style.display = 'none';
       voidLayer.style.display = 'block';
       
       rEl.innerText = 'ЭЛИТА';
       valEl.innerText = '108';
       unitEl.innerHTML = 'МИЛЛИСЕКУНД // СКОРОСТЬ СБРОСА ТОНУСА';
-      gridEl.style.marginTop = '195px';
+
+      hudTag.innerText = 'ИНГИБИТОРНЫЙ КОНТРОЛЬ ЦНС // ДЕАКТИВАЦИЯ';
+      hudDesc.innerText = 'Скорость выключения мышц-антагонистов. Экспресс-маркер утомления, гипертонуса и риска надрыва связок.';
 
       gridEl.innerHTML = `
-        <div class="stat-cell"><div class="s-lbl">КОЭФФИЦИЕНТ nRATE</div><div class="s-val">7.4 s⁻¹</div></div>
+        <div class="stat-cell"><div class="s-lbl">КОЭФФИЦИЕНТ nRATE</div><div class="s-val" style="color:#ffd700;">7.4 s⁻¹</div></div>
         <div class="stat-cell"><div class="s-lbl">ОТКЛИК ЦНС</div><div class="s-val">224 мс</div></div>
         <div class="stat-cell"><div class="s-lbl">БАЗА УДЕРЖАНИЯ</div><div class="s-val">16.4 кг</div></div>
         <div class="stat-cell"><div class="s-lbl">ОСТАТОК ЦЕПИ</div><div class="s-val">0.2 кг</div></div>
       `;
 
-      bioText.innerHTML = "Скорость мышечной деактивации и торможения коры. Маркер перетренированности, локального гипертонуса и риска надрыва связок.";
-      protoText.innerHTML = "Изометрическое удержание коридора 10–20 кг → сигнал вспышки → мгновенное расслабление мышц.";
-
       applyCardTheme(card, rEl, valEl, themeColor);
-      initVoidCanvasPromo(108, themeColor);
+      initVoidFractalEngine(108, themeColor);
     }
     else if (m === 'ASYM') {
       themeColor = '#ffd700';
       voidLayer.style.display = 'none';
       legacyLayer.style.display = 'block';
-      gridEl.style.marginTop = '14px';
 
       rEl.innerHTML = 'БАЛАНС 6.8%';
       valEl.innerText = '6.8%';
       unitEl.innerHTML = 'БИЛАТЕРАЛЬНЫЙ ДИСБАЛАНС (ASI)';
+
+      hudTag.innerText = 'БИЛАТЕРАЛЬНАЯ СИММЕТРИЯ // ЗАЩИТА ОСЕВОГО СКЕЛЕТА';
+      hudDesc.innerText = 'Выявление скрытого силового перекоса сторон. Разница >10% формирует опасный ротационный момент в позвоночнике.';
 
       gridEl.innerHTML = `
         <div class="stat-cell" style="border-color:${COL_LEFT_HAND}; background:rgba(0,243,255,0.04);"><div class="s-lbl" style="color:${COL_LEFT_HAND};">ЛЕВАЯ РУКА</div><div class="s-val" style="color:${COL_LEFT_HAND};">117.8 кг</div></div>
@@ -442,9 +444,6 @@
         <div class="stat-cell"><div class="s-lbl">РАЗРЫВ iRFD</div><div class="s-val">8.4%</div></div>
         <div class="stat-cell"><div class="s-lbl">СДВИГ ПИКА</div><div class="s-val">140 мс</div></div>
       `;
-
-      bioText.innerHTML = "Сравнение силовых кривых левой и правой стороны. Выявляет скрытые ротационные перекосы позвоночника до появления боли.";
-      protoText.innerHTML = "Замер правой руки (3.5 с) → пауза на ресинтез креатинфосфата (60 с) → замер левой руки (3.5 с).";
 
       applyCardTheme(card, rEl, valEl, themeColor);
       renderAsymChart();
@@ -459,6 +458,7 @@
     valEl.style.color = color;
   }
 
+  // 1. ПУРПУРНЫЙ ГРАФИК POWER
   function renderPowerChart(color) {
     const canvas = document.getElementById('pChart');
     const ctx = canvas.getContext('2d');
@@ -496,6 +496,7 @@
     });
   }
 
+  // 2. БАЛЛИСТИЧЕСКИЙ КОЛЛИМАТОР SPEED
   function initSpeedKineticCollimator(rtMs, rfdVal, j100Val, color) {
     const canvas = document.getElementById('pChart');
     if (!canvas) return;
@@ -580,7 +581,8 @@
     render();
   }
 
-  function initVoidCanvasPromo(dropTime, color) {
+  // 3. ФРАКТАЛЬНЫЙ ГЕНЕРАТОР МОЛНИЙ В РЕЖИМЕ ДЕАКТИВАЦИИ (108 МС)
+  function initVoidFractalEngine(dropTime, color) {
     const cvs = document.getElementById('voidCanvas');
     if (!cvs) return;
     const ctx = cvs.getContext('2d');
@@ -594,7 +596,7 @@
 
     const margin = 24;
     const w = rect.width - (margin * 2);
-    const scaleY = 205;
+    const scaleY = 240;
     const barH = 22;
 
     let targetX = margin + ((250 - dropTime) / 200) * w;
@@ -606,13 +608,28 @@
       { w: 50/200, c: V_GREEN, t: 150 },
       { w: 40/200, c: V_CYAN, t: 110 },
       { w: 30/200, c: V_YELLOW, t: 80 },
-      { w: 30/200, c: V_RED, t: 50 }
+      { w: 30/200, c: '#ff3b30', t: 50 }
     ];
 
-    let frame = 0, strikeFrame = 30, isStruck = false;
+    let frame = 0;
+    let lightningBranches = [];
+
+    // Рекурсивная генерация ветви молнии
+    function generateBolt(x1, y1, x2, y2, displace) {
+      if (displace < 2) {
+        lightningBranches.push({ x1, y1, x2, y2 });
+        return;
+      }
+      const midX = (x1 + x2) / 2 + (Math.random() - 0.5) * displace;
+      const midY = (y1 + y2) / 2 + (Math.random() - 0.5) * displace;
+      generateBolt(x1, y1, midX, midY, displace / 2);
+      generateBolt(midX, midY, x2, y2, displace / 2);
+    }
 
     function loop() {
       ctx.clearRect(0, 0, cvs.width, cvs.height);
+
+      // Отрисовка шкалы 5 зон
       let cx = margin;
       ctx.font = '9px Roboto Mono, monospace';
       ctx.textAlign = 'center';
@@ -621,21 +638,8 @@
         const sw = w * s.w;
         ctx.globalAlpha = 0.75;
         ctx.fillStyle = s.c;
+        ctx.fillRect(cx, scaleY, sw, barH);
 
-        if (!isStruck) {
-          ctx.fillRect(cx, scaleY, sw, barH);
-        } else {
-          if (targetX > cx && targetX < cx + sw) {
-            ctx.fillRect(cx, scaleY, (targetX - 5) - cx, barH);
-            ctx.fillRect(targetX + 5, scaleY, (cx + sw) - (targetX + 5), barH);
-            ctx.fillStyle = '#ffaa00';
-            ctx.globalAlpha = 1;
-            ctx.fillRect(targetX - 6, scaleY, 2, barH);
-            ctx.fillRect(targetX + 4, scaleY, 2, barH);
-          } else {
-            ctx.fillRect(cx, scaleY, sw, barH);
-          }
-        }
         if (s.t !== 50) {
           ctx.fillStyle = '#667';
           ctx.globalAlpha = 1;
@@ -645,19 +649,45 @@
         cx += sw;
       });
 
-      if (!isStruck) {
-        ctx.fillStyle = '#fff';
-        const hProgress = 18 * Math.min(frame / strikeFrame, 1.0);
-        ctx.fillRect(targetX - 2, scaleY - hProgress, 4, hProgress);
+      // Периодический стохастический разряд молнии (каждые 35 кадров)
+      if (frame % 35 === 0) {
+        lightningBranches = [];
+        generateBolt(targetX, 90, targetX + (Math.random() - 0.5) * 10, scaleY, 24);
       }
 
-      if (frame === strikeFrame) { isStruck = true; }
+      // Отрисовка разряда
+      if (lightningBranches.length > 0) {
+        ctx.save();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2.5;
+        ctx.shadowBlur = 14;
+        ctx.shadowColor = '#ffd700'; // Золотое ионное свечение
+        ctx.beginPath();
+        lightningBranches.forEach(b => {
+          ctx.moveTo(b.x1, b.y1);
+          ctx.lineTo(b.x2, b.y2);
+        });
+        ctx.stroke();
+
+        ctx.strokeStyle = '#ffd700';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Маркер деактивации на шкале
+      ctx.fillStyle = '#ffffff';
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = '#ffd700';
+      ctx.fillRect(targetX - 2, scaleY - 6, 4, barH + 12);
+
       frame++;
       activeAnimReq = requestAnimationFrame(loop);
     }
     loop();
   }
 
+  // 4. ДВЕ КРИВЫЕ ASYM
   function renderAsymChart() {
     const canvas = document.getElementById('pChart');
     const ctx = canvas.getContext('2d');

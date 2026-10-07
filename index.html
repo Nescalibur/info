@@ -116,26 +116,26 @@
       <div class="monolith-perspective">
         <div class="card-face card-front" id="main-card">
           <div class="specular-glare" id="cardGlare"></div>
-          
-          <div id="void-layer"><canvas id="voidCanvas"></canvas></div>
 
           <div id="content-container">
+            <!-- 1. РАНГ С ШИРОКИМ ТРЕКИНГОМ -->
             <div class="rank-box">
               <div class="rank-text" id="pRank">РАНГ // ТИТАН</div>
             </div>
             
+            <!-- 2. ГЛАВНАЯ ЦИФРА И ЕДИНИЦА С ПРЕМИАЛЬНЫМИ ОТСТУПАМИ -->
             <div class="card-hero-block" id="heroBox">
               <div class="card-hero-val" id="pHeroVal">126.4</div>
               <div class="card-hero-unit" id="pHeroUnit">КИЛОГРАММ // ПИКОВАЯ ТЯГА</div>
             </div>
 
-            <div id="legacy-layer">
-              <div class="chart-container">
-                <canvas id="pChart"></canvas>
-              </div>
+            <!-- 3. ЕДИНЫЙ ЦЕНТРАЛЬНЫЙ ВИЗУАЛЬНЫЙ СЛОЙ (190px) -->
+            <div class="chart-container" id="visualContainer">
+              <canvas id="pChart"></canvas>
+              <canvas id="voidCanvas" style="display:none;"></canvas>
             </div>
 
-            <!-- СПОРТИВНЫЙ ГРИД МЕТРИК -->
+            <!-- 4. СПОРТИВНЫЙ ГРИД МЕТРИК СТРОГО ВНИЗУ -->
             <div class="stats-grid" id="pStatsGrid"></div>
           </div>
         </div>
@@ -205,7 +205,6 @@
     align-items: center;
   }
 
-  /* МОБИЛЬНЫЙ ПОРЯДОК: СЕЛЕКТОР НАД КАРТОЧКОЙ */
   @media(max-width: 860px) {
     .terminal-cockpit { grid-template-columns: 1fr; gap: 20px; }
     .terminal-hud-panel { order: -1; }
@@ -213,20 +212,20 @@
   }
 
   .monolith-perspective {
-    perspective: 1200px;
+    perspective: 1400px;
     width: 100%;
     max-width: 420px;
     margin: 0 auto;
   }
 
-  /* ЛИКВИДАЦИЯ ПУСТОТЫ ВНИЗУ КАРТОЧКИ */
+  /* ОБСИДИАНОВАЯ ПЛИТА БЕЗ ПУСТОТЫ ВНИЗУ */
   #modes #main-card {
     width: 100% !important;
     box-sizing: border-box !important;
-    min-height: auto !important; /* УБРАНА ПУСТОТА */
     height: auto !important;
+    min-height: auto !important;
     border-radius: 20px !important;
-    padding: 22px 20px 20px 20px !important;
+    padding: 24px 22px 20px 22px !important;
     background: radial-gradient(130% 130% at 50% 0%, #151821 0%, #0b0d12 60%, #050608 100%) !important;
     background-image: none !important;
     box-shadow: inset 0 1px 1px rgba(255,255,255,0.18), inset 0 -1px 2px rgba(0,0,0,0.9), 0 25px 60px rgba(0,0,0,0.95) !important;
@@ -234,40 +233,46 @@
     position: relative !important;
     overflow: hidden !important;
     transform-style: preserve-3d;
-    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease, opacity 0.3s ease;
+    transition: transform 0.65s cubic-bezier(0.19, 1, 0.22, 1), border-color 0.4s ease, box-shadow 0.4s ease;
   }
 
-  /* ПЛАВНАЯ КИНЕМАТИКА ОТЖИМА БЕЗ РВАНЫХ КАДРОВ */
-  #main-card.kinetic-shift {
-    transform: translateY(-6px) scale(0.98);
-    opacity: 0.88;
+  /* ТЯЖЕЛЫЙ 3D-ОТРЫВ МОНОЛИТА */
+  #main-card.monolith-flip {
+    transform: translateZ(55px) rotateY(-14deg) rotateX(6deg) scale(0.96) !important;
+    box-shadow: 0 35px 80px rgba(0,0,0,0.95), 0 0 50px var(--tab-accent, #bf5af2) !important;
   }
 
   .specular-glare {
     position: absolute;
     inset: -100%;
-    background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.05) 50%, transparent 60%);
+    background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.06) 50%, transparent 60%);
     pointer-events: none;
     transform: translateX(-100%);
-    transition: transform 0.6s ease;
+    transition: transform 0.75s ease;
   }
-  #main-card.kinetic-shift .specular-glare {
+  #main-card.monolith-flip .specular-glare {
     transform: translateX(100%);
   }
 
-  .rank-box { text-align: center; margin-bottom: 4px; position: relative; z-index: 5; }
+  /* ПРЕМИАЛЬНЫЕ ПРОСТРАНСТВЕННЫЕ ОТСТУПЫ */
+  .rank-box {
+    text-align: center;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 5;
+  }
   .rank-text {
     font-family: 'Orbitron', sans-serif;
-    font-size: 19px;
+    font-size: 15px;
     font-weight: 800;
     text-shadow: 0 0 20px currentColor;
-    letter-spacing: 2px;
+    letter-spacing: 3.5px;
     line-height: 1.2;
   }
 
   .card-hero-block {
     text-align: center;
-    margin: 2px 0 0 0;
+    margin: 0;
     padding: 0;
     position: relative;
     z-index: 5;
@@ -275,41 +280,48 @@
   }
   .card-hero-val {
     font-family: 'Orbitron', monospace;
-    font-size: 58px;
+    font-size: 60px;
     font-weight: 900;
     line-height: 0.95;
     letter-spacing: 2px;
+    margin-bottom: 10px;
     transition: color 0.3s ease;
   }
   .card-hero-unit {
     font-size: 10px;
-    color: #888;
-    font-weight: bold;
+    color: #7b8599;
+    font-weight: 700;
     letter-spacing: 2px;
-    margin-top: 6px;
     text-transform: uppercase;
     font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 16px;
   }
 
-  #legacy-layer { display: block; position: relative; z-index: 5; }
-  .chart-container { height: 185px; width: 100%; position: relative; margin-top: 10px; }
-
-  #void-layer { display: none; position: relative; width: 100%; height: 185px; margin-top: 10px; z-index: 5; }
-  canvas#voidCanvas { width: 100%; height: 100%; display: block; }
+  /* ЕДИНЫЙ КОНТЕЙНЕР ГРАФИКА / МОЛНИИ (190px) */
+  .chart-container {
+    height: 190px;
+    width: 100%;
+    position: relative;
+  }
+  #pChart, #voidCanvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+  }
 
   .stats-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
-    margin-top: 16px;
-    padding-top: 14px;
+    margin-top: 18px;
+    padding-top: 16px;
     border-top: 1px solid #222;
     position: relative;
     z-index: 20;
   }
   .stat-cell {
     background: #0d1017;
-    padding: 10px 8px;
+    padding: 11px 8px;
     border-radius: 8px;
     text-align: center;
     border: 1px solid #1c2333;
@@ -321,14 +333,18 @@
   .s-lbl {
     font-size: 8px;
     color: #778;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
     text-transform: uppercase;
     letter-spacing: 1px;
     font-family: 'JetBrains Mono', monospace;
     font-weight: 700;
   }
-  /* ВСЕ ЦИФРЫ В ПЛАШКАХ БЕЛЫЕ */
-  .s-val { font-size: 14px; font-weight: bold; font-family: 'Orbitron', monospace; color: #fff; }
+  .s-val {
+    font-size: 14px;
+    font-weight: bold;
+    font-family: 'Orbitron', monospace;
+    color: #fff;
+  }
 
   /* ПРАВАЯ ПАНЕЛЬ */
   .terminal-hud-panel {
@@ -439,7 +455,7 @@
   let activeAnimReq = null;
   let carouselTimer = null;
   let tickerAnimTimer = null;
-  let userInteracted = false; // БЛОКИРОВКА АВТОПРОКРУТКИ ПРИ КЛИКЕ
+  let userInteracted = false;
 
   const MODES_LIST = ['POWER', 'SPEED', 'VOID', 'ASYM'];
   let currentModeIdx = 0;
@@ -450,35 +466,35 @@
   const COL_LEFT_HAND  = '#00f3ff';
   const COL_RIGHT_HAND = '#ff9f0a';
 
-  // ПРИ ПЕРВОМ КЛИКЕ АВТОПРОКРУТКА ОТКЛЮЧАЕТСЯ НАВСЕГДА
   function manualSelectMode(m) {
     if (!userInteracted) {
       userInteracted = true;
       stopAutoCarousel();
     }
     currentModeIdx = MODES_LIST.indexOf(m);
-    triggerKineticShift(() => applyModeData(m));
+    triggerMonolithFlip(() => applyModeData(m));
   }
 
   function startAutoCarousel() {
     if (userInteracted) return;
     carouselTimer = setInterval(() => {
       currentModeIdx = (currentModeIdx + 1) % MODES_LIST.length;
-      triggerKineticShift(() => applyModeData(MODES_LIST[currentModeIdx]));
-    }, 6500);
+      triggerMonolithFlip(() => applyModeData(MODES_LIST[currentModeIdx]));
+    }, 7000);
   }
 
   function stopAutoCarousel() {
     if (carouselTimer) { clearInterval(carouselTimer); carouselTimer = null; }
   }
 
-  function triggerKineticShift(callback) {
+  // ТЯЖЕЛАЯ 3D-КИНЕМАТИКА ОТРЫВА МОНОЛИТА (650мс)
+  function triggerMonolithFlip(callback) {
     const card = document.getElementById('main-card');
-    card.classList.add('kinetic-shift');
+    card.classList.add('monolith-flip');
     setTimeout(() => {
       callback();
-      setTimeout(() => card.classList.remove('kinetic-shift'), 180);
-    }, 150);
+      setTimeout(() => card.classList.remove('monolith-flip'), 240);
+    }, 220);
   }
 
   function animateValue(id, targetNum, isFloat, suffix = '') {
@@ -517,16 +533,18 @@
     const hudTag = document.getElementById('hudTag');
     const hudDesc = document.getElementById('hudDesc');
     const hudTarget = document.getElementById('hudTarget');
-    const legacyLayer = document.getElementById('legacy-layer');
-    const voidLayer = document.getElementById('void-layer');
+    const chartCanvas = document.getElementById('pChart');
+    const voidCanvas = document.getElementById('voidCanvas');
 
     let themeColor = V_PURPLE;
 
-    // 1. СИЛА: РАНГ // ТИТАН (ПУРПУР)
+    // ==========================================
+    // 1. СИЛА: РАНГ // ТИТАН (126.4 кг / ПУРПУР)
+    // ==========================================
     if (m === 'POWER') {
       themeColor = V_PURPLE;
-      voidLayer.style.display = 'none';
-      legacyLayer.style.display = 'block';
+      voidCanvas.style.display = 'none';
+      chartCanvas.style.display = 'block';
 
       rEl.innerText = 'РАНГ // ТИТАН';
       animateValue('pHeroVal', 126.4, true);
@@ -546,11 +564,13 @@
       applyCardTheme(card, rEl, valEl, themeColor);
       renderPowerChart(themeColor);
     }
-    // 2. СКОРОСТЬ: РАНГ // КОБРА (172 мс / КРАСНЫЙ)
+    // ==========================================
+    // 2. СКОРОСТЬ: РАНГ // КОБРА (172 мс / АЛЫЙ)
+    // ==========================================
     else if (m === 'SPEED') {
       themeColor = V_RED;
-      voidLayer.style.display = 'none';
-      legacyLayer.style.display = 'block';
+      voidCanvas.style.display = 'none';
+      chartCanvas.style.display = 'block';
 
       rEl.innerText = 'РАНГ // КОБРА';
       animateValue('pHeroVal', 172, false);
@@ -570,11 +590,13 @@
       applyCardTheme(card, rEl, valEl, themeColor);
       initSpeedKineticCollimator(172, 184, 0.64, themeColor);
     }
-    // 3. ДЕАКТИВАЦИЯ: РАНГ // ЭЛИТА (108 мс / ЗОЛОТО / СТРОГО 2 БЕЛЫЕ ПЛАШКИ)
+    // ==========================================
+    // 3. ДЕАКТИВАЦИЯ: РАНГ // ЭЛИТА (108 мс / ЗОЛОТО)
+    // ==========================================
     else if (m === 'VOID') {
       themeColor = V_GOLD;
-      legacyLayer.style.display = 'none';
-      voidLayer.style.display = 'block';
+      chartCanvas.style.display = 'none';
+      voidCanvas.style.display = 'block';
       
       rEl.innerText = 'РАНГ // ЭЛИТА';
       animateValue('pHeroVal', 108, false);
@@ -592,11 +614,13 @@
       applyCardTheme(card, rEl, valEl, themeColor);
       initVoidFractalEngine(108, themeColor);
     }
-    // 4. АСИММЕТРИЯ: СТАТУС // БАЛАНС (ЗОЛОТО / ТОЛЬКО РУКИ ЦВЕТНЫЕ)
+    // ==========================================
+    // 4. АСИММЕТРИЯ: СТАТУС // БАЛАНС (ЗОЛОТО)
+    // ==========================================
     else if (m === 'ASYM') {
       themeColor = V_GOLD;
-      voidLayer.style.display = 'none';
-      legacyLayer.style.display = 'block';
+      voidCanvas.style.display = 'none';
+      chartCanvas.style.display = 'block';
 
       rEl.innerHTML = 'СТАТУС // БАЛАНС';
       animateValue('pHeroVal', 6.8, true, '%');
@@ -618,20 +642,19 @@
     }
   }
 
-  // ЦВЕТ ГЛАВНОЙ ЦИФРЫ ТЕПЕРЬ ВСЕГДА СИНХРОНЕН РАНГУ
   function applyCardTheme(card, rEl, valEl, color) {
     document.documentElement.style.setProperty('--tab-accent', color);
     card.style.boxShadow = `0 10px 40px ${color}35, inset 0 1px 1px rgba(255,255,255,0.18)`;
     card.style.borderColor = color;
     rEl.style.color = color;
     valEl.style.color = color;
-    valEl.style.textShadow = `0 0 30px ${color}45`;
+    valEl.style.textShadow = `0 0 30px ${color}50`;
   }
 
   function renderPowerChart(color) {
     const canvas = document.getElementById('pChart');
     const ctx = canvas.getContext('2d');
-    const grad = ctx.createLinearGradient(0, 0, 0, 185);
+    const grad = ctx.createLinearGradient(0, 0, 0, 190);
     grad.addColorStop(0, color);
     grad.addColorStop(1, 'rgba(0,0,0,0)');
 
@@ -655,7 +678,7 @@
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        animation: { duration: 800, easing: 'easeOutQuart' },
+        animation: { duration: 750, easing: 'easeOutQuart' },
         plugins: { legend: { display: false } },
         scales: {
           x: { grid: { display: false }, ticks: { maxTicksLimit: 5, color: '#556', font: { family: 'Roboto Mono' } } },
@@ -672,7 +695,7 @@
     const container = canvas.parentElement;
 
     const cW = container.clientWidth || 370;
-    const cH = 185;
+    const cH = 190;
     const dpr = window.devicePixelRatio || 1;
     canvas.width = cW * dpr;
     canvas.height = cH * dpr;
@@ -707,7 +730,7 @@
       ctx.arc(cx, cy, maxR, Math.PI * 0.75, curAngle);
       ctx.strokeStyle = color;
       ctx.lineWidth = 9;
-      ctx.shadowBlur = 12;
+      ctx.shadowBlur = 14;
       ctx.shadowColor = color;
       ctx.stroke();
       ctx.restore();
@@ -748,14 +771,14 @@
     render();
   }
 
-  // СТОХАСТИЧЕСКАЯ ФРАКТАЛЬНАЯ МОЛНИЯ (8-10 ВЕТВЕЙ С ПАУЗАМИ 2.0-4.0 СЕК)
+  // СТОХАСТИЧЕСКАЯ ФРАКТАЛЬНАЯ МОЛНИЯ (ФИЗИЧЕСКАЯ МОДЕЛЬ 8–10 ВЕТВЕЙ)
   function initVoidFractalEngine(dropTime, color) {
     const cvs = document.getElementById('voidCanvas');
     if (!cvs) return;
     const ctx = cvs.getContext('2d');
     const container = cvs.parentElement;
     const cW = container.clientWidth || 370;
-    const cH = 185;
+    const cH = 190;
     const dpr = window.devicePixelRatio || 1;
     cvs.width = cW * dpr;
     cvs.height = cH * dpr;
@@ -765,16 +788,16 @@
 
     const margin = 20;
     const w = cW - (margin * 2);
-    const scaleY = 145; // ШКАЛА ВЫРОВНЕНА СТРОГО В ЦЕНТРЕ ВИЗУАЛА
-    const barH = 18;
+    const scaleY = 135; // ВЫРОВНЕНО В ЦЕНТРЕ ХОЛСТА 190PX
+    const barH = 16;
 
     let targetX = margin + ((250 - dropTime) / 200) * w;
     if (targetX < margin) targetX = margin;
     if (targetX > margin + w) targetX = margin + w;
 
     const segs = [
-      { w: 50/200, c: '#848484', t: 200 },
-      { w: 50/200, c: '#32d74b', t: 150 },
+      { w: 50/200, c: '#4a5568', t: 200 },
+      { w: 50/200, c: '#28c76f', t: 150 },
       { w: 40/200, c: '#00f3ff', t: 110 },
       { w: 30/200, c: '#ffd700', t: 80 },
       { w: 30/200, c: '#ff3b30', t: 50 }
@@ -784,82 +807,111 @@
     let dischargeAlpha = 0;
     let nextStrikeTime = performance.now() + 600;
 
-    // Рекурсивный генератор 8-10 фрактальных ветвей
-    function generateFractalTree(x1, y1, x2, y2, depth) {
+    // Рекурсивный физический генератор ветвления лидера
+    function generateSteppedLeader(x1, y1, x2, y2, depth) {
       if (depth <= 0) return;
-      const midX = (x1 + x2) / 2 + (Math.random() - 0.5) * (depth * 9);
-      const midY = (y1 + y2) / 2 + (Math.random() - 0.5) * (depth * 5);
+      const midX = (x1 + x2) / 2 + (Math.random() - 0.5) * (depth * 10);
+      const midY = (y1 + y2) / 2 + (Math.random() - 0.5) * (depth * 6);
 
-      lightningTree.push({ x1, y1, x2: midX, y2: midY, w: depth * 0.7 });
-      generateFractalTree(midX, midY, x2, y2, depth - 1);
+      lightningTree.push({ x1, y1, x2: midX, y2: midY, w: depth });
+      generateSteppedLeader(midX, midY, x2, y2, depth - 1);
 
-      // Ответвление под углом 30-45 градусов
-      if (Math.random() > 0.4 && depth > 1) {
-        const branchX = midX + (Math.random() - 0.5) * 35;
-        const branchY = midY + Math.random() * 25;
-        lightningTree.push({ x1: midX, y1: midY, x2: branchX, y2: branchY, w: depth * 0.4 });
-        generateFractalTree(midX, midY, branchX, branchY, depth - 2);
+      // Генерация 8–10 боковых разрядов-ветвей
+      if (Math.random() > 0.35 && depth > 1) {
+        const branchAngle = (Math.random() - 0.5) * 0.8;
+        const branchLen = 20 + Math.random() * 25;
+        const bx = midX + Math.sin(branchAngle) * branchLen;
+        const by = midY + Math.cos(branchAngle) * branchLen;
+        lightningTree.push({ x1: midX, y1: midY, x2: bx, y2: by, w: depth * 0.55 });
+        if (depth > 2) {
+          generateSteppedLeader(midX, midY, bx, by, depth - 2);
+        }
       }
     }
 
     function loop() {
       ctx.clearRect(0, 0, cW, cH);
 
-      // 5 цветовых зон шкалы
+      // Отрисовка прецизионного рельса шкалы
       let cx = margin;
-      ctx.font = '9px Roboto Mono, monospace';
+      ctx.font = '8px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
+
+      // Теневой ложемент шкалы
+      ctx.fillStyle = '#06080e';
+      ctx.fillRect(margin - 2, scaleY - 2, w + 4, barH + 4);
 
       segs.forEach(s => {
         const sw = w * s.w;
-        ctx.globalAlpha = 0.75;
+        ctx.globalAlpha = 0.8;
         ctx.fillStyle = s.c;
-        ctx.fillRect(cx, scaleY, sw, barH);
+        ctx.fillRect(cx, scaleY, sw - 1, barH);
 
+        // Градуировочные насечки шкалы
         if (s.t !== 50) {
-          ctx.fillStyle = '#667';
+          ctx.fillStyle = '#556';
           ctx.globalAlpha = 1;
-          ctx.fillRect(cx + sw, scaleY + barH, 1, 4);
-          ctx.fillText(s.t, cx + sw, scaleY + barH + 12);
+          ctx.fillRect(cx + sw - 1, scaleY + barH + 2, 1, 4);
+          ctx.fillText(s.t, cx + sw - 1, scaleY + barH + 13);
         }
         cx += sw;
       });
 
       const now = performance.now();
 
-      // СТОХАСТИЧЕСКИЙ РАЗРЯД (ПАУЗЫ 2.0-4.0 СЕКУНДЫ)
+      // СТОХАСТИЧЕСКИЙ РАЗРЯД (ПАУЗЫ 2.2–4.5 СЕКУНДЫ)
       if (now >= nextStrikeTime) {
         lightningTree = [];
-        generateFractalTree(targetX + (Math.random() - 0.5) * 8, 8, targetX, scaleY, 5);
+        // Старт сверху холста точно в прицел 108 мс
+        generateSteppedLeader(targetX + (Math.random() - 0.5) * 12, 4, targetX, scaleY, 5);
         dischargeAlpha = 1.0;
-        nextStrikeTime = now + 2000 + Math.random() * 2500;
+        nextStrikeTime = now + 2200 + Math.random() * 2300;
       }
 
-      // Отрисовка ветвей молнии
+      // Отрисовка ветвей молнии с горячим ядром
       if (dischargeAlpha > 0.04) {
         ctx.save();
         ctx.globalAlpha = dischargeAlpha;
-        ctx.strokeStyle = '#ffffff';
-        ctx.shadowBlur = 16;
+        
+        // Внешняя ионизированная плазма
+        ctx.strokeStyle = '#ffd700';
+        ctx.shadowBlur = 18;
         ctx.shadowColor = '#ffd700';
-
-        lightningTree.forEach(branch => {
-          ctx.lineWidth = Math.max(0.6, branch.w);
+        lightningTree.forEach(b => {
+          ctx.lineWidth = Math.max(1.2, b.w * 0.9);
           ctx.beginPath();
-          ctx.moveTo(branch.x1, branch.y1);
-          ctx.lineTo(branch.x2, branch.y2);
+          ctx.moveTo(b.x1, b.y1);
+          ctx.lineTo(b.x2, b.y2);
+          ctx.stroke();
+        });
+
+        // Внутренний ослепительно белый ствол
+        ctx.strokeStyle = '#ffffff';
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = '#ffffff';
+        lightningTree.forEach(b => {
+          ctx.lineWidth = Math.max(0.6, b.w * 0.35);
+          ctx.beginPath();
+          ctx.moveTo(b.x1, b.y1);
+          ctx.lineTo(b.x2, b.y2);
           ctx.stroke();
         });
 
         ctx.restore();
-        dischargeAlpha *= 0.86; // Быстрый спад
+        dischargeAlpha *= 0.87; // Затухание за ~100 мс
       }
 
-      // Маркер деактивации на шкале
-      ctx.fillStyle = '#ffffff';
+      // ПРИБОРНЫЙ ВИЗИР ЗАХВАТА ЦЕЛИ (108 MS)
+      ctx.save();
+      ctx.strokeStyle = '#ffd700';
+      ctx.lineWidth = 1.5;
       ctx.shadowBlur = 10;
       ctx.shadowColor = '#ffd700';
-      ctx.fillRect(targetX - 2, scaleY - 5, 4, barH + 10);
+      // Верхняя и нижняя засечки прицела
+      ctx.strokeRect(targetX - 3, scaleY - 4, 6, barH + 8);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(targetX - 1, scaleY - 6, 2, barH + 12);
+      ctx.restore();
 
       activeAnimReq = requestAnimationFrame(loop);
     }
@@ -904,7 +956,7 @@
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        animation: { duration: 800, easing: 'easeOutQuart' },
+        animation: { duration: 750, easing: 'easeOutQuart' },
         plugins: { legend: { display: false } },
         scales: {
           x: { grid: { color: '#161616' }, ticks: { maxTicksLimit: 6, color: '#556', font: { family: 'Roboto Mono' } } },

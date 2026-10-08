@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0a0b0e">
-<title>NESCALIBUR // ТУРНИР v8</title>
+<title>NESCALIBUR // ТУРНИР v9</title>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <style>
 :root{
@@ -32,7 +32,7 @@ body{padding-bottom:env(safe-area-inset-bottom)}button,input,select,textarea{fon
 .twoPane{display:grid;grid-template-columns:1fr 330px;gap:14px}.sideStack{display:grid;gap:14px}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.toolbar > *{flex:0 0 auto}.field{display:grid;gap:7px}.field label{font:800 10px JetBrains Mono,monospace;color:var(--muted);text-transform:uppercase}.field input,.field select,.field textarea{width:100%;background:#0b0d11;color:#fff;border:1px solid var(--line);border-radius:12px;min-height:48px;padding:0 13px;outline:none}.field textarea{padding-top:11px;min-height:95px}.field input:focus,.field select:focus,.field textarea:focus{border-color:#687181}.formGrid{display:grid;gap:10px}.formGrid.two{grid-template-columns:1fr 1fr}.note{padding:12px;border:1px dashed #353a45;border-radius:13px;color:#aeb5c0;line-height:1.5;font-size:12px}
 .stickyBar{position:fixed;z-index:25;bottom:0;left:0;right:0;background:rgba(8,9,12,.95);backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:8px max(10px,env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.stickyBar .btn{min-height:48px}.countBadge{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:999px;background:#fff;color:#0a0b0c;font:900 11px JetBrains Mono,monospace}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:80;display:grid;place-items:end center;padding:0}.sheet{width:min(720px,100%);max-height:min(92vh,900px);overflow:auto;background:#111318;border:1px solid var(--line);border-radius:22px 22px 0 0;box-shadow:0 -30px 100px rgba(0,0,0,.55)}.sheetHead{position:sticky;top:0;background:rgba(17,19,24,.96);backdrop-filter:blur(12px);z-index:2;display:flex;justify-content:space-between;gap:10px;padding:15px 16px;border-bottom:1px solid var(--line)}.sheetTitle{font-size:18px;font-weight:950}.sheetBody{padding:16px;display:grid;gap:12px}.close{border:0;background:transparent;color:#adb5c1;font-size:28px;line-height:1;padding:4px 7px;cursor:pointer}.modalActions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}.eyeWrap{position:relative}.eyeWrap input{padding-right:52px}.eye{position:absolute;right:7px;top:6px;width:40px;height:36px;border:0;background:transparent;color:#aeb5c0;font-size:18px}
-.athList{display:grid;gap:7px;max-height:48vh;overflow:auto}.athItem{width:100%;border:1px solid var(--line);background:#0d0f13;color:#fff;border-radius:13px;padding:11px;text-align:left;cursor:pointer}.athItem:hover{border-color:#596171}.athTop{display:flex;justify-content:space-between;gap:8px}.athName2{font-weight:900}.athMeta{margin-top:5px;color:var(--muted);font:600 10px JetBrains Mono,monospace}.athActions{margin-top:8px;display:flex;gap:6px}.athActions .btn{min-height:38px;padding:0 10px;font-size:11px}
+.athList{display:grid;gap:7px;max-height:48vh;overflow:auto}.athItem{width:100%;border:1px solid var(--line);background:#0d0f13;color:#fff;border-radius:13px;padding:11px;text-align:left;cursor:pointer}.athItem:hover{border-color:#596171}.overlay.busy .close{opacity:.35}.overlay.busy .close{pointer-events:none}.athItem:disabled{opacity:.55;cursor:default}.athTop{display:flex;justify-content:space-between;gap:8px}.athName2{font-weight:900}.athMeta{margin-top:5px;color:var(--muted);font:600 10px JetBrains Mono,monospace}.athActions{margin-top:8px;display:flex;gap:6px}.athActions .btn{min-height:38px;padding:0 10px;font-size:11px}
 .passport{display:grid;gap:13px}.profileHero{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.profileName{font-size:27px;font-weight:950}.profileGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.profileMode{padding:12px;border:1px solid var(--line);border-radius:14px;background:#0d0f13}.profileMode .pmHead{font:900 10px JetBrains Mono,monospace;color:var(--accent)}.profileMode .pmVal{font-size:22px;font-weight:950;margin-top:7px}.profileMode .pmBase{font:700 10px JetBrains Mono,monospace;color:var(--muted);margin-top:4px}.profileSeries{display:grid;gap:7px}.seriesRow{display:grid;grid-template-columns:86px 1fr 1fr;gap:8px;padding:9px 0;border-bottom:1px solid rgba(39,43,52,.65);font:600 10px JetBrains Mono,monospace}.decision{border-left:4px solid #fff;background:#0d0f13;border-radius:0 14px 14px 0;padding:14px}.decision.good{border-color:var(--green)}.decision.warn{border-color:var(--amber)}.qr{background:#fff;min-height:280px;border-radius:14px;display:grid;place-items:center;padding:12px}.qr svg{max-width:100%;height:auto}.shareUrl{font-size:12px;font-family:JetBrains Mono,monospace}
 #replayCanvas{width:100%;height:260px;background:#0a0c10;border:1px solid var(--line);border-radius:15px}.mobileOnly{display:none}.desktopOnly{display:block}.screenMode .top,.screenMode .stickyBar{display:none}.screenMode .shell{max-width:1500px;padding-bottom:24px}.screenMode .eventName{font-size:30px}.screenMode .leaderRow,.screenMode .leaderHead{grid-template-columns:80px minmax(0,1fr) 160px 140px}.screenMode .leaderRow{padding:19px 22px}.screenExit{position:fixed;right:14px;top:14px;z-index:100}.screenMode .screenExit{display:block}
 @media (max-width:900px){.cols2,.twoPane{grid-template-columns:1fr}.cols3{grid-template-columns:1fr}.profileGrid{grid-template-columns:repeat(2,1fr)}.sideStack{order:-1}}
@@ -110,11 +110,11 @@ body{padding-bottom:env(safe-area-inset-bottom)}button,input,select,textarea{fon
 const DEFAULT_API='https://script.google.com/macros/s/AKfycbxfEk1OCVqGtNhKR2vrBoFfj3J709niGvWgLlvc-yYMDkUf9rWWWrvJ4NMDCIHPPeTx/exec';
 const Q=new URLSearchParams(location.search);
 const STATE={
-  api:localStorage.getItem('nsc8_api')||Q.get('api')||DEFAULT_API,
-  session:localStorage.getItem('nsc8_session')||'', view:(Q.get('view')||'live').toLowerCase(),
+  api:localStorage.getItem('nsc9_api')||Q.get('api')||DEFAULT_API,
+  session:localStorage.getItem('nsc9_session')||'', view:(Q.get('view')||'live').toLowerCase(),
   stations:[],events:[],event:null,date:Q.get('date')||new Date().toISOString().slice(0,10),station:Q.get('station')||'',
   mode:(Q.get('mode')||'ALL').toUpperCase(),status:'UNASSIGNED',rows:[],leaderboard:[],stats:{total:0,assigned:0,unassigned:0,invalid:0},
-  athletes:[],selected:new Set(),revision:0,lastGoodAt:0,failCount:0,pulseTimer:null,autoTimer:null,loading:false,moreOffset:0,profile:null,replay:null
+  athletes:[],selected:new Set(),revision:0,lastGoodAt:0,failCount:0,pulseTimer:null,autoTimer:null,loading:false,moreOffset:0,profile:null,replay:null,assignBusy:false,duelFirst:null,predictionAthleteId:null
 };
 let reqSeq=0;const inflight=new Map();const pendingMutations=new Set();
 const $=id=>document.getElementById(id);
@@ -127,10 +127,10 @@ function randomId(prefix='op'){return prefix+'_'+Date.now().toString(36)+'_'+(++
 function apiReady(){return /^https:\/\//.test(STATE.api)}
 function setConnection(kind,text){const el=$('conn');el.className='conn '+kind;el.querySelector('#connText').textContent=text}
 function markSuccess(){STATE.failCount=0;STATE.lastGoodAt=Date.now();setConnection('online','СВЯЗЬ ОК')}
-function markFailure(background=false){STATE.failCount++;if(STATE.failCount>=2)setConnection('offline','НЕТ СВЯЗИ');else setConnection('check','ПРОВЕРКА СВЯЗИ')}
-function updateUrl(){const u=new URL(location.href);u.searchParams.set('view',STATE.view);u.searchParams.set('date',STATE.date);STATE.station?u.searchParams.set('station',STATE.station):u.searchParams.delete('station');STATE.event?.eventId?u.searchParams.set('event',STATE.event.eventId):u.searchParams.delete('event');STATE.mode!=='ALL'?u.searchParams.set('mode',STATE.mode):u.searchParams.delete('mode');u.searchParams.set('api',STATE.api);history.replaceState({},'',u)}
-function saveEventLocal(){if(!STATE.event||!STATE.station)return;localStorage.setItem('nsc8_event_'+STATE.station+'_'+STATE.date,STATE.event.eventId)}
-function storedEventId(){return localStorage.getItem('nsc8_event_'+STATE.station+'_'+STATE.date)||Q.get('event')||''}
+function markFailure(background=false){STATE.failCount++;if(navigator.onLine===false||STATE.failCount>=3)setConnection('offline',navigator.onLine===false?'НЕТ СЕТИ':'НЕТ СВЯЗИ');else setConnection('check','ПРОВЕРКА СВЯЗИ')}
+function updateUrl(){const u=new URL(location.href);u.search='';if(STATE.view!=='live')u.searchParams.set('view',STATE.view);if(STATE.view==='passport'&&Q.get('athlete'))u.searchParams.set('athlete',Q.get('athlete'));else if(STATE.view==='result'&&Q.get('result'))u.searchParams.set('result',Q.get('result'));else{const eventId=STATE.event?.eventId||Q.get('event')||storedEventId();if(eventId)u.searchParams.set('event',eventId);else{if(STATE.station)u.searchParams.set('station',STATE.station);if(STATE.date)u.searchParams.set('date',STATE.date)}}if(STATE.mode!=='ALL')u.searchParams.set('mode',STATE.mode);history.replaceState({},'',u.toString())}
+function saveEventLocal(){if(!STATE.event||!STATE.station)return;localStorage.setItem('nsc9_event_'+STATE.station+'_'+STATE.date,STATE.event.eventId)}
+function storedEventId(){return Q.get('event')||localStorage.getItem('nsc9_event_'+STATE.station+'_'+STATE.date)||''}
 function closeSheet(id){$(id).classList.add('hidden')}
 function openSheet(id){$(id).classList.remove('hidden')}
 function togglePin(){const i=$('pinInput');i.type=i.type==='password'?'text':'password';$('pinEye').textContent=i.type==='password'?'◉':'👁'}
@@ -153,7 +153,7 @@ function jsonp(action,params={},opts={}){
 
 function handleSessionError(e){
   if(String(e&&e.message||'').startsWith('SESSION_EXPIRED')){
-    STATE.session='';localStorage.removeItem('nsc8_session');
+    STATE.session='';localStorage.removeItem('nsc9_session');
     closeSheet('startOverlay');closeSheet('assignOverlay');closeSheet('athleteOverlay');
     openSheet('loginOverlay');
     setTimeout(()=>{try{$('pinInput').focus()}catch(_){}} ,80);
@@ -162,36 +162,44 @@ function handleSessionError(e){
   return false;
 }
 
+async function waitOperation(requestId, timeoutMs=25000){
+  const started=Date.now();
+  while(Date.now()-started<timeoutMs){
+    let st=null;
+    try{ st=await jsonp('op_status',{session:STATE.session,requestId},{timeout:7000}); }
+    catch(e){ if(handleSessionError(e)) throw e; if(e.server) throw e; await new Promise(r=>setTimeout(r,1200)); continue; }
+    if(st.status==='DONE'&&st.result){markSuccess();return st.result;}
+    if(st.status==='FAILED') throw new Error(st.result?.error||'Операция завершилась ошибкой.');
+    await new Promise(r=>setTimeout(r,1200));
+  }
+  return null;
+}
+
 async function mutate(action,params={},opts={}){
-  let requestId=params.requestId||randomId(action);
+  const requestId=params.requestId||randomId(action);
   if(pendingMutations.has(requestId))throw new Error('Операция уже выполняется.');
   pendingMutations.add(requestId);
   try{
-    let lastErr=null;
-    for(let attempt=0;attempt<2;attempt++){
-      try{
-        const out=await jsonp(action,Object.assign({},params,{session:STATE.session,requestId}),{write:true,timeout:opts.timeout||18000});
-        markSuccess();
-        return out;
-      }
-      catch(e){
-        lastErr=e;
-        if(handleSessionError(e))throw e;
-        if(!e.timeout&&!e.network)throw e;
-      }
-      // Confirm the SAME request before ever issuing a new mutation.
-      try{
-        const st=await jsonp('op_status',{session:STATE.session,requestId},{timeout:7000});
-        if(st.status==='DONE'&&st.result){markSuccess();return st.result;}
-      }catch(e){if(handleSessionError(e))throw e;}
+    const payload=Object.assign({},params,{session:STATE.session,requestId});
+    try{
+      const out=await jsonp(action,payload,{write:true,timeout:opts.timeout||18000});
+      markSuccess();return out;
+    }catch(e){
+      if(handleSessionError(e))throw e;
+      if(!e.timeout&&!e.network)throw e;
+      const confirmed=await waitOperation(requestId,25000);
+      if(confirmed)return confirmed;
+      // Only now is a second mutation request allowed. It carries the SAME requestId,
+      // so the server can safely replay it or resume a stale PENDING transaction.
+      const out=await jsonp(action,payload,{write:true,timeout:opts.timeout||18000});
+      markSuccess();return out;
     }
-    throw lastErr||new Error('Операция не подтверждена. Данные не считаются записанными.');
   }finally{pendingMutations.delete(requestId)}
 }
 
 async function login(){
   const pin=$('pinInput').value.trim();if(!pin)return toast('Введите PIN.');const done=setLoading($('loginBtn'),'ПРОВЕРЯЮ…');
-  try{const ts=Date.now(),challenge=randomId('challenge');const bytes=new TextEncoder().encode(ts+'|'+challenge);const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(pin),{name:'HMAC',hash:'SHA-256'},false,['sign']);const sig=await crypto.subtle.sign('HMAC',key,bytes);const response=Array.from(new Uint8Array(sig)).map(b=>b.toString(16).padStart(2,'0')).join('');const d=await jsonp('auth',{ts,challenge,response},{timeout:10000});STATE.session=d.session;localStorage.setItem('nsc8_session',STATE.session);closeSheet('loginOverlay');markSuccess();STATE.view='admin';await bootstrapAdmin();toast('ПУЛЬТ открыт.')}catch(e){markFailure();toast(e.message)}finally{done()}}
+  try{const ts=Date.now(),challenge=randomId('challenge');const bytes=new TextEncoder().encode(ts+'|'+challenge);const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(pin),{name:'HMAC',hash:'SHA-256'},false,['sign']);const sig=await crypto.subtle.sign('HMAC',key,bytes);const response=Array.from(new Uint8Array(sig)).map(b=>b.toString(16).padStart(2,'0')).join('');const d=await jsonp('auth',{ts,challenge,response},{timeout:10000});STATE.session=d.session;localStorage.setItem('nsc9_session',STATE.session);closeSheet('loginOverlay');markSuccess();STATE.view='admin';await bootstrapAdmin();toast('ПУЛЬТ открыт.')}catch(e){markFailure();toast(e.message)}finally{done()}}
 function requireAdmin(){if(STATE.session)return true;openSheet('loginOverlay');setTimeout(()=>$('pinInput').focus(),50);return false}
 
 async function boot(){
@@ -217,7 +225,7 @@ function renderPublicResult(d){$('momentBody').innerHTML=`<div class="eyebrow">N
 
 function bind(){document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));$('pinInput').addEventListener('keydown',e=>{if(e.key==='Enter')login()});$('athSearch').addEventListener('input',debounce(()=>loadAssignAthletes(),240));window.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('screenMode'))exitScreen()});window.addEventListener('offline',()=>setConnection('offline','НЕТ СЕТИ'));window.addEventListener('online',()=>{setConnection('check','ПРОВЕРКА');heartbeat()})}
 function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}}
-async function switchView(v){if(v==='admin'&&!requireAdmin())return;STATE.view=v;updateUrl();if(v==='live'){showLiveShell();await bootstrapPublic()}else if(v==='admin'){showAdminShell();await bootstrapAdmin()}else{showAthleteShell();await loadAthletes()} }
+async function switchView(v){if(STATE.loadingViewSwitch)return;STATE.loadingViewSwitch=true;try{if(v==='admin'&&!requireAdmin())return;STATE.view=v;updateUrl();if(v==='live'){showLiveShell();renderLive();if(STATE.event){await refreshLive()}else{await bootstrapPublic()}}else if(v==='admin'){showAdminShell();await bootstrapAdmin()}else{showAthleteShell();await loadAthletes()}}finally{STATE.loadingViewSwitch=false}}
 function setNav(active){document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===active))}
 function showLiveShell(){$('liveView').classList.remove('hidden');$('adminView').classList.add('hidden');$('athletesView').classList.add('hidden');setNav('live');renderSticky('live')}
 function showAdminShell(){$('liveView').classList.add('hidden');$('adminView').classList.remove('hidden');$('athletesView').classList.add('hidden');setNav('admin');renderSticky('admin')}
@@ -231,10 +239,12 @@ function applyBootstrap(d,isAdmin){
   if(d.station)STATE.station=d.station;
   if(!STATE.station&&STATE.stations.length===1)STATE.station=STATE.stations[0].key;
   if(d.date)STATE.date=d.date;
-  const requested=storedEventId();
-  const candidate=(requested&&STATE.events.find(e=>e.eventId===requested))||d.activeEvent||null;
-  STATE.event=candidate||null;
-  if(isAdmin&&STATE.event)saveEventLocal();
+  const requested=Q.get('event')||storedEventId()||STATE.event?.eventId||'';
+  const fromList=requested?STATE.events.find(e=>e.eventId===requested):null;
+  const candidate=d.activeEvent||fromList||(STATE.event&&STATE.event.eventId===requested?STATE.event:null);
+  if(candidate)STATE.event=candidate;
+  else if(!STATE.event)STATE.event=null;
+  if(STATE.event){STATE.station=STATE.event.station||STATE.station;STATE.date=STATE.event.date||STATE.date;if(isAdmin)saveEventLocal()}
   updateUrl();
 }
 function currentStation(){return STATE.event?.station||STATE.station||''}
@@ -249,7 +259,7 @@ function renderLive(){
 }
 function leaderRow(r,i){const mm=STATE.mode==='ALL'?'ALL':STATE.mode;const [val,unit]=metric(r,mm);return `<div class="leaderRow ${i===0?'newLead':''}"><div class="place ${i<3?'top':''}">${esc(r.rank||i+1)}</div><div><div class="athName">${esc(r.name||'—')}</div><div class="athSub"><span>${esc(r.club||'')}</span>${r.modeScores?`<span>4D ${Object.values(r.modeScores).filter(Number.isFinite).length}/4</span>`:''}</div></div><div class="mainMetric"><b>${fmt(val,mm==='ALL'?1:(mm==='POWER'?1:0))}</b><small>${unit}</small></div><div class="score">${fmt(mm==='ALL'?r.overallScore:r.modeScore,1)}</div></div>`}
 function renderLiveError(msg){if(STATE.leaderboard.length||STATE.event){renderLive();toast('Связь временно недоступна. Последние данные сохранены.')}else $('liveView').innerHTML=`<div class="card pad empty"><h3>Не удалось связаться с сервером</h3><p>${esc(msg)}</p><button class="btn primary" onclick="bootstrapPublic()">ПОВТОРИТЬ</button></div>`}
-async function refreshLive(){try{const d=await jsonp('live',{eventId:STATE.event?.eventId||'',station:currentStation(),date:currentDate(),mode:STATE.mode},{timeout:11000});if(d.event)STATE.event=d.event;STATE.stats={total:Number(d.received||0),assigned:Number(d.assigned||0),unassigned:Number(d.unassigned||0),invalid:Number(d.invalid||0)};STATE.leaderboard=d.rows||[];STATE.revision=Number(d.revision||STATE.revision);saveEventLocal();updateUrl();renderLive();markSuccess()}catch(e){markFailure(true);renderLive()}}
+async function refreshLive(){try{const d=await jsonp('live',{eventId:STATE.event?.eventId||Q.get('event')||'',station:currentStation(),date:currentDate(),mode:STATE.mode},{timeout:11000});if(d.event)STATE.event=d.event;STATE.stats={total:Number(d.received||0),assigned:Number(d.assigned||0),unassigned:Number(d.unassigned||0),invalid:Number(d.invalid||0)};STATE.leaderboard=d.rows||[];STATE.revision=Number(d.revision||STATE.revision);if(STATE.event)saveEventLocal();updateUrl();renderLive();markSuccess()}catch(e){markFailure(true);renderLive()}}
 function setLiveMode(m){STATE.mode=m;updateUrl();refreshLive()}
 
 async function loadAdminResults(reset=false){if(!STATE.event)return; if(reset){STATE.moreOffset=0;STATE.rows=[]}try{const d=await jsonp('admin_results',{session:STATE.session,eventId:STATE.event.eventId,date:STATE.date,station:currentStation(),mode:'ALL',status:STATE.status,q:'',offset:STATE.moreOffset,limit:80},{timeout:14000});STATE.rows=reset?(d.rows||[]):STATE.rows.concat(d.rows||[]);STATE.moreOffset=d.nextOffset??null;STATE.stats=d.stats||STATE.stats;STATE.leaderboard=d.leaderboard||STATE.leaderboard;STATE.revision=Number(d.revision||STATE.revision);renderAdmin();markSuccess()}catch(e){if(handleSessionError(e))returnmarkFailure(true);if(!STATE.event)renderAdminError(e.message)}}
@@ -285,25 +295,36 @@ function openAssignOne(resultKey){STATE.selected.clear();STATE.selected.add(resu
 function assignSelected(){if(!STATE.selected.size)return;openAssignDrawer(STATE.selected.size)}
 function openAssignDrawer(n){$('assignTitle').textContent=`Назначение · ${n} результат${n===1?'':'ов'}`;$('assignNote').textContent=`Выбрано: ${n}. После подтверждения вес участия сохраняется отдельно в событии и не переписывает профиль спортсмена.`;$('athSearch').value='';$('assignWeight').value='';openSheet('assignOverlay');loadAssignAthletes()}
 async function loadAssignAthletes(){try{const d=await jsonp('athletes',{session:STATE.session,q:$('athSearch').value.trim(),limit:60,offset:0},{timeout:9000});STATE.athletes=d.athletes||[];renderAssignAthletes()}catch(e){$('assignAthletes').innerHTML=`<div class="empty"><h3>Список спортсменов не загрузился</h3><p>${esc(e.message)}</p></div>`}}
-function renderAssignAthletes(){$('assignAthletes').innerHTML=STATE.athletes.length?STATE.athletes.map(a=>`<button class="athItem" onclick="assignToAthlete('${esc(a.athleteId)}',this)"><div class="athTop"><span class="athName2">${esc(a.name)}</span><span class="tag">${esc(a.sex)} · ${fmt(a.currentWeight,1)} кг</span></div><div class="athMeta">${esc(a.club||'без клуба')} · ${a.tests||0} тестов · ${esc(a.athleteId)}</div></button>`).join(''):'<div class="empty"><h3>Не найдено</h3><p>Создайте нового спортсмена прямо здесь.</p></div>'}
+function setAssignBusy(flag){
+  STATE.assignBusy=!!flag;
+  const overlay=$('assignOverlay'); if(overlay) overlay.classList.toggle('busy',STATE.assignBusy);
+  document.querySelectorAll('#assignAthletes .athItem').forEach(b=>{b.disabled=STATE.assignBusy;});
+  const search=$('athSearch'), weight=$('assignWeight');
+  if(search) search.disabled=STATE.assignBusy;
+  if(weight) weight.disabled=STATE.assignBusy;
+}
+
+function renderAssignAthletes(){$('assignAthletes').innerHTML=STATE.athletes.length?STATE.athletes.map(a=>`<button class="athItem" ${STATE.assignBusy?'disabled':''} onclick="assignToAthlete('${esc(a.athleteId)}',this)"><div class="athTop"><span class="athName2">${esc(a.name)}</span><span class="tag">${esc(a.sex)} · ${fmt(a.currentWeight,1)} кг</span></div><div class="athMeta">${esc(a.club||'без клуба')} · ${a.tests||0} тестов · ${esc(a.athleteId)}</div></button>`).join(''):'<div class="empty"><h3>Не найдено</h3><p>Создайте нового спортсмена прямо здесь.</p></div>';setAssignBusy(STATE.assignBusy)}
 async function assignToAthlete(athleteId,btn){
   const a=STATE.athletes.find(x=>x.athleteId===athleteId);if(!a)return;
   const weight=Number($('assignWeight').value||0);
   if(!(weight>0)){toast('Сначала укажите вес участия.');$('assignWeight').focus();return}
   const ids=Array.from(STATE.selected);if(!ids.length)return;
-  const done=setLoading(btn,'НАЗНАЧАЮ…');closeSheet('assignOverlay');
+  const done=setLoading(btn,'НАЗНАЧАЮ…');
+  setAssignBusy(true);
   let doneN=0;
   try{
     for(let i=0;i<ids.length;i+=20){
       const chunk=ids.slice(i,i+20);
+      btn.textContent=`НАЗНАЧАЮ ${doneN}/${ids.length}…`;
       await mutate('assign',{eventId:STATE.event.eventId,athleteId,eventWeight:weight,resultKeys:JSON.stringify(chunk)});
       doneN+=chunk.length;
     }
-    STATE.selected.clear();await loadAdminResults(true);toast(`Назначено: ${doneN} · ${a.name} · ${fmt(weight,1)} кг`);
+    STATE.selected.clear();closeSheet('assignOverlay');await loadAdminResults(true);toast(`Назначено: ${doneN} · ${a.name} · ${fmt(weight,1)} кг`);
   }catch(e){
     toast(`Операция остановлена после ${doneN} из ${ids.length}. ${e.message}`);
     await loadAdminResults(true);
-  }finally{done()}
+  }finally{setAssignBusy(false);done()}
 }
 
 async function unassignOne(id){confirmAction('ОТКРЕПИТЬ РЕЗУЛЬТАТ','Назначение будет деактивировано, сам результат не удалится.',async()=>{await mutate('unassign',{eventId:STATE.event.eventId,resultKeys:JSON.stringify([id])});await loadAdminResults(true);toast('Результат откреплён.')})}
@@ -328,7 +349,7 @@ function drawReplay(d){const c=$('replayCanvas'),ctx=c.getContext('2d');ctx.clea
 function openAB(){const s=STATE.profile?.series||[];if(s.length<2)return toast('Для A/B нужны минимум два сопоставимых теста.');const a=s[s.length-2],b=s[s.length-1];let html='<div class="statGrid">';['POWER','SPEED','VOID','ASYM'].forEach(m=>{const va=metric(a,m)[0],vb=metric(b,m)[0];const delta=Number.isFinite(Number(va))&&Number.isFinite(Number(vb))?Number(vb)-Number(va):null;html+=`<div class="stat"><div class="n">${fmt(delta,m==='POWER'?1:0)}</div><div class="l">Δ ${modeLabel(m)}</div></div>`});html+='</div><div class="note">A/B показывает изменение между двумя измерениями. Это сравнение наблюдения, а не доказательство причинного эффекта тренировки.</div>';$('momentBody').innerHTML=html;openSheet('momentOverlay')}
 function openChangeImprint(){const s=STATE.profile?.series||[];if(s.length<4)return toast('Нужно больше истории для отпечатка изменения.');const recent=s.slice(-2),prior=s.slice(-4,-2);let html='<div class="eyebrow">ОТПЕЧАТОК ИЗМЕНЕНИЯ</div><div class="statGrid">';['POWER','SPEED','VOID','ASYM'].forEach(m=>{const a=median_(prior.map(x=>metric(x,m)[0]).filter(Number.isFinite)),b=median_(recent.map(x=>metric(x,m)[0]).filter(Number.isFinite));const pct=Number.isFinite(a)&&a!==0&&Number.isFinite(b)?100*(b-a)/Math.abs(a):null;html+=`<div class="stat"><div class="n">${fmt(pct,1)}%</div><div class="l">${modeLabel(m)}</div></div>`});html+='</div><div class="note">Сравнение блоков до/после по доступным последним измерениям. Система не утверждает причинность.</div>';$('momentBody').innerHTML=html;openSheet('momentOverlay')}
 function median_(a){a=a.filter(Number.isFinite).sort((x,y)=>x-y);if(!a.length)return null;const m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2}
-function shareProfile(id){const u=new URL(location.href);u.search='';u.searchParams.set('view','passport');u.searchParams.set('athlete',id);u.searchParams.set('api',STATE.api);navigator.clipboard?.writeText(u.toString());toast('Публичная ссылка скопирована.');}
+function shareProfile(id){const u=new URL(location.href);u.search='';u.searchParams.set('view','passport');u.searchParams.set('athlete',id);navigator.clipboard?.writeText(u.toString());$('shareUrl')?.setAttribute('value',u.toString());toast('Публичная ссылка скопирована.');}
 
 async function changeAdminDate(date){
   const d=String(date||'').trim();if(!d)return;
@@ -344,33 +365,59 @@ async function openChallenge(athleteId){
   }catch(e){if(!handleSessionError(e))toast(e.message)}
 }
 
-async function openDuel(athleteA){
-  const active=STATE.athletes.filter(x=>x.active);
-  if(!active.length)return toast('Нет спортсменов для сравнения.');
-  const names=active.map((a,i)=>`${i+1}. ${a.name} · ${a.club||'без клуба'} · ${a.athleteId}`).join('\n');
-  const second=prompt('Введите номер второго спортсмена:\n\n'+names,'2');
-  const idx=Math.max(1,Number(second||0))-1;const b=active[idx];if(!b)return;
-  try{const [a,bp]=await Promise.all([jsonp('profile',{session:STATE.session,athleteId:athleteA},{timeout:14000}),jsonp('profile',{session:STATE.session,athleteId:b.athleteId},{timeout:14000})]);
+async function renderDuelResult(athleteA, athleteB){
+  try{
+    const [a,bp]=await Promise.all([jsonp('profile',{session:STATE.session,athleteId:athleteA},{timeout:14000}),jsonp('profile',{session:STATE.session,athleteId:athleteB},{timeout:14000})]);
     const rows=['POWER','SPEED','VOID','ASYM'].map(m=>{const av=Number(a.modes?.[m]?.latest),bv=Number(bp.modes?.[m]?.latest);const au=m==='POWER'?'кг':m==='ASYM'?'%':'мс';return `<div class="stat"><div class="n">${fmt(av,m==='POWER'?1:0)} / ${fmt(bv,m==='POWER'?1:0)}</div><div class="l">${modeLabel(m)} · ${au}</div></div>`}).join('');
-    $('momentBody').innerHTML=`<div class="eyebrow">СРАВНЕНИЕ / ДУЭЛЬ</div><div class="profileName">${esc(a.athlete.name)} <span style="color:#687181">VS</span> ${esc(bp.athlete.name)}</div><div class="statGrid">${rows}</div><div class="note">Сравнение актуальных значений профиля. Разные режимы сохраняют свои физические единицы; общий соревновательный балл сравнивается отдельно, когда он сформирован.</div>`;openSheet('momentOverlay');
+    $('momentBody').innerHTML=`<div class="eyebrow">СРАВНЕНИЕ / ДУЭЛЬ</div><div class="profileName">${esc(a.athlete.name)} <span style="color:#687181">VS</span> ${esc(bp.athlete.name)}</div><div class="statGrid">${rows}</div><div class="note">Сравнение актуальных значений профиля. Разные режимы сохраняют свои физические единицы; общий соревновательный балл сравнивается отдельно, когда он сформирован.</div>`;
+    openSheet('momentOverlay');
   }catch(e){if(!handleSessionError(e))toast(e.message)}
 }
 
+function openDuel(athleteA){
+  if(!athleteA)return;
+  STATE.duelFirst=athleteA;
+  const active=STATE.athletes.filter(x=>x.active&&x.athleteId!==athleteA);
+  $('assignTitle').textContent='Дуэль · выбрать соперника';
+  $('assignNote').textContent='Сначала выбран спортсмен A. Теперь выберите спортсмена B.';
+  $('athSearch').value='';
+  $('assignWeight').value='';
+  $('athSearch').disabled=false;
+  $('assignAthletes').innerHTML=active.length?active.map(a=>`<button class="athItem" onclick="chooseDuelSecond('${esc(a.athleteId)}')"><div class="athTop"><span class="athName2">${esc(a.name)}</span><span class="tag">${esc(a.sex)} · ${fmt(a.currentWeight,1)} кг</span></div><div class="athMeta">${esc(a.club||'без клуба')} · ${a.tests||0} тестов · ${esc(a.athleteId)}</div></button>`).join(''):'<div class="empty"><h3>Нет соперников</h3><p>Нужен ещё один активный спортсмен.</p></div>';
+  openSheet('assignOverlay');
+}
+function chooseDuelSecond(id){const a=STATE.duelFirst;if(!a)return;closeSheet('assignOverlay');renderDuelResult(a,id);STATE.duelFirst=null;}
 function openDuelPicker(){
   const active=STATE.athletes.filter(x=>x.active);if(!active.length)return toast('Нет спортсменов.');
-  const first=prompt('Введите номер первого спортсмена:\n\n'+active.map((a,i)=>`${i+1}. ${a.name} · ${a.club||'без клуба'}`).join('\n'),'1');
-  const idx=Math.max(1,Number(first||0))-1;const a=active[idx];if(a)openDuel(a.athleteId);
+  STATE.duelFirst=null;
+  $('assignTitle').textContent='Дуэль · спортсмен A';
+  $('assignNote').textContent='Выберите первого спортсмена. Следующим шагом выберете соперника.';
+  $('athSearch').value='';$('assignWeight').value='';
+  $('assignAthletes').innerHTML=active.map(a=>`<button class="athItem" onclick="openDuel('${esc(a.athleteId)}')"><div class="athTop"><span class="athName2">${esc(a.name)}</span><span class="tag">${esc(a.sex)} · ${fmt(a.currentWeight,1)} кг</span></div><div class="athMeta">${esc(a.club||'без клуба')} · ${a.tests||0} тестов · ${esc(a.athleteId)}</div></button>`).join('');
+  openSheet('assignOverlay');
 }
 
 function openPredictionPicker(){if(!STATE.event)return toast('Сначала запустите турнир.');if(!STATE.athletes.length)return loadAthletes().then(()=>openPredictionPicker());const a=STATE.athletes.filter(x=>x.active).slice(0,40);$('assignAthletes').innerHTML=a.map(x=>`<button class="athItem" onclick="openPredictionFor('${esc(x.athleteId)}')"><div class="athTop"><span class="athName2">${esc(x.name)}</span><span class="tag">${esc(x.sex)} · ${fmt(x.currentWeight,1)} кг</span></div></button>`).join('');$('assignTitle').textContent='Предтестовый прогноз';$('assignNote').textContent='Запишите ожидание ДО измерения. При последующем назначении результата система сравнит прогноз с фактом.';closeSheet('athleteOverlay');openSheet('assignOverlay')}
-function openPredictionFor(id){const a=STATE.athletes.find(x=>x.athleteId===id);if(!a)return;const mode=prompt('Режим: POWER / SPEED / VOID / ASYM','POWER');if(!mode)return;const val=prompt('Прогнозируемое значение в единицах режима:',mode==='POWER'||mode==='ASYM'?'100':'300');if(val===null)return;mutate('prediction_save',{eventId:STATE.event.eventId,athleteId:id,mode,predictedValue:Number(val)}).then(()=>{closeSheet('assignOverlay');toast('Прогноз сохранён ДО теста.');}).catch(e=>toast(e.message))}
+function openPredictionFor(id){
+  const a=STATE.athletes.find(x=>x.athleteId===id);if(!a)return;
+  STATE.predictionAthleteId=id;
+  $('momentBody').innerHTML=`<div class="eyebrow">ПРЕДТЕСТОВЫЙ ПРОГНОЗ</div><div class="profileName">${esc(a.name)}</div><div class="formGrid"><div class="field"><label>Режим</label><select id="predictionMode"><option value="POWER">СИЛА · кг</option><option value="SPEED">СКОРОСТЬ · мс</option><option value="VOID">ДЕАКТИВАЦИЯ · мс</option><option value="ASYM">АСИММЕТРИЯ · %</option></select></div><div class="field"><label>Прогноз</label><input id="predictionValue" type="number" step="0.1" inputmode="decimal" placeholder="Введите ожидаемое значение"></div></div><div class="modalActions"><button class="btn" onclick="closeSheet('momentOverlay')">ОТМЕНА</button><button class="btn primary" id="predictionSaveBtn" onclick="savePredictionForm()">СОХРАНИТЬ ПРОГНОЗ</button></div><div class="note">Прогноз фиксируется до измерения. После назначения результата система сравнит ожидание с фактом.</div>`;
+  closeSheet('assignOverlay');openSheet('momentOverlay');
+}
+async function savePredictionForm(){
+  if(!STATE.event||!STATE.predictionAthleteId)return toast('Турнир не запущен.');
+  const mode=$('predictionMode').value,val=Number($('predictionValue').value||NaN),btn=$('predictionSaveBtn');
+  if(!Number.isFinite(val))return toast('Введите прогноз.');
+  const done=setLoading(btn,'СОХРАНЯЮ…');
+  try{await mutate('prediction_save',{eventId:STATE.event.eventId,athleteId:STATE.predictionAthleteId,mode,predictedValue:val});closeSheet('momentOverlay');toast('Прогноз сохранён ДО теста.');}catch(e){if(!handleSessionError(e))toast(e.message)}finally{done();STATE.predictionAthleteId=null;}
+}
 
 function openProfilePicker(){const a=STATE.athletes.filter(x=>x.active);if(!a.length)return toast('Нет спортсменов.');$('athSearch').value='';$('assignTitle').textContent='Профиль спортсмена';$('assignNote').textContent='Выберите спортсмена.';renderAssignAthletes();openSheet('assignOverlay');document.querySelectorAll('#assignAthletes .athItem').forEach((b,i)=>{b.onclick=()=>{const x=STATE.athletes.filter(a=>a.active)[i];closeSheet('assignOverlay');if(x)openProfile(x.athleteId)}})}
 
 function showRules(){const r=STATE.event?.rules||{};$('momentBody').innerHTML=`<div class="note"><b>СИЛА:</b> peak нормируется по массе/полу.<br><b>СКОРОСТЬ:</b> реакция + ранняя сила, геометрическое объединение.<br><b>ДЕАКТИВАЦИЯ:</b> реакция + время расслабления, геометрическое объединение.<br><b>АСИММЕТРИЯ:</b> гармоническое среднее левой/правой силы с нормировкой.<br><b>ОБЩИЙ:</b> геометрическое объединение четырёх баллов; по умолчанию нужны все 4.<br><br>1–2 теста: базы нет. 3–4: ранняя. 5–7: рабочая. 8+: стабильная.<br><br>${esc(r.normalisationMode||'OWN_DATA')}</div>`;openSheet('momentOverlay')}
 async function repairStations(){const btn=document.activeElement instanceof HTMLButtonElement?document.activeElement:null;const done=setLoading(btn,'ПРОВЕРЯЮ…');try{const d=await mutate('repair',{mode:'stations'});STATE.stations=(d.stations||[]);await bootstrapAdmin();toast('Каталог станций пересобран.')}catch(e){toast(e.message)}finally{done()}}
 
-function openShare(){const u=new URL(location.href);u.search='';u.searchParams.set('view','live');if(STATE.event?.eventId)u.searchParams.set('event',STATE.event.eventId);if(currentStation())u.searchParams.set('station',currentStation());u.searchParams.set('date',currentDate());u.searchParams.set('mode',STATE.mode);u.searchParams.set('api',STATE.api);$('shareUrl').value=u.toString();const qbox=$('qrBox');qbox.innerHTML='';try{if(typeof qrcode!=='function')throw 0;const qr=qrcode(0,'M');qr.addData(u.toString());qr.make();qbox.innerHTML=qr.createSvgTag({cellSize:5,margin:0})}catch(e){qbox.innerHTML='<div style="color:#222;text-align:center;padding:25px">QR-библиотека недоступна.<br>Используйте кнопку КОПИРОВАТЬ.</div>'}openSheet('shareOverlay')}
+function openShare(){const u=new URL(location.href);u.search='';if(STATE.event?.eventId){u.searchParams.set('event',STATE.event.eventId)}else{u.searchParams.set('view','live');if(currentStation())u.searchParams.set('station',currentStation());if(currentDate())u.searchParams.set('date',currentDate())}if(STATE.mode!=='ALL')u.searchParams.set('mode',STATE.mode);$('shareUrl').value=u.toString();const qbox=$('qrBox');qbox.innerHTML='';try{if(typeof qrcode!=='function')throw 0;const qr=qrcode(0,'M');qr.addData(u.toString());qr.make();qbox.innerHTML=qr.createSvgTag({cellSize:5,margin:0})}catch(e){qbox.innerHTML='<div style="color:#222;text-align:center;padding:25px">QR-библиотека недоступна.<br>Используйте кнопку КОПИРОВАТЬ.</div>'}openSheet('shareOverlay')}
 async function copyShare(){try{await navigator.clipboard.writeText($('shareUrl').value);toast('Ссылка скопирована.')}catch(e){$('shareUrl').select();document.execCommand('copy');toast('Ссылка скопирована.')}}
 async function nativeShare(){const u=$('shareUrl').value;if(navigator.share){try{await navigator.share({title:STATE.event?.name||'NESCALIBUR',text:'Публичное табло NESCALIBUR',url:u});return}catch(e){}}copyShare()}
 function screenMode(){document.body.classList.add('screenMode');$('screenExit').classList.remove('hidden');startPulse()}
@@ -379,10 +426,10 @@ function confirmAction(title,text,fn){$('confirmTitle').textContent=title;$('con
 function toast(msg){let el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';el.style.cssText='position:fixed;z-index:120;left:50%;bottom:82px;transform:translateX(-50%);max-width:min(92vw,560px);padding:12px 15px;background:#f0f2f5;color:#0b0c0e;border-radius:12px;font-weight:850;box-shadow:0 12px 40px rgba(0,0,0,.4)';document.body.appendChild(el)}el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(()=>el.remove(),3300)}
 
 async function heartbeat(){if(document.hidden)return;try{const d=await jsonp('pulse',{}, {timeout:7500});markSuccess();const rev=Number(d.revision||0);if(rev!==STATE.revision){STATE.revision=rev;if(STATE.view==='live'){await refreshLive()}else if(STATE.view==='admin'&&STATE.event){await loadAdminResults(true)}else if(STATE.view==='athletes'){await loadAthletes()}}}catch(e){markFailure(true)}}
-function startPulse(){clearInterval(STATE.pulseTimer);STATE.pulseTimer=setInterval(heartbeat,8000)}
+function startPulse(){clearInterval(STATE.pulseTimer);STATE.pulseTimer=setInterval(heartbeat,10000)}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)heartbeat()});
 
-window.changeAdminDate=changeAdminDate;window.openChallenge=openChallenge;window.openDuel=openDuel;window.openDuelPicker=openDuelPicker;
+window.changeAdminDate=changeAdminDate;window.openChallenge=openChallenge;window.openDuel=openDuel;window.openDuelPicker=openDuelPicker;window.chooseDuelSecond=chooseDuelSecond;window.savePredictionForm=savePredictionForm;
 window.addEventListener('load',()=>{boot().catch(e=>{setConnection('offline','ОШИБКА');toast(e.message)})});
 </script>
 </body>

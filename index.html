@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NESCALIBUR — контроль состояния тела</title>
+  <title>NESCALIBUR — силовые испытания и результаты</title>
   <!-- FAVICONS -->
   <link rel="icon" type="image/png" sizes="512x512" href="favicon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png"> <!-- Для иконок на iPhone -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -40,15 +40,15 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
-    <span class="eyebrow">Инструментальный чек-ап функционального ресурса</span>
+    <span class="eyebrow">Силовые испытания. Измеримые результаты.</span>
 
     <img src="logo-sword.png" alt="NESCALIBUR" class="main-logo">
 
 
 
     <p class="hero-sub">
-      Фиксирует состояние.
-      Решение за человеком.
+      Измеряем показатели.
+      Решение — за человеком.
     </p>
 
     <div class="scroll-indicator"></div>
@@ -70,10 +70,7 @@
   </div>
 
   <p class="section-text">
-    NESCALIBUR — это станция измерения скоростно-силовых характеристик. 
-    Она переводит ощущения в данные. 
-    Мы исключили субъективность, чтобы вы могли принимать решения, 
-    основанные на фактах.
+    NESCALIBUR — тренировочный комплекс для силовых испытаний и регистрации результатов. Он помогает сравнивать показатели, полученные по одному протоколу, и обсуждать их с тренером.
   </p>
 </section>
 
@@ -83,20 +80,20 @@
 <section class="section grid">
   <div class="card">
     <span class="metric">ДЛЯ СПОРТСМЕНА</span>
-    <h3>Понимание ресурса</h3>
-    <p>Знание: когда можно идти на рекорд, а когда организм требует восстановления. Снижение риска травм.</p>
+    <h3>Понимание результатов</h3>
+    <p>Результаты помогают отслеживать силовые показатели при повторении одного протокола. Они не определяют готовность к рекорду или риск травмы сами по себе.</p>
   </div>
 
   <div class="card">
     <span class="metric">ДЛЯ ТРЕНЕРА</span>
-    <h3>Факты вместо мнений</h3>
-    <p>Метрика готовности и прогресса подопечного. Основание для коррекции плана тренировок здесь и сейчас.</p>
+    <h3>Данные для тренера</h3>
+    <p>Дополнительные показатели для обсуждения техники, нагрузки и динамики результатов. Интерпретация зависит от протокола и контекста.</p>
   </div>
 
   <div class="card">
     <span class="metric">ДЛЯ БИЗНЕСА</span>
-    <h3>Стандарт безопасности</h3>
-    <p>Снижение оттока клиентов через профилактику выгорания. Технологическое преимущество и забота о долголетии.</p>
+    <h3>Формат для клуба</h3>
+    <p>Комплекс можно использовать в клиентских активациях, мини-турнирах и демонстрационных тренировках. Коммерческий эффект проверяется на пилоте.</p>
   </div>
 </section>
 
@@ -106,7 +103,7 @@
 <section class="section" id="modes" style="max-width: 980px; margin: 0 auto; padding: 40px 20px;">
   <div class="section-header" style="margin-bottom: 22px;">
     <span class="section-index" style="color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 13px;">02</span>
-    <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 32px; margin: 0; color: #fff;">Режимы измерения</h2>
+    <h2 style="font-family: 'Inter', sans-serif; font-size: 32px; margin: 0; color: #fff;">Режимы измерения</h2>
   </div>
 
   <div class="terminal-cockpit" id="cockpitContainer">
@@ -158,7 +155,7 @@
             <span class="m-btn-title">СКОРОСТЬ</span>
             <span class="m-btn-code">RT // 80Hz</span>
           </div>
-          <span class="m-btn-sub">Сенсомоторный баллистический рефлекс</span>
+          <span class="m-btn-sub">Быстрый силовой ответ на сигнал</span>
         </button>
 
         <button class="m-stack-btn" id="btn-VOID" onclick="manualSelectMode('VOID')">
@@ -166,7 +163,7 @@
             <span class="m-btn-title">ДЕАКТИВАЦИЯ</span>
             <span class="m-btn-code">VOID // INHIBIT</span>
           </div>
-          <span class="m-btn-sub">Скорость релаксации и тонус ЦНС</span>
+          <span class="m-btn-sub">Снижение усилия после сигнала</span>
         </button>
 
         <button class="m-stack-btn" id="btn-ASYM" onclick="manualSelectMode('ASYM')">
@@ -182,13 +179,13 @@
       <div class="telemetry-decoder" id="hudBox">
         <div class="d-header">
           <span class="d-indicator"></span>
-          <span class="d-tag" id="hudTag">НЕЙРОМЫШЕЧНЫЙ ПОТОЛОК // МПС</span>
+          <span class="d-tag" id="hudTag">СИЛОВОЙ ПОКАЗАТЕЛЬ // МПС</span>
         </div>
         <p class="d-body" id="hudDesc">
-          Оценка максимального произвольного сокращения (МПС) без читинга и инерции. Фиксирует предел волевой мобилизации высокопороговых двигательных единиц.
+          Регистрирует достигнутое усилие в рамках заданного протокола. Для сравнения результатов важно сохранять одинаковую высоту рукояти, инструкцию и условия тестирования.
         </p>
         <div class="d-footer">
-          <span class="d-param" id="hudTarget">ЦЕЛЕВОЙ ФАКТОР: СТРУКТУРНАЯ СИЛА</span>
+          <span class="d-param" id="hudTarget">ПОКАЗАТЕЛЬ: ДОСТИГНУТОЕ УСИЛИЕ</span>
           <span class="d-status">АКТИВЕН</span>
         </div>
       </div>
@@ -262,7 +259,7 @@
     z-index: 5;
   }
   .rank-text {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 15px;
     font-weight: 800;
     text-shadow: 0 0 20px currentColor;
@@ -279,7 +276,7 @@
     background: none !important;
   }
   .card-hero-val {
-    font-family: 'Orbitron', monospace;
+    font-family: 'Inter', monospace;
     font-size: 60px;
     font-weight: 900;
     line-height: 0.95;
@@ -342,7 +339,7 @@
   .s-val {
     font-size: 14px;
     font-weight: bold;
-    font-family: 'Orbitron', monospace;
+    font-family: 'Inter', monospace;
     color: #fff;
   }
 
@@ -382,7 +379,7 @@
     margin-bottom: 2px;
   }
   .m-btn-title {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 13px;
     font-weight: 900;
     color: #fff;
@@ -550,9 +547,9 @@
       animateValue('pHeroVal', 126.4, true);
       unitEl.innerHTML = 'КИЛОГРАММ // ПИКОВАЯ ТЯГА';
 
-      hudTag.innerText = 'НЕЙРОМЫШЕЧНЫЙ ПОТОЛОК // МПС';
-      hudDesc.innerText = 'Предельная изометрическая мобилизация моторной коры и высокопороговых волокон задней цепи без читинга и инерции штанги.';
-      hudTarget.innerText = 'ЦЕЛЕВОЙ ФАКТОР: СТРУКТУРНАЯ СИЛА (MVC)';
+      hudTag.innerText = 'СИЛОВОЙ ПОКАЗАТЕЛЬ // МПС';
+      hudDesc.innerText = 'Регистрация достигнутого усилия в заданном протоколе задней цепи без читинга и инерции штанги.';
+      hudTarget.innerText = 'ПОКАЗАТЕЛЬ: ДОСТИГНУТОЕ УСИЛИЕ (MVC)';
 
       gridEl.innerHTML = `
         <div class="stat-cell"><div class="s-lbl">ТОННАЖ (ИМПУЛЬС)</div><div class="s-val">438 кг·с</div></div>
@@ -603,12 +600,12 @@
       unitEl.innerHTML = 'МИЛЛИСЕКУНД // СКОРОСТЬ СБРОСА ТОНУСА';
 
       hudTag.innerText = 'ИНГИБИТОРНЫЙ КОНТРОЛЬ // РЕЛАКСАЦИЯ';
-      hudDesc.innerText = 'Скорость выключения мышц-антагонистов. Экспресс-маркер утомления пирамидного тракта, гипертонуса и риска травмы.';
+      hudDesc.innerText = 'Регистрирует изменение усилия после сигнала в рамках заданного протокола; результат зависит от условий теста.';
       hudTarget.innerText = 'ЦЕЛЕВОЙ ФАКТОР: ТЕМП ДЕАКТИВАЦИИ (nRATE)';
 
       gridEl.innerHTML = `
         <div class="stat-cell" style="border-color:#332914;"><div class="s-lbl">КОЭФФИЦИЕНТ ДЕАКТИВАЦИИ</div><div class="s-val">7.4 s⁻¹</div></div>
-        <div class="stat-cell" style="border-color:#332914;"><div class="s-lbl">ОТКЛИК ТОРМОЖЕНИЯ ЦНС</div><div class="s-val">224 мс</div></div>
+        <div class="stat-cell" style="border-color:#332914;"><div class="s-lbl">ВРЕМЯ ПОСЛЕ СИГНАЛА</div><div class="s-val">224 мс</div></div>
       `;
 
       applyCardTheme(card, rEl, valEl, themeColor);
@@ -627,8 +624,8 @@
       unitEl.innerHTML = 'БИЛАТЕРАЛЬНЫЙ ДИСБАЛАНС (ASI)';
 
       hudTag.innerText = 'БИЛАТЕРАЛЬНЫЙ БАЛАНС // СИММЕТРИЯ ТЯГИ';
-      hudDesc.innerText = 'Выявление скрытого силового перекоса конечностей. Разница более 10% формирует опасный ротационный момент в позвоночнике.';
-      hudTarget.innerText = 'ЦЕЛЕВОЙ ФАКТОР: ИНДЕКС ASI (<10% НОРМА)';
+      hudDesc.innerText = 'Сравнение результатов левой и правой стороны в рамках одного протокола. Разница сама по себе не определяет риск травмы; важны повторяемость, техника и контекст.';
+      hudTarget.innerText = 'ПОКАЗАТЕЛЬ: ИНДЕКС ASI // СРАВНЕНИЕ СТОРОН';
 
       gridEl.innerHTML = `
         <div class="stat-cell" style="border-color:${COL_LEFT_HAND}; background:rgba(0,243,255,0.04);"><div class="s-lbl" style="color:${COL_LEFT_HAND};">ЛЕВАЯ РУКА</div><div class="s-val" style="color:${COL_LEFT_HAND};">117.8 кг</div></div>
@@ -681,8 +678,8 @@
         animation: { duration: 750, easing: 'easeOutQuart' },
         plugins: { legend: { display: false } },
         scales: {
-          x: { grid: { display: false }, ticks: { maxTicksLimit: 5, color: '#556', font: { family: 'Roboto Mono' } } },
-          y: { beginAtZero: true, grid: { color: '#161922' }, ticks: { color: '#667', font: { family: 'Roboto Mono' } } }
+          x: { grid: { display: false }, ticks: { maxTicksLimit: 5, color: '#556', font: { family: 'JetBrains Mono' } } },
+          y: { beginAtZero: true, grid: { color: '#161922' }, ticks: { color: '#667', font: { family: 'JetBrains Mono' } } }
         }
       }
     });
@@ -959,8 +956,8 @@
         animation: { duration: 750, easing: 'easeOutQuart' },
         plugins: { legend: { display: false } },
         scales: {
-          x: { grid: { color: '#161616' }, ticks: { maxTicksLimit: 6, color: '#556', font: { family: 'Roboto Mono' } } },
-          y: { beginAtZero: true, grid: { color: '#161922' }, ticks: { color: '#667', font: { family: 'Roboto Mono' } } }
+          x: { grid: { color: '#161616' }, ticks: { maxTicksLimit: 6, color: '#556', font: { family: 'JetBrains Mono' } } },
+          y: { beginAtZero: true, grid: { color: '#161922' }, ticks: { color: '#667', font: { family: 'JetBrains Mono' } } }
         }
       }
     });
@@ -1000,7 +997,7 @@
 <section class="section" id="partnership" style="max-width: 960px; margin: 0 auto; padding: 40px 15px;">
   <div class="section-header" style="margin-bottom: 25px;">
     <span class="section-index" style="color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 13px;">04</span>
-    <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 28px; margin: 5px 0 0 0; color: #fff;">Форматы интеграции</h2>
+    <h2 style="font-family: 'Inter', sans-serif; font-size: 28px; margin: 5px 0 0 0; color: #fff;">Форматы интеграции</h2>
   </div>
 
   <div class="partnership-grid">
@@ -1008,10 +1005,10 @@
     <div class="partner-card">
       <span class="partner-tag">ИВЕНТЫ // ТУРНИРЫ</span>
       <h3>Выездная зона на турнир</h3>
-      <p>Организация мобильной лаборатории нейромышечной готовности на соревнованиях по кроссфиту, единоборствам или пауэрлифтингу.</p>
+      <p>Выездная зона силовых испытаний NESCALIBUR на соревнованиях по кроссфиту, единоборствам или пауэрлифтингу.</p>
       <div class="partner-spec">
-        <div>• 100% бесплатный замер для всех атлетов</div>
-        <div>• Экспресс-тест готовности ЦНС за 15 секунд</div>
+        <div>• Тестирование участников — условия согласуются с организатором</div>
+        <div>• Короткий силовой тест с регистрацией результата</div>
         <div>• Опция: наградной жетон с лазерным прожигом (500 ₽)</div>
       </div>
       <button onclick="openLeadModalWithGoal('Турнир')" class="partner-btn">ПРИГЛАСИТЬ НА ТУРНИР</button>
@@ -1021,19 +1018,19 @@
     <div class="partner-card primary">
       <span class="partner-tag primary-tag">КЛУБНЫЙ ПИЛОТ // 7 ДНЕЙ</span>
       <h3>Тест-драйв в клуб</h3>
-      <p>Бесплатная недельная интеграция станции в ваш зал с обучением тренеров продаже персональных тренировок через объективные дефициты.</p>
+      <p>Пилот в клубе: знакомство тренеров с результатами испытаний и вариантами их применения. Срок, формат и стоимость согласуются до старта.</p>
       <div class="partner-spec">
         <div>• Установка комплекса и воркшоп для тренерского состава</div>
         <div>• Выявление асимметрии (ASI) на вводных инструктажах</div>
         <div>• Оценка роста конверсии в продажи блоков ПТ</div>
       </div>
-      <button onclick="openLeadModalWithGoal('Клубный пилот')" class="partner-btn primary-btn">ЗАПРОСИТЬ ПИЛОТ</button>
+      <button onclick="openLeadModalWithGoal('Клубный пилот')" class="partner-btn primary-btn">ОБСУДИТЬ ПИЛОТ</button>
     </div>
 
     <!-- ПАКЕТ 3: ПОСТАВКА В СОБСТВЕННОСТЬ -->
     <div class="partner-card">
       <span class="partner-tag">ОСНАЩЕНИЕ // HAAS</span>
-      <h3>Станция в собственность</h3>
+      <h3>Комплекс для клуба</h3>
       <p>Поставка стационарных комплексов для клубов, бойцовских академий и спортивных баз с пожизненным доступом к аналитическому ядру.</p>
       <div class="partner-spec">
         <div>• Силовой контур 500 кг, платформа «Квинтет»</div>
@@ -1078,7 +1075,7 @@
   }
   .primary-tag { color: #ffd700; }
   .partner-card h3 {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 17px;
     color: #fff;
     margin: 0 0 10px 0;
@@ -1106,7 +1103,7 @@
     color: #fff;
     padding: 12px;
     border-radius: 6px;
-    font-family: 'Orbitron', monospace;
+    font-family: 'Inter', monospace;
     font-size: 10px;
     font-weight: 800;
     letter-spacing: 1px;
@@ -1133,22 +1130,22 @@
     <!-- FAQ ITEM 1 -->
     <div class="faq-item">
       <button class="faq-question">
-        Что измеряет станция и как это применить на практике?
+        Что регистрирует станция и как использовать результаты?
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-answer">
-        <p>NESCALIBUR анализирует ваши время-силовые характеристики. Субъективные ощущения часто обманчивы: вы можете выпить энергетик, но физиологически нервная система не успела восстановиться. Прибор считывает пиковое усилие, градиент мышечной активации и скорость релаксации. Эта информация дает точный ответ: готово ли ваше тело к рекордам сегодня, или программа нуждается в корректировке для предотвращения травм. Это аналитика, которая точнее штанги: мы исключаем читинг, инерцию и погрешности техники, оставляя только чистые данные о вашем прогрессе.</p>
+        <p>NESCALIBUR регистрирует показатели усилия и времени в рамках заданного протокола. Результаты можно сравнивать при одинаковых условиях; они не являются самостоятельным диагнозом готовности, восстановления или риска травмы.</p>
       </div>
     </div>
 
     <!-- FAQ ITEM 2 -->
     <div class="faq-item">
       <button class="faq-question">
-        Почему изометрический тест безопаснее работы со штангой?
+        Чем изометрический тест отличается от работы со штангой?
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-answer">
-        <p>В динамических упражнениях наибольший риск микротравм и разрывов приходится на эксцентрическую фазу (опускание веса) и моменты преодоления инерции. Изометрия исключает эти факторы. Вы работаете с неподвижной рукоятью, генерируя ровно то усилие, на которое способен ваш связочный аппарат в данный момент времени. В системе нет гравитационного давления падающего снаряда. При любом дискомфорте достаточно сбросить напряжение, и нагрузка моментально обнулится. <strong>Внимание: тестирование требует предварительной суставной разминки.</strong></p>
+        <p>Изометрический тест выполняется с неподвижной рукоятью и отличается от динамического подъёма веса. Это не гарантирует отсутствие травм: участнику важно соблюдать инструкцию и прекратить тест при боли или дискомфорте.</p>
       </div>
     </div>
 
@@ -1159,7 +1156,7 @@
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-answer">
-        <p>Станция откалибрована по стандарту мировой биомеханики — изометрической тяге с уровня середины бедра. Высота в 42 см нивелирует разницу в длине конечностей и гибкости голеностопа, ставя атлетов ростом от 160 до 195 см в позицию максимального механического рычага тазобедренного сустава. Фиксированная позиция — условие, при котором ваши результаты математически валидны для отслеживания долгосрочного прогресса и сравнения с эталонными значениями.</p>
+        <p>В NESCALIBUR используется фиксированная высота рукояти около 42 см от платформы — это подколенная тяга. Её нельзя автоматически приравнивать к изометрической тяге с уровня середины бедра. Сравнивать результаты корректно при одинаковой высоте рукояти и одном протоколе.</p>
       </div>
     </div>
 
@@ -1170,7 +1167,7 @@
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-answer">
-        <p>Женская физиология подвержена циклическим гормональным изменениям, которые напрямую влияют на эластичность связок, задержку жидкости и тонус центральной нервной системы. NESCALIBUR позволяет отказаться от культа "цифр на весах" в пользу оценки реальной функциональной готовности. Аппарат рассчитывает показатели относительно вашей массы тела. Вы получаете объективный индикатор: когда организм готов к тяжелой работе на рельеф, а когда связочный аппарат уязвим и требует бережного функционального тренинга или йоги.</p>
+        <p>На результат могут влиять индивидуальные особенности, недавняя нагрузка, сон, питание и условия тестирования. Станция не измеряет гормональный статус и не определяет функциональную готовность сама по себе.</p>
       </div>
     </div>
     <!-- FAQ ITEM 5: ВШИТЫЕ ТАБЫ -->
@@ -1187,12 +1184,12 @@
           <button class="tab-btn" data-tab="tab-power">Рост силы</button>
           <button class="tab-btn" data-tab="tab-sports">Спорт и единоборства</button>
           <button class="tab-btn" data-tab="tab-health">Рельеф</button>
-          <button class="tab-btn" data-tab="tab-safety">Снижение травматизма</button>
+          <button class="tab-btn" data-tab="tab-safety">Сравнение сторон</button>
         </div>
 
         <div class="tab-content active" id="tab-hypertrophy">
           <div class="tab-content-box" style="padding: 20px; background: transparent; border-left: 2px solid var(--accent);">
-            <p><strong>Гипертрофия и бодибилдинг:</strong> Одно из главных условий роста мышц — рекрутирование высокопороговых двигательных единиц. Если тест «Деактивация» фиксирует истощение нервной системы, ваш мозг физиологически не сможет задействовать нужные мышечные волокна. Тренировка превратится в "мусорный объем", разрушающий мышцы без стимула к росту. Nescalibur покажет, когда вы готовы к гипертрофии, а когда целесообразнее провести легкую пампинг-сессию.</p>
+            <p><strong>Гипертрофия и бодибилдинг:</strong> Результаты силового теста могут быть дополнительным ориентиром для обсуждения тренировок. Они не позволяют напрямую определить рекрутирование двигательных единиц или гарантировать гипертрофический стимул.</p>
           </div>
         </div>
 
@@ -1204,19 +1201,19 @@
 
         <div class="tab-content" id="tab-sports">
           <div class="tab-content-box" style="padding: 20px; background: transparent; border-left: 2px solid var(--accent);">
-            <p><strong>Единоборства и игровые виды спорта:</strong> В динамике побеждает не абсолютная масса, а градиент нарастания силы и способность к мгновенному расслаблению (для хлесткого удара или рывка). Режим «Скорость» оценивает вашу когнитивную реакцию и стартовый баллистический импульс, отсекая случайные предугадывания. Это полезный инструмент для подведения пиковой формы к дате соревнований без риска перетренированности.</p>
+            <p><strong>Единоборства и игровые виды спорта:</strong> В режиме «Скорость» регистрируется реакция на сигнал и силовой ответ в рамках протокола. Это не равно измерению боевой эффективности и не гарантирует улучшения удара или рывка.</p>
           </div>
         </div>
 
         <div class="tab-content" id="tab-health">
           <div class="tab-content-box" style="padding: 20px; background: transparent; border-left: 2px solid var(--accent);">
-<p><strong>Дефицит калорий и рельеф:</strong> При снижении калорийности рациона в первую очередь истощаются запасы гликогена и страдает нервно-мышечное восстановление. Попытки тренироваться «на силе воли», когда связочный аппарат не восстановился, приводят к срыву адаптации и микротравмам. Короткий тест перед занятием объективно показывает, справляется ли организм с диетой и нагрузкой: если скорость сброса тонуса падает, это прямое указание провести тренировку в поддерживающем режиме, сохранив мышцы и здоровье.</p>
+<p><strong>Дефицит калорий и рельеф:</strong> При изменении питания и нагрузки результаты теста могут меняться, но один короткий тест не определяет качество восстановления, доступность энергии или риск травмы. Сопоставляйте динамику с самочувствием и контекстом тренировок.</p>
           </div>
         </div>
 
         <div class="tab-content" id="tab-safety">
   <div class="tab-content-box" style="padding: 20px; background: transparent; border-left: 2px solid var(--accent);">
-    <p><strong>Защита осевого скелета и связок:</strong> При интенсивных физических нагрузках травмы редко происходят симметрично. Разрыв крестообразных связок колена или компрессия дисков сегментов L4–S1 происходят в момент, когда одна сторона тела принимает нагрузку, к которой не готова. Протокол «Асимметрия» за 45 секунд выявляет силовой перекос между сторонами. Разница свыше 15% означает, что при осевой нагрузке позвоночник испытывает опасный ротационный крутящий момент. Выявление дефицита позволяет скорректировать объем тяг до появления острой боли.</p>
+    <p><strong>Асимметрия и сравнение сторон:</strong> Тест показывает разницу между результатами сторон в заданном протоколе. Это повод для дополнительного наблюдения и обсуждения с тренером, а не самостоятельный прогноз травмы.</p>
   </div>
 </div>
 
@@ -1320,7 +1317,7 @@
   <div style="background:#0b0d12; border:1px solid rgba(255,255,255,0.15); border-radius:16px; padding:28px; width:100%; max-width:420px; box-shadow:0 25px 60px rgba(0,0,0,0.9); position:relative; font-family:'Inter', sans-serif;">
     <button onclick="closeLeadModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#888; font-size:20px; cursor:pointer;">✕</button>
     
-    <div style="font-family:'Space Grotesk', sans-serif; font-size:18px; font-weight:700; color:#fff; margin-bottom:6px;">ЗАПРОС НА ИНТЕГРАЦИЮ</div>
+    <div style="font-family:'Inter', sans-serif; font-size:18px; font-weight:700; color:#fff; margin-bottom:6px;">ЗАПРОС НА ИНТЕГРАЦИЮ</div>
 <div style="font-size:11px; color:#6e798d; margin-bottom:20px; line-height:1.4;">Прямая связь с разработчиком комплекса. Ответ в день обращения.</div>
 
     <form onsubmit="submitLeadForm(event)">
@@ -1335,7 +1332,7 @@
         <option value="Вопрос создателю">Вопрос по технологии / метрологии</option>
       </select>
 
-      <button type="submit" id="lBtn" style="width:100%; background:var(--accent, #ff3b30); color:#fff; border:none; padding:14px; border-radius:8px; font-family:'Space Grotesk', sans-serif; font-size:13px; font-weight:700; cursor:pointer; letter-spacing:1px; transition:0.2s;">ОТПРАВИТЬ ЗАПРОС</button>
+      <button type="submit" id="lBtn" style="width:100%; background:var(--accent, #ff3b30); color:#fff; border:none; padding:14px; border-radius:8px; font-family:'Inter', sans-serif; font-size:13px; font-weight:700; cursor:pointer; letter-spacing:1px; transition:0.2s;">ОТПРАВИТЬ ЗАПРОС</button>
     </form>
     <div id="lStatus" style="font-size:11px; text-align:center; margin-top:14px;"></div>
   </div>

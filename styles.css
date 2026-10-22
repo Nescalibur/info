@@ -67,7 +67,7 @@ body {
 }
 
 .hero-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 28px;
   margin: 20px 0 10px;
 }
@@ -132,7 +132,7 @@ body {
 }
 
 h2 {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 36px;
   margin: 0;
 }
@@ -309,7 +309,7 @@ html { scroll-behavior: smooth; } /* Плавный скролл к якорям
   transition: transform 0.3s ease;
 }
 .nav-brand {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 900;
   font-size: 18px;
   color: var(--text);
@@ -339,7 +339,7 @@ html { scroll-behavior: smooth; } /* Плавный скролл к якорям
   background: transparent;
   border: none;
   color: var(--text);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 20px;
   text-align: left;
   padding: 20px 0;
@@ -410,7 +410,7 @@ html { scroll-behavior: smooth; } /* Плавный скролл к якорям
   border-radius: 0 12px 12px 0;
 }
 .tab-content-box h3 {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 24px;
   color: var(--text);
   margin: 0 0 15px 0;
@@ -449,3 +449,28 @@ html { scroll-behavior: smooth; } /* Плавный скролл к якорям
 }
 /* Сдвиг контента вниз из-за фиксированного меню */
 .hero { padding-top: 70px; }
+
+
+/* NESCALIBUR typography normalization — unified 2-family system */
+:root {
+  --font-ui: 'Inter', Arial, sans-serif;
+  --font-data: 'JetBrains Mono', Consolas, monospace;
+}
+html, body, button, input, select, textarea {
+  font-family: var(--font-ui);
+}
+h1, h2, h3, h4, p, a, label, .faq-question, .tab-content-box h3 {
+  font-family: var(--font-ui);
+}
+.metric, .section-index, .caption, .value, .nav-link, .m-btn-code,
+.d-tag, .d-footer, .s-lbl, .eyebrow {
+  font-family: var(--font-data);
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
